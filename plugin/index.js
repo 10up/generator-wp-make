@@ -113,6 +113,11 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.copy( 'grunt/_jshintrc', '.jshintrc' );
 	},
 
+	bower: function() {
+		this.template( 'bower/_bower.json', 'bower.json' );
+		this.copy( 'bower/bowerrc', '.bowerrc' );
+	}
+
 	git: function() {
 		this.copy( 'gitignore', '.gitignore' );
 	}
