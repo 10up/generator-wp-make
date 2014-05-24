@@ -107,6 +107,10 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.copy( 'readmes/readme-css.md', 'assets/css/readme.md' );
 	},
 
+	tests: function() {
+
+	},
+
 	grunt: function() {
 		this.template( 'grunt/_package.json', 'package.json' );
 		this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
@@ -116,7 +120,11 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	bower: function() {
 		this.template( 'bower/_bower.json', 'bower.json' );
 		this.copy( 'bower/bowerrc', '.bowerrc' );
-	}
+	},
+
+	composer: function() {
+		this.copy( 'composer/composer.json', 'composer.json' );
+	},
 
 	git: function() {
 		this.copy( 'gitignore', '.gitignore' );
