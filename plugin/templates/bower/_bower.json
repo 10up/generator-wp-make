@@ -1,0 +1,23 @@
+{
+  "name": "<%= _.slugify( opts.projectTitle ) %>",
+  "version": "0.0.1",
+  "main": "/",
+  "license": "GPLv2+",
+  "ignore": [
+    "**/.*",
+    "assets/css/src/*",
+    "assets/css/source/*",
+    "assets/js/src/*",
+    "assets/js/vendor/*",
+    "images/src/*",
+    "test",
+    "*.md",
+    "AUTHORS.txt",
+    "Gruntfile.js",
+    "package.json",
+    "composer.json"
+  ],
+  "devDependencies": {
+  },
+  "keywords": []
+}
