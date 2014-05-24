@@ -77,13 +77,13 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	plugin: function() {
-		this.template( '_readme.txt', 'readme.txt' );
-		this.template( 'php/_plugin.php', this.fileSlug + '.php' );
+		this.template( 'plugin/_readme.txt', 'readme.txt' );
+		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
 		this.copy( 'readmes/readme-includes.md', 'includes/readme.md' );
 	},
 
 	i18n: function() {
-		this.template( '_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
+		this.template( 'i18n/_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
 	},
 
 	images: function() {
@@ -127,7 +127,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	git: function() {
-		this.copy( 'gitignore', '.gitignore' );
+		this.copy( 'git/gitignore', '.gitignore' );
 	}
 });
 
