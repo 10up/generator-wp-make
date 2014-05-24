@@ -79,7 +79,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	plugin: function() {
 		this.template( 'plugin/_readme.txt', 'readme.txt' );
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
-		this.copy( 'readmes/readme-includes.md', 'includes/readme.md' );
+		this.copy( 'plugin/readme-includes.md', 'includes/readme.md' );
 	},
 
 	i18n: function() {
@@ -87,13 +87,13 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	images: function() {
-		this.copy( 'readmes/readme-images.md', 'images/readme.md' );
-		this.copy( 'readmes/readme-img-sources.md', 'images/src/readme.md' );
+		this.copy( 'images/readme.md', 'images/readme.md' );
+		this.copy( 'images/readme-sources.md', 'images/src/readme.md' );
 	},
 
 	js: function() {
 		this.template( 'js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
-		this.copy( 'readmes/readme-vendor.md', 'assets/js/vendor/readme.md' );
+		this.copy( 'js/readme-vendor.md', 'assets/js/vendor/readme.md' );
 	},
 
 	css: function() {
@@ -104,7 +104,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
 		}
-		this.copy( 'readmes/readme-css.md', 'assets/css/readme.md' );
+		this.copy( 'css/readme.md', 'assets/css/readme.md' );
 	},
 
 	tests: function() {
