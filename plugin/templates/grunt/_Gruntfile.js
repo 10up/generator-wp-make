@@ -6,9 +6,9 @@ module.exports = function( grunt ) {
 		concat: {
 			options: {
 				stripBanners: true,
-				banner: '/*! <% print('<%' + '=') %> pkg.title <% print('%' + '>') %> - v<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>\n' +
-					' * <% print('<%' + '=') %> pkg.homepage <% print('%' + '>') %>\n' +
-					' * Copyright (c) <% print('<%' + '=') %> grunt.template.today("yyyy") <% print('%' + '>') %>;' +
+				banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
+					' * <%%= pkg.homepage %>\n' +
+					' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
 					' * Licensed GPLv2+' +
 					' */\n'
 			},
@@ -32,9 +32,9 @@ module.exports = function( grunt ) {
 					'assets/js/<%= fileSlug %>.min.js': ['assets/js/<%= fileSlug %>.js']
 				},
 				options: {
-					banner: '/*! <% print('<%' + '=') %> pkg.title <% print('%' + '>') %> - v<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>\n' +
-						' * <% print('<%' + '=') %> pkg.homepage <% print('%' + '>') %>\n' +
-						' * Copyright (c) <% print('<%' + '=') %> grunt.template.today("yyyy") <% print('%' + '>') %>;' +
+					banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
+						' * <%%= pkg.homepage %>\n' +
+						' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
 						' * Licensed GPLv2+' +
 						' */\n',
 					mangle: {
@@ -70,9 +70,9 @@ module.exports = function( grunt ) {
 		<% } %>
 		cssmin: {
 			options: {
-				banner: '/*! <% print('<%' + '=') %> pkg.title <% print('%' + '>') %> - v<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>\n' +
-					' * <% print('<%' + '=') %>pkg.homepage <% print('%' + '>') %>\n' +
-					' * Copyright (c) <% print('<%' + '=') %> grunt.template.today("yyyy") <% print('%' + '>') %>;' +
+				banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
+					' * <%%=pkg.homepage %>\n' +
+					' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
 					' * Licensed GPLv2+' +
 					' */\n'
 			},
@@ -113,7 +113,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		clean: {
-			main: ['release/<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>']
+			main: ['release/<%%= pkg.version %>']
 		},
 		copy: {
 			// Copy the plugin to a versioned release directory
@@ -132,17 +132,17 @@ module.exports = function( grunt ) {
 					'!.gitignore',
 					'!.gitmodules'
 				],
-				dest: 'release/<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>/'
+				dest: 'release/<%%= pkg.version %>/'
 			}		
 		},
 		compress: {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/cmi_companion.<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>.zip'
+					archive: './release/cmi_companion.<%%= pkg.version %>.zip'
 				},
 				expand: true,
-				cwd: 'release/<% print('<%' + '=') %> pkg.version <% print('%' + '>') %>/',
+				cwd: 'release/<%%= pkg.version %>/',
 				src: ['**/*'],
 				dest: 'cmi_companion/'
 			}		
