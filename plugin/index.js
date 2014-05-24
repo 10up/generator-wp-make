@@ -10,10 +10,16 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.magenta('Thanks for generating with WP Make!'));
 
 		this.on('end', function () {
-    		if (!this.options['skip-install']) {
-    			this.installDependencies();
-    		}
-    	});
+			if (!this.options['skip-install']) {
+				this.installDependencies();
+				this.spawnCommand( 'composer', ['install'] )
+					.on('exit', function (err) {
+						if (err === 127) {
+							this.log.error('Could not find Composer');
+						}
+				}.bind(this));
+			}
+		});
 	},
 
 	options: function () {
