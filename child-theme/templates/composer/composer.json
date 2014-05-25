@@ -1,0 +1,7 @@
+{
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "*@stable",
+        "10up/wp_mock": "dev-master"
+    }
+}
