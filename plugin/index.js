@@ -10,14 +10,36 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.magenta('Thanks for generating with WP Make!'));
 
 		this.on('end', function () {
-			if (!this.options['skip-install']) {
-				this.installDependencies();
-				this.spawnCommand( 'composer', ['install'] )
-					.on('exit', function (err) {
-						if (err === 127) {
-							this.log.error('Could not find Composer');
-						}
-				}.bind(this));
+			var npmInstall = chalk.yellow.bold( 'npm install' ),
+			composerInstall = chalk.yellow.bold( 'composer install' );
+			
+			this.log( 'You plugins has been generated.');
+
+			if( this.options['skip-install'] || ( this.options['skip-npm'] && this.options['skip-composer'] ) ) {
+				this.log( 'Just run ' + npmInstall + ' & ' + composerInstall + ' when you are ready' );
+			} else if ( this.options['skip-npm'] ) {
+				this.log( 'Skipping npm install. Just run ' + npmInstall + ' when you are ready.' );
+				this.log( 'Running ' + composerInstall + ' for you. If this fails try running it yourself.' );
+				
+				installComposer.apply( this );
+			} else if ( this.options['skip-composer'] ) {
+				this.log( 'Skipping composer install. Just run ' + composerInstall + ' when you are ready.' );
+				this.log( 'Running ' + npmInstall + ' for you. If this fails try running it yourself.' );
+				
+				this.installDependencies({
+					npm: true,
+					bower: false,
+					skipMessage: true
+				});
+			} else {
+				this.log( 'Running ' + npmInstall + ' & ' + composerInstall + ' for you...' );
+				
+				this.installDependencies({
+					npm: true,
+					bower: false,
+					skipMessage: true,
+					callback: installComposer.bind(this)
+				});
 			}
 		});
 	},
@@ -139,5 +161,14 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.copy( 'git/gitignore', '.gitignore' );
 	}
 });
+
+function installComposer() {
+	this.spawnCommand( 'composer', ['install'] )
+	.on('exit', function (err) {
+		if (err === 127) {
+			this.log.error('Could not find Composer');
+		}
+	}.bind(this));
+}
 
 module.exports = PluginGenerator;
