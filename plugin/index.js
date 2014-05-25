@@ -147,7 +147,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		if ( this.opts.sass ) {
 			this.template( 'css/_style.css', 'assets/css/sass/' + this.fileSlug + '.scss' );
 		} else if ( this.opts.autoprefixer ) {
-			this.template( 'css/_style.css', 'assets/css/source/' + this.fileSlug + '.css' );
+			this.template( 'css/_style.css', 'assets/css/src/' + this.fileSlug + '.css' );
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
 		}

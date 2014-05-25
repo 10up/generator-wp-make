@@ -63,7 +63,7 @@ module.exports = function( grunt ) {
 				},
 				files: { <% if ( opts.sass ) { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/<%= fileSlug %>.css' ]<% } else { %>
-					'assets/css/<%= fileSlug %>.css': [ 'assets/css/source/<%= fileSlug %>.css' ]<% } %>
+					'assets/css/<%= fileSlug %>.css': [ 'assets/css/src/<%= fileSlug %>.css' ]<% } %>
 				}
 			}
 		},
