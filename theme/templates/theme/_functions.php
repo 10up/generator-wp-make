@@ -17,7 +17,7 @@
 define( '<%= opts.funcPrefix.toUpperCase() %>_VERSION',      '0.1.0' );
 define( '<%= opts.funcPrefix.toUpperCase() %>_URL',          get_stylesheet_directory_uri() );
 define( '<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL', get_template_directory_uri() );
-define( '<%= opts.funcPrefix.toUpperCase() %>_PATH',         get_template_directory() );
+define( '<%= opts.funcPrefix.toUpperCase() %>_PATH',         get_template_directory() . '/' );
 define( '<%= opts.funcPrefix.toUpperCase() %>_INC',          <%= opts.funcPrefix.toUpperCase() %>_PATH . 'includes/' );
 
 // Include files
