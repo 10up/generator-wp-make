@@ -21,7 +21,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 				this.log( 'Skipping npm install. Just run ' + npmInstall + ' when you are ready.' );
 				this.log( 'Running ' + composerInstall + ' for you. If this fails try running it yourself.' );
 				
-				installComposer.apply( this );
+				_installComposer.apply( this );
 			} else if ( this.options['skip-composer'] ) {
 				this.log( 'Skipping composer install. Just run ' + composerInstall + ' when you are ready.' );
 				this.log( 'Running ' + npmInstall + ' for you. If this fails try running it yourself.' );
@@ -38,7 +38,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 					npm: true,
 					bower: false,
 					skipMessage: true,
-					callback: installComposer.bind(this)
+					callback: _installComposer.bind(this)
 				});
 			}
 		});
@@ -85,12 +85,6 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			},
 			{
 				type:    'confirm',
-				name:    'autoprefixer',
-				message: 'Use Autoprefixer?',
-				default: true
-			},
-			{
-				type:    'confirm',
 				name:    'sass',
 				message: 'Use Sass?',
 				default: true
@@ -100,6 +94,27 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.prompt(prompts, function (props) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace(/[\s]/, '-').replace( /[^a-z-_]/, '' );
+			done();
+		}.bind(this));
+	},
+
+	autoprefixer: function() {
+		// If we're running Sass, automatically use autoprefixer.
+		if ( this.opts.sass ) {
+			this.opts.autoprefixer = true;
+			return;
+		}
+
+		// See if we want to use it on it's own, but only if not using Sass.
+		var done = this.async();
+		this.prompt([{
+			type:    'confirm',
+			name:    'autoprefixer',
+			message: 'Use Autoprefixer?',
+			default: true
+		}],
+		function(props){
+			this.opts.autoprefixer = props.autoprefixer;
 			done();
 		}.bind(this));
 	},
@@ -162,7 +177,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	}
 });
 
-function installComposer() {
+function _installComposer() {
 	this.spawnCommand( 'composer', ['install'] )
 	.on('exit', function (err) {
 		if (err === 127) {
