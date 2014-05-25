@@ -120,17 +120,23 @@ module.exports = function( grunt ) {
 			main: {
 				src:  [
 					'**',
+					'!**/.*',
 					'!node_modules/**',
+					'!vendor/**',
+					'!tests/**',
 					'!release/**',
-					'!.git/**',
-					'!.sass-cache/**',
+					'!css/sass/**',
 					'!css/src/**',
 					'!js/src/**',
 					'!img/src/**',
+					'!bootstrap.php',
+					'!bower.json',
+					'!composer.json',
+					'!composer.lock',
 					'!Gruntfile.js',
 					'!package.json',
-					'!.gitignore',
-					'!.gitmodules'
+					'!phpunit.xml',
+					'!phpunit.xml.dist'
 				],
 				dest: 'release/<%%= pkg.version %>/'
 			}		

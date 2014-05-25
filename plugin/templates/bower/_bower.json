@@ -5,17 +5,18 @@
   "license": "GPLv2+",
   "ignore": [
     "**/.*",
+    "*.md",
     "assets/css/sass/*",
     "assets/css/src/*",
     "assets/js/src/*",
     "assets/js/vendor/*",
     "images/src/*",
-    "test",
-    "*.md",
-    "AUTHORS.txt",
+    "tests",
+    "bootstrap.php",
     "Gruntfile.js",
     "package.json",
-    "composer.json"
+    "composer.json",
+    "phpunit.xml.dist"
   ],
   "devDependencies": {
   },
