@@ -1,0 +1,18 @@
+/**
+ * Theme Name:  <%= opts.projectTitle %>
+ * Theme URI:   <%= opts.projectHome %>
+ * Description: <%= opts.description %>
+ * Author:      <%= opts.authorName %>
+ * Author URI:  <%= opts.authorUrl %>
+ * Version:     0.1.0
+ * Tags:
+ *
+ * License:     GPLv2+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+/**
+ * Built using yo wp-make:theme
+ * Copyright (c) 2014 10up, LLC
+ * https://github.com/lkwdwrd/generator-wp-make
+ */
