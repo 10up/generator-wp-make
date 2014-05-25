@@ -94,6 +94,9 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.prompt(prompts, function (props) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace(/[\s]/, '-').replace( /[^a-z-_]/, '' );
+			this.classSlug = this.fileSlug.replace( '-', '_' ).replace( /(^|_)([a-z])/g, function( match, group1, group2 ){
+				return group1 + group2.toUpperCase(); 
+			});
 			done();
 		}.bind(this));
 	},
@@ -122,6 +125,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	plugin: function() {
 		this.template( 'plugin/_readme.txt', 'readme.txt' );
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
+		this.template( 'plugin/_class-plugin.php', 'includes/class-' + this.fileSlug + '.php' );
 		this.copy( 'plugin/readme-includes.md', 'includes/readme.md' );
 	},
 

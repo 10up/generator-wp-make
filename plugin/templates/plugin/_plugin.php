@@ -41,39 +41,16 @@ define( '<%= opts.funcPrefix.toUpperCase() %>_URL',     plugin_dir_url( __FILE__
 define( '<%= opts.funcPrefix.toUpperCase() %>_PATH',    dirname( __FILE__ ) . '/' );
 define( '<%= opts.funcPrefix.toUpperCase() %>_INC',     <%= opts.funcPrefix.toUpperCase() %>_PATH . 'includes/' );
 
-/**
- * Default initialization for the plugin:
- * - Registers the default textdomain.
- */
-function <%= opts.funcPrefix %>_init() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), '<%= opts.funcPrefix %>' );
-	load_textdomain( '<%= opts.funcPrefix %>', WP_LANG_DIR . '/<%= opts.funcPrefix %>/<%= opts.funcPrefix %>-' . $locale . '.mo' );
-	load_plugin_textdomain( '<%= opts.funcPrefix %>', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-}
-
-/**
- * Activate the plugin
- */
-function <%= opts.funcPrefix %>_activate() {
-	// First load the init scripts in case any rewrite functionality is being loaded
-	<%= opts.funcPrefix %>_init();
-
-	flush_rewrite_rules();
-}
-register_activation_hook( __FILE__, '<%= opts.funcPrefix %>_activate' );
-
-/**
- * Deactivate the plugin
- * Uninstall routines should be in uninstall.php
- */
-function <%= opts.funcPrefix %>_deactivate() {
-
-}
-register_deactivation_hook( __FILE__, '<%= opts.funcPrefix %>_deactivate' );
+// Include files
+require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'class-<%= fileSlug %>.php';
 
 // Wireup actions
-add_action( 'init', '<%= opts.funcPrefix %>_init' );
+add_action( 'init', array( '<%= classSlug %>', 'init' ) );
 
 // Wireup filters
 
 // Wireup shortcodes
+
+// Activation/Deactivation
+register_activation_hook( __FILE__, array( '<%= classSlug %>', 'activate' ) );
+register_deactivation_hook( __FILE__, array( '<%= classSlug %>', 'deactivate' ) );
