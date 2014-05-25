@@ -82,7 +82,7 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	function wptheme_header_meta() {
+	function header_meta() {
 		$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
 
 		echo apply_filters( 'wptheme_humans', $humans );
