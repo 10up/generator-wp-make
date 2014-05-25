@@ -96,7 +96,7 @@ module.exports = function( grunt ) {
 			styles: { <% if ( opts.sass ) { %>
 				files: ['assets/css/sass/*.scss'],
 				tasks: ['sass', 'autoprefixer', 'cssmin'],<% } else if ( opts.autoprefixer ) { %>
-				files: ['assets/css/source/*.css'],
+				files: ['assets/css/src/*.css'],
 				tasks: ['autoprefixer', 'cssmin'],<% } else { %>
 				files: ['assets/css/*.css', '!assets/css/*.min.css'],
 				tasks: ['cssmin'],<% } %>
