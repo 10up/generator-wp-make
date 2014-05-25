@@ -9,7 +9,7 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	function load() {
+	public static function load() {
 		self::i18n();
 		add_action( 'init', array( __CLASS__, 'init' ) );
 		do_action( '<%= opts.funcPrefix %>_loaded' );
@@ -19,7 +19,7 @@ class <%= classSlug %> {
 	 * 
 	 * @return void.
 	 */
-	function init() {
+	public static function init() {
 		do_action( '<%= opts.funcPrefix %>_init' );
 	}
 	/**
@@ -27,7 +27,7 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	function i18n() {
+	public static function i18n() {
 		$locale = apply_filters( 'plugin_locale', get_locale(), '<%= opts.funcPrefix %>' );
 		load_textdomain( '<%= opts.funcPrefix %>', WP_LANG_DIR . '/<%= opts.funcPrefix %>/<%= opts.funcPrefix %>-' . $locale . '.mo' );
 		load_plugin_textdomain( '<%= opts.funcPrefix %>', false, plugin_basename( <%= opts.funcPrefix.toUpperCase() %>_PATH ) . '/languages/' );
@@ -38,7 +38,7 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	activate() {
+	public static function activate() {
 		// First load the init scripts in case any rewrite functionality is being loaded
 		self::init();
 		flush_rewrite_rules();
@@ -51,7 +51,7 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	deactivate() {
+	public static function deactivate() {
 
 	}
 }
