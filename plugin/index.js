@@ -13,7 +13,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			var npmInstall = chalk.yellow.bold( 'npm install' ),
 			composerInstall = chalk.yellow.bold( 'composer install' );
 			
-			this.log( 'You plugins has been generated.');
+			this.log( 'Your plugin has been generated.');
 
 			if( this.options['skip-install'] || ( this.options['skip-npm'] && this.options['skip-composer'] ) ) {
 				this.log( 'Just run ' + npmInstall + ' & ' + composerInstall + ' when you are ready' );

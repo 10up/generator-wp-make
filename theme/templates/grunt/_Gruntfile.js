@@ -79,7 +79,7 @@ module.exports = function( grunt ) {
 			minify: {
 				expand: true,
 				
-				cwd: 'assets/css/',				
+				cwd: 'assets/css/',
 				src: ['<%= fileSlug %>.css'],
 				
 				dest: 'assets/css/',
@@ -153,13 +153,6 @@ module.exports = function( grunt ) {
 				src: ['**/*'],
 				dest: 'cmi_companion/'
 			}		
-		},
-		wp_readme_to_markdown: {
-			readme: {
-				files: {
-					'readme.md': 'readme.txt'
-				}
-			}
 		}
 	} );
 	
@@ -168,11 +161,11 @@ module.exports = function( grunt ) {
 	
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin' ] );
 	<% } else if ( opts.autoprefixer ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'autoprefixer', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'autoprefixer', 'cssmin' ] );
 	<% } else { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin' ] );
 	<% } %>
 	
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
