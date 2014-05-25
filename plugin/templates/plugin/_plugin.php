@@ -45,7 +45,7 @@ define( '<%= opts.funcPrefix.toUpperCase() %>_INC',     <%= opts.funcPrefix.toUp
 require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'class-<%= fileSlug %>.php';
 
 // Wireup actions
-add_action( 'init', array( '<%= classSlug %>', 'init' ) );
+add_action( 'plugins_loaded', array( '<%= classSlug %>', 'load' ) );
 
 // Wireup filters
 
