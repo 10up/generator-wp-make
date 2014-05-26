@@ -10,7 +10,7 @@ class <%= classSlug %> {
 	 * @return void.
 	 */
 	public static function load() {
-		self::i18n();
+		add_action( 'init', array( __CLASS__, 'i18n' ) );
 		add_action( 'init', array( __CLASS__, 'init' ) );
 		do_action( '<%= opts.funcPrefix %>_loaded' );
 	}
