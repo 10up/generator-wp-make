@@ -14,8 +14,8 @@ class <%= classSlug %> {
 	 * 
 	 * @return void.
 	 */
-	function setup() {
-		self::i18n();
+	public static function setup() {
+		add_action( 'init', array( __CLASS__, 'i18n' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'styles' ) );
 		add_action( 'wp_head', array( __CLASS__, 'header_meta' ) );
@@ -33,7 +33,7 @@ class <%= classSlug %> {
 	 * @return void.
 	 */
 	public static function i18n() {
-		load_theme_textdomain( 'wptheme', <%= opts.funcPrefix.toUpperCase() %>_PATH . '/languages' );
+		load_theme_textdomain( '<%= opts.funcPrefix %>', <%= opts.funcPrefix.toUpperCase() %>_PATH . '/languages' );
 	 }
 
 	/**
@@ -44,11 +44,11 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	public static function scripts() {
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	public static function scripts( $debug = false ) {
+		$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_script(
-			'wptheme',
+			'<%= opts.funcPrefix %>',
 			<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/<%= fileSlug %>{$min}.js",
 			array(),
 			<%= opts.funcPrefix.toUpperCase() %>_VERSION,
@@ -64,11 +64,11 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	public static function styles() {
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	public static function styles( $debug = false ) {
+		$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_style(
-			'wptheme',
+			'<%= opts.funcPrefix %>',
 			<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>{$min}.css",
 			array(),
 			<%= opts.funcPrefix.toUpperCase() %>_VERSION
@@ -82,9 +82,9 @@ class <%= classSlug %> {
 	 *
 	 * @return void.
 	 */
-	function header_meta() {
+	public static function header_meta() {
 		$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
 
-		echo apply_filters( 'wptheme_humans', $humans );
+		echo apply_filters( '<%= opts.funcPrefix %>_humans', $humans );
 	}
 }
