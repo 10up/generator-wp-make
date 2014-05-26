@@ -154,9 +154,9 @@ var ChildThemeGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.copy( 'tests/phpunit/bootstrap.php', 'bootstrap.php' );
+		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
+		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
 		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
-		this.copy( 'tests/phpunit/Class_Test.php', 'tests/phpunit/Class_Test.php' );
 		//qunit
 		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
 		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
