@@ -154,6 +154,19 @@ module.exports = function( grunt ) {
 				src: ['**/*'],
 				dest: 'cmi_companion/'
 			}		
+		},
+		phpunit: {
+			classes: {
+				dir: 'tests/phpunit/'
+			},
+			options: {
+				bin: 'vendor/bin/phpunit',
+				bootstrap: 'bootstrap.php',
+				colors: true
+			}
+		},
+		qunit: {
+			all: ['tests/qunit/**/*.html']
 		}
 	} );
 	
@@ -170,6 +183,8 @@ module.exports = function( grunt ) {
 	<% } %>
 	
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
+
+	grunt.registerTask( 'test', ['phpunit', 'qunit'] );
 
 	grunt.util.linefeed = '\n';
 };

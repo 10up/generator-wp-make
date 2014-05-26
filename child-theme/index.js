@@ -3,43 +3,35 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
+var async = require('async');
 
 
 var ChildThemeGenerator = yeoman.generators.Base.extend({
-  init: function () {
+	init: function () {
 		this.log(chalk.magenta('Thanks for generating with WP Make!'));
 
 		this.on('end', function () {
-			var npmInstall = chalk.yellow.bold( 'npm install' ),
-			composerInstall = chalk.yellow.bold( 'composer install' );
-			
-			this.log( 'Your child theme has been generated.');
+			var i, length, installs = [],
+				chalks = {skipped:[], run:[]},
+				installers = ['npm', 'bower', 'composer'];
 
-			if( this.options['skip-install'] || ( this.options['skip-npm'] && this.options['skip-composer'] ) ) {
-				this.log( 'Just run ' + npmInstall + ' & ' + composerInstall + ' when you are ready' );
-			} else if ( this.options['skip-npm'] ) {
-				this.log( 'Skipping npm install. Just run ' + npmInstall + ' when you are ready.' );
-				this.log( 'Running ' + composerInstall + ' for you. If this fails try running it yourself.' );
-				
-				_installComposer.apply( this );
-			} else if ( this.options['skip-composer'] ) {
-				this.log( 'Skipping composer install. Just run ' + composerInstall + ' when you are ready.' );
-				this.log( 'Running ' + npmInstall + ' for you. If this fails try running it yourself.' );
-				
-				this.installDependencies({
-					npm: true,
-					bower: false,
-					skipMessage: true
-				});
-			} else {
-				this.log( 'Running ' + npmInstall + ' & ' + composerInstall + ' for you. If this fails try running them yourself.' );
-				
-				this.installDependencies({
-					npm: true,
-					bower: false,
-					skipMessage: true,
-					callback: _installComposer.bind(this)
-				});
+			this.log(chalk.green.bold('Your child-theme has been generated.'));
+
+			for (i = 0, length = installers.length; i < length; i++) {
+				if (this.options['skip-install'] || this.options[ 'skip-' + installers[ i ] ] ) {
+					chalks.skipped.push(chalk.yellow.bold(installers[ i ] + ' install'));
+				} else {
+					chalks.run.push(chalk.yellow.bold(installers[ i ] + ' install'));
+					installs.push(_install(installers[ i ],this));
+				}
+			}
+			
+			if ( 0 < chalks.skipped.length ) {
+				this.log( 'Skipping ' + chalks.skipped.join(', ') + '. Just run yourself when you are ready.');
+			}
+			if ( 0 < installs.length ) {
+				this.log( 'Running ' + chalks.run.join(', ') + ' for you. If this fails try running yourself.');
+				async.parallel(installs);
 			}
 		});
 	},
@@ -165,6 +157,9 @@ var ChildThemeGenerator = yeoman.generators.Base.extend({
 		this.copy( 'tests/phpunit/bootstrap.php', 'bootstrap.php' );
 		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		this.copy( 'tests/phpunit/Class_Test.php', 'tests/phpunit/Class_Test.php' );
+		//qunit
+		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
+		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
 	},
 
 	grunt: function() {
@@ -187,13 +182,19 @@ var ChildThemeGenerator = yeoman.generators.Base.extend({
 	}
 });
 
-function _installComposer() {
-	this.spawnCommand( 'composer', ['install'] )
-	.on('exit', function (err) {
-		if (err === 127) {
-			this.log.error('Could not find Composer');
-		}
-	}.bind(this));
+function _install( command, context ) {
+	return function install( cb ) {
+		context.emit(command + 'Install');
+		context.spawnCommand( command, ['install'] )
+		.on('error', cb)
+		.on('exit', context.emit.bind(context, command + 'Install:end'))
+		.on('exit', function (err) {
+			if (err === 127) {
+				this.log.error('Could not find Composer');
+			}
+			cb(err);
+		}.bind(context));
+	}
 }
 
 module.exports = ChildThemeGenerator;
