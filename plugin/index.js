@@ -168,7 +168,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	composer: function() {
-		this.copy( 'composer/composer.json', 'composer.json' );
+		this.template( 'composer/_composer.json', 'composer.json' );
 	},
 
 	git: function() {

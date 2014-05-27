@@ -1,0 +1,22 @@
+{
+	"name": "<%= _.slugify( opts.projectTitle ) %>",
+	"description": "<%= opts.description %>",
+	"version": "0.0.1",
+	"type": "wordpress-plugin",
+	"keywords": [],
+	"homepage": "<%= opts.projectHome %>",
+	"license": "GPLv2.0+",
+	"authors": [
+		{
+			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
+			"email": "<%= opts.authorEmail %>",
+			"homepage": "<%= opts.authorUrl %>",
+			"role": "Developer"
+		}
+	],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "*@stable",
+        "10up/wp_mock": "dev-master"
+    }
+}
