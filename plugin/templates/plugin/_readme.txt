@@ -1,4 +1,4 @@
-=== CMI Companion ===
+=== <%= opts.projectTitle %> ===
 Contributors:      <%= opts.authorName %>
 Donate link:       <%= opts.authorUrl %>
 Tags: 
@@ -19,7 +19,7 @@ License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 = Manual Installation =
 
 1. Upload the entire `/<%= basename %>` directory to the `/wp-content/plugins/` directory.
-2. Activate CMI Companion through the 'Plugins' menu in WordPress.
+2. Activate <%= opts.projectTitle %> through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
 

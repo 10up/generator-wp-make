@@ -147,12 +147,12 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/cmi_companion.<%%= pkg.version %>.zip'
+					archive: './release/<%= opts.funcPrefix %>.<%%= pkg.version %>.zip'
 				},
 				expand: true,
 				cwd: 'release/<%%= pkg.version %>/',
 				src: ['**/*'],
-				dest: 'cmi_companion/'
+				dest: '<%= opts.funcPrefix %>/'
 			}		
 		},
 		phpunit: {
