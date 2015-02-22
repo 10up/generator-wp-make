@@ -126,8 +126,8 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	images: function() {
-		this.copy( 'images/readme.md', 'images/readme.md' );
-		this.copy( 'images/readme-sources.md', 'images/src/readme.md' );
+		this.copy( '../../shared/images/readme.md', 'images/readme.md' );
+		this.copy( '../../shared/images/readme-sources.md', 'images/src/readme.md' );
 	},
 
 	js: function() {
