@@ -90,12 +90,23 @@ var LibGenerator = generator.Base.extend({
 			}.bind( this ) );
 		},
 
+		grunt: function() {
+			this.template( 'grunt/_package.json', 'package.json' );
+			this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
+			this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
+		},
+
+		bower: function() {
+			this.template( '../../shared/bower/_bower.json', 'bower.json' );
+			this.copy( '../../shared/bower/bowerrc', '.bowerrc' );
+		},
+
 		composer: function() {
 			this.template( 'composer/_composer.json', 'composer.json' );
 		},
 
 		git: function() {
-			this.copy( '_gitignore', '.gitignore' );
+			this.copy( '../../shared/git/gitignore', '.gitignore' );
 		},
 
 		markdown: function() {
@@ -109,8 +120,9 @@ var LibGenerator = generator.Base.extend({
 			this.template( '_TestCase.php', 'tests/test-tools/TestCase.php' );
 		},
 
-		bootstrap: function() {
+		library: function() {
 			this.template( '_app.php', this.opts.className + '.php' );
+			this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
 		}
 	}
 );
