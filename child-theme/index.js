@@ -137,8 +137,8 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	},
 
 	js: function() {
-		this.template( 'js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
-		this.copy( 'js/readme-vendor.md', 'assets/js/vendor/readme.md' );
+		this.template( '../../shared/js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
+		this.copy( '../../shared/js/readme-vendor.md', 'assets/js/vendor/readme.md' );
 	},
 
 	css: function() {
