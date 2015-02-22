@@ -127,17 +127,17 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 	},
 
 	i18n: function() {
-		this.template( 'i18n/_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
+		this.template( '../../shared/i18n/_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
 	},
 
 	images: function() {
-		this.copy( 'images/readme.md', 'images/readme.md' );
-		this.copy( 'images/readme-sources.md', 'images/src/readme.md' );
+		this.copy( '../../shared/images/readme.md', 'images/readme.md' );
+		this.copy( '../../shared/images/readme-sources.md', 'images/src/readme.md' );
 	},
 
 	js: function() {
-		this.template( 'js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
-		this.copy( 'js/readme-vendor.md', 'assets/js/vendor/readme.md' );
+		this.template( '../../shared/js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
+		this.copy( '../../shared/js/readme-vendor.md', 'assets/js/vendor/readme.md' );
 	},
 
 	css: function() {
@@ -148,7 +148,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
 		}
-		this.copy( 'css/readme.md', 'assets/css/readme.md' );
+		this.copy( '../../shared/css/readme.md', 'assets/css/readme.md' );
 	},
 
 	tests: function() {
@@ -157,27 +157,27 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
 		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
-		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
-		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
+		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
+		this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
 	},
 
 	grunt: function() {
 		this.template( 'grunt/_package.json', 'package.json' );
 		this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
-		this.copy( 'grunt/_jshintrc', '.jshintrc' );
+		this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
 	},
 
 	bower: function() {
-		this.template( 'bower/_bower.json', 'bower.json' );
-		this.copy( 'bower/bowerrc', '.bowerrc' );
+		this.template( '../../shared/bower/_bower.json', 'bower.json' );
+		this.copy( '../../shared/bower/bowerrc', '.bowerrc' );
 	},
 
 	composer: function() {
-		this.template( 'composer/_composer.json', 'composer.json' );
+		this.template( '../../shared/composer/_composer.json', 'composer.json' );
 	},
 
 	git: function() {
-		this.copy( 'git/gitignore', '.gitignore' );
+		this.copy( '../../shared/git/gitignore', '.gitignore' );
 	}
 });
 
