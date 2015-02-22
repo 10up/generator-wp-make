@@ -27,7 +27,8 @@
     "grunt-contrib-compress": "^0.5.3",
     "grunt-phpunit": "^0.3.3",
     "grunt-contrib-qunit": "^0.4.0",
-    "load-grunt-tasks": "^0.4.0"
+    "load-grunt-tasks": "^0.4.0",
+    "qunitjs": "~1.17.1"
   },
   "keywords": []
 }

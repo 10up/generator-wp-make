@@ -18,8 +18,6 @@
     "composer.json",
     "phpunit.xml.dist"
   ],
-  "devDependencies": {
-    "qunit": "~1.14.0"
-  },
+  "devDependencies": {},
   "keywords": []
 }
