@@ -86,7 +86,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.prompt( prompts, function ( props ) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-			this.classSlug = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+			this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 				return group1 + group2.toUpperCase(); 
 			});
 			done();
@@ -153,9 +153,9 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.template( '../../shared/tests/phpunit/_Core_Tests.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
+		this.template( '../../shared/tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
 		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
-		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php' );
+		this.template( '../../shared/tests/phpunit/_bootstrap.php.dist', 'bootstrap.php.dist' );
 		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
