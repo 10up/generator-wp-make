@@ -86,7 +86,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.prompt( prompts, function ( props ) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-			this.classSlug = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+			this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 				return group1 + group2.toUpperCase(); 
 			});
 			done();
@@ -117,7 +117,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	plugin: function() {
 		this.template( 'plugin/_readme.txt', 'readme.txt' );
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
-		this.template( 'plugin/_class-plugin.php', 'includes/class-' + this.fileSlug + '.php' );
+		this.template( 'plugin/_core.php', 'includes/functions/core.php' );
 		this.copy( 'plugin/readme-includes.md', 'includes/readme.md' );
 	},
 
@@ -148,7 +148,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
+		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.namespace + '_Test.php' );
 		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
 		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit

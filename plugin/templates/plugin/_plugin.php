@@ -42,15 +42,12 @@ define( '<%= opts.funcPrefix.toUpperCase() %>_PATH',    dirname( __FILE__ ) . '/
 define( '<%= opts.funcPrefix.toUpperCase() %>_INC',     <%= opts.funcPrefix.toUpperCase() %>_PATH . 'includes/' );
 
 // Include files
-require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'class-<%= fileSlug %>.php';
+require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'functions/core.php';
 
-// Wireup actions
-add_action( 'plugins_loaded', array( '<%= classSlug %>', 'load' ) );
-
-// Wireup filters
-
-// Wireup shortcodes
 
 // Activation/Deactivation
-register_activation_hook( __FILE__, array( '<%= classSlug %>', 'activate' ) );
-register_deactivation_hook( __FILE__, array( '<%= classSlug %>', 'deactivate' ) );
+register_activation_hook( __FILE__, '\TenUp\<%= namespace %>\Core\activate' );
+register_deactivation_hook( __FILE__, '\TenUp\<%= namespace %>\Core\deactivate' );
+
+// Bootstrap
+TenUp\<%= namespace %>\Core\setup();

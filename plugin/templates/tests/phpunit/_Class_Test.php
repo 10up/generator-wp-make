@@ -1,4 +1,5 @@
 <?php
+namespace TenUp\<%= namespace %>\Core;
 
 /**
  * This is a very basic test case to get things started. You should probably rename this and make
@@ -12,24 +13,14 @@
  *   - https://github.com/10up/wp_mock
  */
 
-use WP_Mock\Tools\TestCase;
+use WP_Mock\Tools\TestCase as BaseTestCase;
+use TenUp\<%= namespace %> as Base;
 
-class <%= classSlug %>_Test extends TestCase {
+class Core_Test extends Base\TestCase {
 
-	/**
-	 * Set up before any test methods run.
-	 */
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		require_once <%= opts.funcPrefix.toUpperCase() %>_DIR . 'includes/class-<%= fileSlug %>.php';
-	}
+	protected $testFiles = [
 
-	/**
-	 * Set up before each test method runs.
-	 */
-	public function setUp() {
-		parent::setUp();
-	}
+	];
 
 	/** 
 	 * Test load method.
@@ -98,19 +89,5 @@ class <%= classSlug %>_Test extends TestCase {
 	 */
 	public function test_deactivate() {
 		<%= classSlug %>::deactivate();	
-	}
-
-	/**
-	 * Clean up run after each test method runs.
-	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
-	
-	/**
-	 * Clean up after all test methods have run.
-	 */
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
 	}
 }
