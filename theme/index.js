@@ -155,7 +155,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		//phpunit
 		this.template( '../../shared/tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
 		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
-		this.template( '../../shared/tests/phpunit/_bootstrap.php.dist', 'bootstrap.php.dist' );
+		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
 		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
