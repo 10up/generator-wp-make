@@ -1,4 +1,5 @@
 <?php
+namespace TenUp\<%= namespace %>\Core;
 
 /**
  * This is a very basic test case to get things started. You should probably rename this and make
@@ -12,35 +13,28 @@
  *   - https://github.com/10up/wp_mock
  */
 
-use WP_Mock\Tools\TestCase;
+use TenUp\<%= namespace %> as Base;
 
-class <%= classSlug %>_Test extends TestCase {
+class Core_Tests extends Base\TestCase {
 
-	/**
-	 * Set up before any test methods run.
-	 */
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		require_once <%= opts.funcPrefix.toUpperCase() %>_DIR . 'includes/class-<%= fileSlug %>.php';
-	}
-
-	/**
-	 * Set up before each test method runs.
-	 */
-	public function setUp() {
-		parent::setUp();
-	}
+	protected $testFiles = [
+		'functions/core.php'
+	];
 
 	/** 
 	 * Test setup method.
 	 */
 	public function test_setup() {
-		\WP_Mock::expectActionAdded( 'init', array( '<%= classSlug %>', 'i18n' ) );
-		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', array( '<%= classSlug %>', 'scripts' ) );
-		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', array( '<%= classSlug %>', 'styles' ) );
-		\WP_Mock::expectActionAdded( 'wp_head', array( '<%= classSlug %>', 'header_meta' ) );
+		// Setup
+		\WP_Mock::expectActionAdded( 'init',               'TenUp\<%= namespace %>\Core\i18n'        );
+		\WP_Mock::expectActionAdded( 'wp_head',            'TenUp\<%= namespace %>\Core\header_meta' );
+		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', 'TenUp\<%= namespace %>\Core\scripts'     );
+		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', 'TenUp\<%= namespace %>\Core\styles'      );
 
-		<%= classSlug %>::setup();
+		// Act
+		setup();
+
+		// Verify
 		$this->assertConditionsMet();
 	}
 
@@ -48,6 +42,7 @@ class <%= classSlug %>_Test extends TestCase {
 	 * Test internationalization integration.
 	 */
 	public function test_i18n() {
+		// Setup
 		\WP_Mock::wpFunction( 'load_theme_textdomain', array(
 			'times' => 1,
 			'args' => array(
@@ -56,7 +51,10 @@ class <%= classSlug %>_Test extends TestCase {
 			),
 		) );
 
-		<%= classSlug %>::i18n();
+		// Act
+		i18n();
+
+		// Verify
 		$this->assertConditionsMet();
 	}
 
@@ -76,7 +74,7 @@ class <%= classSlug %>_Test extends TestCase {
 			),
 		) );
 
-		<%= classSlug %>::scripts();
+		scripts();
 		$this->assertConditionsMet();
 		
 		// Debug Mode
@@ -91,7 +89,7 @@ class <%= classSlug %>_Test extends TestCase {
 			),
 		) );
 
-		<%= classSlug %>::scripts( true );
+		scripts( true );
 		$this->assertConditionsMet();
 	}
 
@@ -110,7 +108,7 @@ class <%= classSlug %>_Test extends TestCase {
 			),
 		) );
 
-		<%= classSlug %>::styles();
+		styles();
 		$this->assertConditionsMet();
 		
 		// Debug Mode
@@ -124,7 +122,7 @@ class <%= classSlug %>_Test extends TestCase {
 			),
 		) );
 
-		<%= classSlug %>::styles( true );
+		styles( true );
 		$this->assertConditionsMet();
 	}
 
@@ -132,27 +130,17 @@ class <%= classSlug %>_Test extends TestCase {
 	 * Test header meta injection
 	 */
 	public function test_header_meta() {
+		// Setup
 		$meta = '<link type="text/plain" rel="author" href="template_url/humans.txt" />';
 		\WP_Mock::onFilter( '<%= opts.funcPrefix %>_humans' )->with( $meta )->reply( $meta );
 
+		// Act
 		ob_start();
-		<%= classSlug %>::header_meta();
+		header_meta();
 		$result = ob_get_clean();
+
+		// Verify
 		$this->assertConditionsMet();
 		$this->assertEquals( $meta, $result );
 	}
-
-	/**
-	 * Clean up run after each test method runs.
-	 */
-	public function tearDown() {
-        parent::tearDown();
-    }
-	
-	/**
-	 * Clean up after all test methods have run.
-	 */
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-    }
 }

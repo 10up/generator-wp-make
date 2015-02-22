@@ -90,7 +90,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		this.prompt( prompts, function ( props ) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-			this.classSlug = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+			this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 				return group1 + group2.toUpperCase(); 
 			} );
 			done();
@@ -121,7 +121,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	theme: function() {
 		this.template( 'theme/_style.css', 'style.css' );
 		this.template( 'theme/_functions.php', 'functions.php' );
-		this.template( 'theme/_class-theme.php', 'includes/class-' + this.fileSlug + '.php' );
+		this.template( 'theme/_core.php', 'includes/functions/core.php' );
 		this.template( 'theme/_humans.txt', 'humans.txt' );
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );
 		this.copy( 'theme/readme-includes.md', 'includes/readme.md' );
@@ -154,9 +154,10 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
-		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
-		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
+		this.template( 'tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
+		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
+		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
+		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
 		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
@@ -178,7 +179,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	},
 
 	git: function() {
-		this.copy( 'git/gitignore', '.gitignore' );
+		this.copy( '../../shared/git/gitignore', '.gitignore' );
 	}
 } );
 

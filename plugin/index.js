@@ -148,10 +148,10 @@ var PluginGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
-		this.template( 'tests/phpunit/_Core_Tests.php', 'tests/phpunit/' + this.namespace + '_Tests.php' );
-		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
-		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
+		this.template( 'tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
+		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
+		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
+		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
 		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
@@ -173,7 +173,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	git: function() {
-		this.copy( 'git/gitignore', '.gitignore' );
+		this.copy( '../../shared/git/gitignore', '.gitignore' );
 	}
 });
 

@@ -13,10 +13,9 @@ namespace TenUp\<%= namespace %>\Core;
  *   - https://github.com/10up/wp_mock
  */
 
-use WP_Mock\Tools\TestCase as BaseTestCase;
 use TenUp\<%= namespace %> as Base;
 
-class Core_Test extends Base\TestCase {
+class Core_Tests extends Base\TestCase {
 
 	protected $testFiles = [
 		'functions/core.php'
