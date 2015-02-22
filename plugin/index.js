@@ -148,8 +148,9 @@ var PluginGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.namespace + '_Test.php' );
-		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
+		this.template( 'tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
+		this.template( 'tests/phpunit/_Core_Tests.php', 'tests/phpunit/' + this.namespace + '_Tests.php' );
+		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
 		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
