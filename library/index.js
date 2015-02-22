@@ -80,7 +80,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 				this.opts = properties;
 
 				this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-				this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+				this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 					return group1 + group2.toUpperCase();
 				});
 

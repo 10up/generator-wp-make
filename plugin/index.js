@@ -86,7 +86,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.prompt( prompts, function ( props ) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-			this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 				return group1 + group2.toUpperCase(); 
 			});
 			done();
@@ -118,7 +118,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.template( 'plugin/_readme.txt', 'readme.txt' );
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
 		this.template( 'plugin/_core.php', 'includes/functions/core.php' );
-		this.copy( 'plugin/readme-includes.md', 'includes/readme.md' );
+		this.copy( 'plugin/readme-includes.md', 'php/readme.md' );
 	},
 
 	i18n: function() {

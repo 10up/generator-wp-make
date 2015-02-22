@@ -86,8 +86,8 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.prompt( prompts, function ( props ) {
 			this.opts = props;
 			this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
-			this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
-				return group1 + group2.toUpperCase(); 
+			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+				return group1 + group2.toUpperCase();
 			});
 			done();
 		}.bind( this ));
