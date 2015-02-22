@@ -149,7 +149,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
 		}
-		this.copy( 'css/readme.md', 'assets/css/readme.md' );
+		this.copy( '../../shared/css/readme.md', 'assets/css/readme.md' );
 	},
 
 	tests: function() {
