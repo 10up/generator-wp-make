@@ -1,13 +1,6 @@
 <?php
 if ( ! defined( 'PROJECT' ) ) {
-	define( 'PROJECT', __DIR__ . '/src/' );
-}
-
-if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', __DIR__ . '/tests/dummy-files/' );
-}
-if ( ! defined( 'WPINC' ) ) {
-	define( 'WPINC', ABSPATH . 'wp-includes' );
+	define( 'PROJECT', __DIR__ . '/php/' );
 }
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
@@ -17,9 +10,9 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	);
 }
 
-require_once( __DIR__ . '/vendor/autoload.php' );
+require_once __DIR__ . '/vendor/autoload.php';
 
-require_once __DIR__ . '/tests/test-tools/TestCase.php';
+require_once __DIR__ . '/tests/phpunit/test-tools/TestCase.php';
 
 WP_Mock::setUsePatchwork( true );
 WP_Mock::bootstrap();

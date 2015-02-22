@@ -109,19 +109,20 @@ var LibGenerator = generator.Base.extend({
 			this.copy( '../../shared/git/gitignore', '.gitignore' );
 		},
 
-		markdown: function() {
-			this.copy( '_LICENSE.md', 'LICENSE.md' );
-			this.template( '_README.md', 'README.md' );
-		},
-
 		tests: function() {
-			this.copy( '_phpunit.xml.dist', 'phpunit.xml.dist' );
-			this.copy( '_bootstrap.php.dist', 'bootstrap.php.dist' );
-			this.template( '_TestCase.php', 'tests/test-tools/TestCase.php' );
+			//phpunit
+			this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
+			this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
+			this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
+			//qunit
+			this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
+			this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
 		},
 
 		library: function() {
-			this.template( '_app.php', this.opts.className + '.php' );
+			this.template( 'library/_app.php', this.opts.className + '.php' );
+			this.copy( 'library/_LICENSE.md', 'LICENSE.md' );
+			this.template( 'library/_README.md', 'README.md' );
 			this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
 		}
 	}
