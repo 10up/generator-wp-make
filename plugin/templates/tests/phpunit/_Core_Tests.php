@@ -26,11 +26,11 @@ class Core_Test extends Base\TestCase {
 	 * Test load method.
 	 */
 	public function test_load() {
-		\WP_Mock::expectActionAdded( 'init', array( '<%= classSlug %>', 'i18n' ) );
-		\WP_Mock::expectActionAdded( 'init', array( '<%= classSlug %>', 'init' ) );
+		\WP_Mock::expectActionAdded( 'init', array( '<%= namespace %>', 'i18n' ) );
+		\WP_Mock::expectActionAdded( 'init', array( '<%= namespace %>', 'init' ) );
 		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_loaded' );
 
-		<%= classSlug %>::load();
+		<%= namespace %>::load();
 		$this->assertConditionsMet();
 	}
 
@@ -40,7 +40,7 @@ class Core_Test extends Base\TestCase {
 	public function test_init() {
 		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_init' );
 
-		<%= classSlug %>::init();
+		<%= namespace %>::init();
 		$this->assertConditionsMet();
 	}
 
@@ -68,7 +68,7 @@ class Core_Test extends Base\TestCase {
 			'args' => array( '<%= opts.funcPrefix %>', false, 'path/languages/' ),
 		) );
 
-		<%= classSlug %>::i18n();
+		<%= namespace %>::i18n();
 		$this->assertConditionsMet();
 	}
 
@@ -80,7 +80,7 @@ class Core_Test extends Base\TestCase {
 			'times' => 1
 		) );
 
-		<%= classSlug %>::activate();
+		<%= namespace %>::activate();
 		$this->assertConditionsMet();
 	}
 
@@ -88,6 +88,6 @@ class Core_Test extends Base\TestCase {
 	 * Test deactivation routine.
 	 */
 	public function test_deactivate() {
-		<%= classSlug %>::deactivate();	
+		<%= namespace %>::deactivate();
 	}
 }
