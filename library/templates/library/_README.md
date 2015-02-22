@@ -1,4 +1,4 @@
-<%= opts.projectName %>
+<%= opts.projectTitle %>
 ===========
 
 <%= opts.description %>

@@ -1,6 +1,6 @@
 <?php
 /**
- * <%= opts.projectName %> library autoloader.
+ * <%= opts.projectTitle %> library autoloader.
  *
  * @author    <%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %> <<%= opts.authorEmail %>>
  * @copyright 2015 <%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>
@@ -9,12 +9,12 @@
  */
 namespace TenUp\<%= namespace %>;
 if ( version_compare( PHP_VERSION, "5.4", "<" ) ) {
-	trigger_error( "<%= opts.projectName %> requires PHP version 5.4 or higher", E_USER_ERROR );
+	trigger_error( '<%= opts.projecTitle %> requires PHP version 5.4 or higher', E_USER_ERROR );
 }
 // Require files
-// if ( ! class_exists( '\\TenUp\\<%= namespace %>\\ClassName' ) ) {
-//     require_once __DIR__ . '/php/filename.php';
+// if ( ! class_exists( '\\TenUp\\<%= namespace %>\\Sub_Namespace' ) ) {
+//     require_once __DIR__ . '/php/functions/sub_namespace.php';
 // }
 
 // Bootstrap
-// ClassName\setup();
+// Sub_Namespace\setup();
