@@ -13,7 +13,8 @@ var WpMakeGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.green("\tyo wp-make:plugin"));
 		this.log(chalk.green("\tyo wp-make:theme"));
 		this.log(chalk.green("\tyo wp-make:child-theme"));
-	},
+		this.log(chalk.green("\tyo wp-make:library"));
+	}
 });
 
 module.exports = WpMakeGenerator;

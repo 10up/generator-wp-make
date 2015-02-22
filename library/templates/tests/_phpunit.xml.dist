@@ -1,0 +1,22 @@
+<phpunit
+    bootstrap="./bootstrap.php.dist"
+    backupGlobals="false"
+    processIsolation="false"
+    colors="false">
+    <testsuites></testsuites>
+    <groups>
+        <include></include>
+        <exclude></exclude>
+    </groups>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src</directory>
+            <exclude></exclude>
+        </whitelist>
+    </filter>
+    <php>
+        <ini name="error_reporting" value="32767" />
+        <ini name="display_errors" value="1" />
+        <ini name="display_startup_errors" value="1" />
+    </php>
+</phpunit>

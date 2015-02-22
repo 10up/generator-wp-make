@@ -2,15 +2,15 @@
 	"name": "<%= _.slugify( opts.projectTitle ) %>",
 	"description": "<%= opts.description %>",
 	"version": "0.0.1",
-	"type": "wordpress-plugin",
+	"type": "wordpress-theme",
 	"keywords": [],
-	"homepage": "<%= opts.projectHome %>",
+	<% if ( opts.projectHome ) { %>"homepage": "<%= opts.projectHome %>",<% } %>
 	"license": "GPLv2.0+",
 	"authors": [
 		{
 			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
 			"email": "<%= opts.authorEmail %>",
-			"homepage": "<%= ( '' !== opts.authorUrl ) ? opts.authorUrl : 'http://10up.com' %>",
+		<% if ( opts.authorUrl ) { %>"homepage": "<%= opts.authorUrl %>",<% } %>
 			"role": "Developer"
 		}
 	],
@@ -20,8 +20,8 @@
 	},
     "require-dev": {
 	    "antecedent/patchwork": "1.2.*",
-        "phpunit/phpunit": "*@stable",
+        "phpunit/phpunit"     : "*@stable",
 	    "brianium/paratest"   : "dev-master",
-        "10up/wp_mock": "dev-master"
+        "10up/wp_mock"        : "dev-master"
     }
 }

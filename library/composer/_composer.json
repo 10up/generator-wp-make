@@ -1,0 +1,28 @@
+{
+	"name": "<%= _.slugify( opts.projectTitle ) %>",
+	"description": "<%= opts.description %>",
+	"version": "0.0.1",
+	"type": "wordpress-library",
+	"keywords": [],
+	<% if ( opts.projectHome ) { %>"homepage": "<%= opts.projectHome %>",<% } %>
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
+			"email": "<%= opts.authorEmail %>",
+			<% if ( opts.authorUrl ) { %>"homepage": "<%= opts.authorUrl %>",<% } %>
+			"role": "Developer"
+		}
+	],
+	"repository": {},
+	"minimum-stability": "dev",
+	"require": {
+		"php": ">=5.4"
+	},
+	"require-dev": {
+		"antecedent/patchwork": "1.2.*",
+		"phpunit/phpunit"     : "*@stable",
+		"brianium/paratest"   : "dev-master",
+		"10up/wp_mock"        : "dev-master"
+	}
+}
