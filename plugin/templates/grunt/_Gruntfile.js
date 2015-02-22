@@ -43,9 +43,6 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
-		},
 		<% if ( opts.sass ) { %>
 		sass:   {
 			all: {
