@@ -20,10 +20,10 @@ define( '<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL', get_template_direct
 define( '<%= opts.funcPrefix.toUpperCase() %>_PATH',         get_template_directory() . '/' );
 define( '<%= opts.funcPrefix.toUpperCase() %>_INC',          <%= opts.funcPrefix.toUpperCase() %>_PATH . 'includes/' );
 
-// Include files
-require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'class-<%= fileSlug %>.php';
+// Include compartmentalized functions
+require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'functions/core.php';
 
-// Wireup actions
-add_action( 'after_setup_theme', array( '<%= classSlug %>', 'setup' ) );
+// Include lib classes
 
-// Wireup filters
+// Run the setup functions
+TenUp\<%= namespace %>\Core\setup();

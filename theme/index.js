@@ -120,10 +120,10 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.template( 'theme/_header.php', 'header.php' );
 		this.template( 'theme/_footer.php', 'footer.php' );
 		this.template( 'theme/_functions.php', 'functions.php' );
-		this.template( 'theme/_class-theme.php', 'includes/class-' + this.fileSlug + '.php' );
-		this.template( 'theme/_humans.txt', 'humans.txt' );
+		this.template( '../../shared/theme/_core.php', 'includes/functions/core.php' );
+		this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );
-		this.copy( 'theme/readme-includes.md', 'includes/readme.md' );
+		this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
 	},
 
 	i18n: function() {
@@ -153,9 +153,10 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_Class_Test.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
-		this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php' );
-		this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
+		this.template( '../../shared/tests/phpunit/_Core_Tests.php', 'tests/phpunit/' + this.classSlug + '_Test.php' );
+		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
+		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php' );
+		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
 		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
 		this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );

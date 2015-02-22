@@ -121,10 +121,10 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	theme: function() {
 		this.template( 'theme/_style.css', 'style.css' );
 		this.template( 'theme/_functions.php', 'functions.php' );
-		this.template( 'theme/_core.php', 'includes/functions/core.php' );
-		this.template( 'theme/_humans.txt', 'humans.txt' );
+		this.template( '../../shared/theme/_core.php', 'includes/functions/core.php' );
+		this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );
-		this.copy( 'theme/readme-includes.md', 'includes/readme.md' );
+		this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
 	},
 
 	i18n: function() {
@@ -154,7 +154,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 
 	tests: function() {
 		//phpunit
-		this.template( 'tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
+		this.template( '../../shared/tests/phpunit/_Core_Tests.php', 'tests/phpunit/Core_Tests.php' );
 		this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
 		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
 		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
