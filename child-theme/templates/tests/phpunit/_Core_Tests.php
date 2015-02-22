@@ -21,6 +21,23 @@ class Core_Tests extends Base\TestCase {
 		'functions/core.php'
 	];
 
+	/**
+	 * Make sure all theme-specific constants are defined before we get started
+	 */
+	public function setUp() {
+		if ( ! defined( '<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL' ) ) {
+			define( '<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL', 'template_url' );
+		}
+		if ( ! defined( '<%= opts.funcPrefix.toUpperCase() %>_VERSION' ) ) {
+			define( '<%= opts.funcPrefix.toUpperCase() %>_VERSION', '0.0.1' );
+		}
+		if ( ! defined( '<%= opts.funcPrefix.toUpperCase() %>_URL' ) ) {
+			define( '<%= opts.funcPrefix.toUpperCase() %>_URL', 'url' );
+		}
+
+		parent::setUp();
+	}
+
 	/** 
 	 * Test setup method.
 	 */
