@@ -4,12 +4,24 @@
   "description": "Yeoman generator",
   "license": "MIT",
   "main": "app/index.js",
-  "repository": "lkwdwrd/generator-wp-make",
+  "repository": "10up/generator-wp-make",
   "author": {
     "name": "Luke Woodward",
     "email": "woodward.lucas@gmail.com",
     "url": "https://github.com/lkwdwrd"
   },
+  "contributors": [
+    {
+      "name": "Luke Woodward",
+      "email": "woodward.lucas@gmail.com",
+      "url": "https://github.com/lkwdwrd"
+    },
+    {
+      "name": "Eric Mann",
+      "email": "eric@eamann.com",
+      "url": "https://eamann.com"
+    }
+  ],
   "engines": {
     "node": ">=0.10.0"
   },
