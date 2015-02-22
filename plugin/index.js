@@ -153,8 +153,8 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.template( '../../shared/tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
 		this.copy( '../../shared/tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
 		//qunit
-		this.template( 'tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
-		this.copy( 'tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
+		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
+		this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
 	},
 
 	grunt: function() {
