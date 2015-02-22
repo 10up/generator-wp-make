@@ -71,7 +71,8 @@ module.exports = function( grunt ) {
 					' * <%%=pkg.homepage %>\n' +
 					' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
 					' * Licensed GPLv2+' +
-					' */\n'
+					' */\n',
+				processImport: false
 			},
 			minify: {
 				expand: true,

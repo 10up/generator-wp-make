@@ -160,7 +160,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	grunt: function() {
 		this.template( 'grunt/_package.json', 'package.json' );
 		this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
-		this.copy( 'grunt/_jshintrc', '.jshintrc' );
+		this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
 	},
 
 	bower: function() {
