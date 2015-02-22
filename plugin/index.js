@@ -169,7 +169,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	composer: function() {
-		this.template( 'composer/_composer.json', 'composer.json' );
+		this.template( '../../shared/composer/_composer.json', 'composer.json' );
 	},
 
 	git: function() {
