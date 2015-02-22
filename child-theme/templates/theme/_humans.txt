@@ -9,7 +9,7 @@
 	Twitter:         @10up
 	
 	Template Design: Eric Mann
-	URI:             http://eamann.com
+	URI:             https://eamann.com
 	Twitter:         @ericmann
 
 	Template Design: Luke Woodward

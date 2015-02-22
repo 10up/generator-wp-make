@@ -12,7 +12,7 @@
  */
 
 /**
- * Copyright (c) 2014 10up (email : info@10up.com)
+ * Copyright (c) 2015 10up (email : info@10up.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -31,8 +31,8 @@
 
 /**
  * Built using yo wp-make:plugin
- * Copyright (c) 2014 10up, LLC
- * https://github.com/lkwdwrd/generator-wp-make
+ * Copyright (c) 2015 10up, LLC
+ * https://github.com/10up/generator-wp-make
  */
 
 // Useful global constants
