@@ -122,7 +122,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	i18n: function() {
-		this.template( 'i18n/_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
+		this.template( '../../shared/i18n/_language.pot', 'languages/' + this.opts.funcPrefix + '.pot' );
 	},
 
 	images: function() {
