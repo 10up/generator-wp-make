@@ -5,7 +5,7 @@ var yeoman = require( 'yeoman-generator' );
 var chalk = require( 'chalk' );
 var async = require( 'async' );
 
-var LibGenerator = generator.Base.extend({
+var LibGenerator = yeoman.generators.Base.extend({
 		init: function() {
 			this.log( chalk.magenta( 'Thanks for generating with WP Make!' ) );
 
@@ -41,19 +41,9 @@ var LibGenerator = generator.Base.extend({
 
 			var prompts = [
 				{
-					name:    'namespace',
-					message: 'Project Namespace',
-					default: 'TenUp'
-				},
-				{
-					name:    'projectName',
-					message: 'Project Name',
-					default: 'WPLib'
-				},
-				{
-					name:    'gitUser',
-					message: 'GitHub Account Name',
-					default: '10up'
+					name:    'projectTitle',
+					message: 'Project Title',
+					default: 'WP Library'
 				},
 				{
 					name:    'description',
@@ -77,6 +67,11 @@ var LibGenerator = generator.Base.extend({
 				{
 					name:    'authorUrl',
 					message: 'Author URL'
+				},
+				{
+					name:    'gitUser',
+					message: 'GitHub Account Name',
+					default: this.user.git.username
 				}
 			];
 
@@ -84,7 +79,10 @@ var LibGenerator = generator.Base.extend({
 			this.prompt( prompts, function( properties ) {
 				this.opts = properties;
 
-				this.opts.className = this.opts.projectName.replace( /[\s]/g, '_' ).replace( /[-]/g, '_' );
+				this.fileSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
+				this.namespace = this.fileSlug.replace( /-/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+					return group1 + group2.toUpperCase();
+				});
 
 				done();
 			}.bind( this ) );
@@ -120,7 +118,7 @@ var LibGenerator = generator.Base.extend({
 		},
 
 		library: function() {
-			this.template( 'library/_app.php', this.opts.className + '.php' );
+			this.template( 'library/_app.php', this.fileSlug + '.php' );
 			this.copy( 'library/_LICENSE.md', 'LICENSE.md' );
 			this.template( 'library/_README.md', 'README.md' );
 			this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );

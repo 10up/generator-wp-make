@@ -7,12 +7,12 @@
  * @license   http://www.opensource.org/licenses/mit-license.html
  * @version   0.0.1
  */
-namespace <%= opts.namespace %>\<%= opts.className %>;
+namespace TenUp\<%= namespace %>;
 if ( version_compare( PHP_VERSION, "5.4", "<" ) ) {
 	trigger_error( "<%= opts.projectName %> requires PHP version 5.4 or higher", E_USER_ERROR );
 }
 // Require files
-// if ( ! class_exists( '\\<%= opts.namespace %>\\<%= opts.className %>\\ClassName' ) ) {
+// if ( ! class_exists( '\\TenUp\\<%= namespace %>\\ClassName' ) ) {
 //     require_once __DIR__ . '/php/filename.php';
 // }
 
