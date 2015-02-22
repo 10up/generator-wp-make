@@ -19,35 +19,30 @@ use TenUp\<%= namespace %> as Base;
 class Core_Test extends Base\TestCase {
 
 	protected $testFiles = [
-
+		'functions/core.php'
 	];
 
 	/** 
 	 * Test load method.
 	 */
-	public function test_load() {
-		\WP_Mock::expectActionAdded( 'init', array( '<%= namespace %>', 'i18n' ) );
-		\WP_Mock::expectActionAdded( 'init', array( '<%= namespace %>', 'init' ) );
+	public function test_setup() {
+		// Setup
+		\WP_Mock::expectActionAdded( 'init', 'TenUp\<%= namespace %>\Core\i18n' );
+		\WP_Mock::expectActionAdded( 'init', 'TenUp\<%= namespace %>\Core\init' );
 		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_loaded' );
 
-		<%= namespace %>::load();
+		// Act
+		setup();
+
+		// Verify
 		$this->assertConditionsMet();
 	}
 
-	/** 
-	 * Test initialization method.
-	 */
-	public function test_init() {
-		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_init' );
-
-		<%= namespace %>::init();
-		$this->assertConditionsMet();
-	}
-
-	/** 
+	/**
 	 * Test internationalization integration.
 	 */
 	public function test_i18n() {
+		// Setup
 		\WP_Mock::wpFunction( 'get_locale', array(
 			'times' => 1,
 			'args' => array(),
@@ -68,7 +63,24 @@ class Core_Test extends Base\TestCase {
 			'args' => array( '<%= opts.funcPrefix %>', false, 'path/languages/' ),
 		) );
 
-		<%= namespace %>::i18n();
+		// Act
+		i18n();
+
+		// Verify
+		$this->assertConditionsMet();
+	}
+
+	/** 
+	 * Test initialization method.
+	 */
+	public function test_init() {
+		// Setup
+		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_init' );
+
+		// Act
+		init();
+
+		// Verify
 		$this->assertConditionsMet();
 	}
 
@@ -76,11 +88,15 @@ class Core_Test extends Base\TestCase {
 	 * Test activation routine.
 	 */
 	public function test_activate() {
+		// Setup
 		\WP_Mock::wpFunction( 'flush_rewrite_rules', array(
 			'times' => 1
 		) );
 
-		<%= namespace %>::activate();
+		// Act
+		activate();
+
+		// Verify
 		$this->assertConditionsMet();
 	}
 
@@ -88,6 +104,11 @@ class Core_Test extends Base\TestCase {
 	 * Test deactivation routine.
 	 */
 	public function test_deactivate() {
-		<%= namespace %>::deactivate();
+		// Setup
+
+		// Act
+		deactivate();
+
+		// Verify
 	}
 }
