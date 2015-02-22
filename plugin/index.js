@@ -164,8 +164,8 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	},
 
 	bower: function() {
-		this.template( 'bower/_bower.json', 'bower.json' );
-		this.copy( 'bower/bowerrc', '.bowerrc' );
+		this.template( '../../shared/bower/_bower.json', 'bower.json' );
+		this.copy( '../../shared/bower/bowerrc', '.bowerrc' );
 	},
 
 	composer: function() {
