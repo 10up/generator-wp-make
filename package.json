@@ -23,15 +23,15 @@
     "yeoman-generator"
   ],
   "dependencies": {
-    "yeoman-generator": "~0.16.0",
-    "chalk": "~0.4.0",
-    "lodash": "~2.4.1"
+    "yeoman-generator": "~0.18.9",
+    "chalk": "~0.5.1",
+    "lodash": "~3.3.0"
   },
   "devDependencies": {
     "mocha": "*",
     "async": "^0.9.0"
   },
   "peerDependencies": {
-    "yo": ">=1.0.0"
+    "yo": ">=1.4.5"
   }
 }
