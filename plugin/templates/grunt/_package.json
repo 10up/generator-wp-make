@@ -2,7 +2,7 @@
   "name": "<%= _.slugify( opts.projectTitle ) %>",
   "title": "<%= opts.projectTitle %>",
   "description": "<%= opts.description %>",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "<%= opts.projectHome %>",
   "repository": {
     "type": "git",
