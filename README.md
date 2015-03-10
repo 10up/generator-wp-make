@@ -12,10 +12,10 @@ If you need it, install Yeoman through npm:
 $ npm install -g yo
 ```
 
-To install generator-wp-make clone this repository and link it to npm:
+To install generator-wp-make clone this repository, enter the directory, and link it to npm:
 
 ```
-$ git clone git@github.com:10up/generator-wp-make.git
+$ git clone git@github.com:10up/generator-wp-make.git && cd generator-wp-make
 $ npm link
 ```
 
