@@ -24,7 +24,7 @@ module.exports = function( grunt ) {
 				'Gruntfile.js',
 				'assets/js/src/**/*.js',
 				'assets/js/test/**/*.js'
-			]		
+			]
 		},
 		uglify: {
 			all: {
@@ -46,6 +46,9 @@ module.exports = function( grunt ) {
 		<% if ( opts.sass ) { %>
 		sass:   {
 			all: {
+				options: {
+					precision: 2
+				},
 				files: {
 					'assets/css/<%= fileSlug %>.css': 'assets/css/sass/<%= fileSlug %>.scss'
 				}
@@ -75,10 +78,10 @@ module.exports = function( grunt ) {
 			},
 			minify: {
 				expand: true,
-				
+
 				cwd: 'assets/css/',
 				src: ['<%= fileSlug %>.css'],
-				
+
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
@@ -91,7 +94,7 @@ module.exports = function( grunt ) {
 				}
 			},
 			styles: { <% if ( opts.sass ) { %>
-				files: ['assets/css/sass/*.scss'],
+				files: ['assets/css/sass/**/*.scss'],
 				tasks: ['sass', 'autoprefixer', 'cssmin'],<% } else if ( opts.autoprefixer ) { %>
 				files: ['assets/css/src/*.css'],
 				tasks: ['autoprefixer', 'cssmin'],<% } else { %>
@@ -137,7 +140,7 @@ module.exports = function( grunt ) {
 					'!phpunit.xml.dist'
 				],
 				dest: 'release/<%%= pkg.version %>/'
-			}		
+			}
 		},
 		compress: {
 			main: {
@@ -149,7 +152,7 @@ module.exports = function( grunt ) {
 				cwd: 'release/<%%= pkg.version %>/',
 				src: ['**/*'],
 				dest: '<%= opts.funcPrefix %>/'
-			}		
+			}
 		},
 		phpunit: {
 			classes: {
@@ -165,10 +168,10 @@ module.exports = function( grunt ) {
 			all: ['tests/qunit/**/*.html']
 		}
 	} );
-	
+
 	// Load tasks
 	require('load-grunt-tasks')(grunt);
-	
+
 	// Register tasks
 	<% if ( opts.sass ) { %>
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin' ] );
@@ -177,7 +180,7 @@ module.exports = function( grunt ) {
 	<% } else { %>
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin' ] );
 	<% } %>
-	
+
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
 
 	grunt.registerTask( 'test', ['phpunit', 'qunit'] );
