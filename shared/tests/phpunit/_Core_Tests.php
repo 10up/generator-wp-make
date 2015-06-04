@@ -38,12 +38,12 @@ class Core_Tests extends Base\TestCase {
 		parent::setUp();
 	}
 
-	/** 
+	/**
 	 * Test setup method.
 	 */
 	public function test_setup() {
 		// Setup
-		\WP_Mock::expectActionAdded( 'init',               'TenUp\<%= namespace %>\Core\i18n'        );
+		\WP_Mock::expectActionAdded( 'after_setup_theme',  'TenUp\<%= namespace %>\Core\i18n'        );
 		\WP_Mock::expectActionAdded( 'wp_head',            'TenUp\<%= namespace %>\Core\header_meta' );
 		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', 'TenUp\<%= namespace %>\Core\scripts'     );
 		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', 'TenUp\<%= namespace %>\Core\styles'      );
