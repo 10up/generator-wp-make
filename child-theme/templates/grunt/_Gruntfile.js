@@ -56,10 +56,12 @@ module.exports = function( grunt ) {
 		},
 		<% } %>
 		<% if ( opts.autoprefixer ) { %>
-		autoprefixer: {
+		postcss: {
 			dist: {
 				options: {
-					browsers: [ 'last 1 version', '> 1%', 'ie 8' ]
+					processors: [
+						require('autoprefixer-core')({browsers: 'last 2 versions'})
+					]
 				},
 				files: { <% if ( opts.sass ) { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/<%= fileSlug %>.css' ]<% } else { %>
