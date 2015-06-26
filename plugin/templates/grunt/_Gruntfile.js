@@ -46,7 +46,8 @@ module.exports = function( grunt ) {
 		<% if ( opts.sass ) { %>
 		sass:   {
 			options: {
-				precision: 2
+				precision: 2,
+				sourceMap: true
 			},
 			all: {
 				files: {
@@ -56,10 +57,12 @@ module.exports = function( grunt ) {
 		},
 		<% } %>
 		<% if ( opts.autoprefixer ) { %>
-		autoprefixer: {
+		postcss: {
 			dist: {
 				options: {
-					browsers: [ 'last 1 version', '> 1%', 'ie 8' ]
+					processors: [
+						require('autoprefixer-core')({browsers: 'last 2 versions'})
+					]
 				},
 				files: { <% if ( opts.sass ) { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/<%= fileSlug %>.css' ]<% } else { %>
@@ -182,12 +185,16 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'css', ['sass', 'postcss', 'cssmin'] );
 	<% } else if ( opts.autoprefixer ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'autoprefixer', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
 	<% } else { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin', 'wp_readme_to_markdown' ] );
+	grunt.registerTask( 'css', ['cssmin'] );
 	<% } %>
+
+	grunt.registerTask( 'js', ['jshint', 'concat', 'uglify'] );
+
+	grunt.registerTask( 'default', ['css', 'js', 'wp_readme_to_markdown' ] );
 
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
 
