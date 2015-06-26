@@ -177,9 +177,9 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTrask( 'css', ['sass', 'postcss', 'cssmin'] );
+	grunt.registerTask( 'css', ['sass', 'postcss', 'cssmin'] );
 	<% } else if ( opts.autoprefixer ) { %>
-	grunt.registerTask( 'css', ['postcss', 'cssmin' ] );
+	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
 	<% } else { %>
 	grunt.registerTask( 'css', ['cssmin'] );
 	<% } %>
