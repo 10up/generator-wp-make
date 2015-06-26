@@ -47,7 +47,8 @@ module.exports = function( grunt ) {
 		sass:   {
 			all: {
 				options: {
-					precision: 2
+					precision: 2,
+					sourceMap: true
 				},
 				files: {
 					'assets/css/<%= fileSlug %>.css': 'assets/css/sass/<%= fileSlug %>.scss'
@@ -177,12 +178,16 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTrask( 'css', ['sass', 'postcss', 'cssmin'] );
 	<% } else if ( opts.autoprefixer ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'autoprefixer', 'cssmin'] );
+	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
 	<% } else { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin' ] );
+	grunt.registerTask( 'css', ['cssmin'] );
 	<% } %>
+
+	grunt.registerTask( 'js', ['jshint', 'concat', 'uglify'] );
+
+	grunt.registerTask( 'default', ['css', 'js'] );
 
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
 
