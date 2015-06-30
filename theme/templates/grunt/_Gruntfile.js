@@ -56,10 +56,14 @@ module.exports = function( grunt ) {
 		},
 		<% } %>
 		<% if ( opts.autoprefixer ) { %>
-		autoprefixer: {
+		postcss: {
 			dist: {
 				options: {
-					browsers: [ 'last 1 version', '> 1%', 'ie 8' ]
+					processors: [
+						require('autoprefixer-core')({
+							browsers: [ 'last 1 version', '> 1%', 'ie 8' ]
+						})
+					]
 				},
 				files: { <% if ( opts.sass ) { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/<%= fileSlug %>.css' ]<% } else { %>
@@ -95,9 +99,9 @@ module.exports = function( grunt ) {
 			},
 			styles: { <% if ( opts.sass ) { %>
 				files: ['assets/css/sass/**/*.scss'],
-				tasks: ['sass', 'autoprefixer', 'cssmin'],<% } else if ( opts.autoprefixer ) { %>
+				tasks: ['sass', 'postcss', 'cssmin'],<% } else if ( opts.autoprefixer ) { %>
 				files: ['assets/css/src/*.css'],
-				tasks: ['autoprefixer', 'cssmin'],<% } else { %>
+				tasks: ['postcss', 'cssmin'],<% } else { %>
 				files: ['assets/css/*.css', '!assets/css/*.min.css'],
 				tasks: ['cssmin'],<% } %>
 				options: {
@@ -174,9 +178,9 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'postcss', 'cssmin' ] );
 	<% } else if ( opts.autoprefixer ) { %>
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'postcss', 'cssmin' ] );
 	<% } else { %>
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin' ] );
 	<% } %>
