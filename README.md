@@ -42,24 +42,24 @@ For each project type you get:
 ### Plugin
 
 This subgenerator scaffolds out a standard WordPress plugin.
- 
+
 The project even includes some basic unit test examples to help get you started!
 
 ### Theme
 
 This subgenerator scaffolds out a standard WordPress theme.
- 
+
 The project even includes some basic unit test examples to help get you started!
 
 ### Child Theme
 
 This subgenerator scaffolds out a standard WordPress child theme.
- 
+
 The project even includes some basic unit test examples to help get you started!
 
 ### Library
 
-This subgenerator scaffolds out a WordPress library. Libraries are a bit different from plugins in that they're meant to be included via Composer and embedded directly into a theme or a plugin. 
+This subgenerator scaffolds out a WordPress library. Libraries are a bit different from plugins in that they're meant to be included via Composer and embedded directly into a theme or a plugin.
 
 ## License
 

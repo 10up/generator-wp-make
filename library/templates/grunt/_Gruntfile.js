@@ -24,7 +24,7 @@ module.exports = function( grunt ) {
 				'Gruntfile.js',
 				'assets/js/src/**/*.js',
 				'assets/js/test/**/*.js'
-			]		
+			]
 		},
 		uglify: {
 			all: {
@@ -54,10 +54,10 @@ module.exports = function( grunt ) {
 			},
 			minify: {
 				expand: true,
-				
-				cwd: 'assets/css/',				
+
+				cwd: 'assets/css/',
 				src: ['<%= fileSlug %>.css'],
-				
+
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
@@ -112,7 +112,7 @@ module.exports = function( grunt ) {
 					'!phpunit.xml.dist'
 				],
 				dest: 'release/<%%= pkg.version %>/'
-			}		
+			}
 		},
 		compress: {
 			main: {
@@ -124,7 +124,7 @@ module.exports = function( grunt ) {
 				cwd: 'release/<%%= pkg.version %>/',
 				src: ['**/*'],
 				dest: '<%= opts.funcPrefix %>/'
-			}		
+			}
 		},
 		phpunit: {
 			classes: {
@@ -140,10 +140,10 @@ module.exports = function( grunt ) {
 			all: ['tests/qunit/**/*.html']
 		}
 	} );
-	
+
 	// Load tasks
 	require('load-grunt-tasks')(grunt);
-	
+
 	// Register tasks
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin' ] );
 

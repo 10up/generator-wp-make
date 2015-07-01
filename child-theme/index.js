@@ -25,7 +25,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 					installs.push( _install( installers[ i ],this ) );
 				}
 			}
-			
+
 			if ( 0 < chalks.skipped.length ) {
 				this.log( 'Skipping ' + chalks.skipped.join( ', ' ) + '. Just run yourself when you are ready.' );
 			}

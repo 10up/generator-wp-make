@@ -55,7 +55,7 @@ class Core_Tests extends Base\TestCase {
 		$this->assertConditionsMet();
 	}
 
-	/** 
+	/**
 	 * Test internationalization integration.
 	 */
 	public function test_i18n() {
@@ -75,7 +75,7 @@ class Core_Tests extends Base\TestCase {
 		$this->assertConditionsMet();
 	}
 
-	/** 
+	/**
 	 * Test scripts enqueue.
 	 */
 	public function test_scripts() {
@@ -93,7 +93,7 @@ class Core_Tests extends Base\TestCase {
 
 		scripts();
 		$this->assertConditionsMet();
-		
+
 		// Debug Mode
 		\WP_Mock::wpFunction( 'wp_enqueue_script', array(
 			'times' => 1,
@@ -110,7 +110,7 @@ class Core_Tests extends Base\TestCase {
 		$this->assertConditionsMet();
 	}
 
-	/** 
+	/**
 	 * Test style enqueue.
 	 */
 	public function test_styles() {
@@ -127,7 +127,7 @@ class Core_Tests extends Base\TestCase {
 
 		styles();
 		$this->assertConditionsMet();
-		
+
 		// Debug Mode
 		\WP_Mock::wpFunction( 'wp_enqueue_style', array(
 			'times' => 1,
@@ -143,7 +143,7 @@ class Core_Tests extends Base\TestCase {
 		$this->assertConditionsMet();
 	}
 
-	/** 
+	/**
 	 * Test header meta injection
 	 */
 	public function test_header_meta() {
