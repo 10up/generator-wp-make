@@ -171,8 +171,9 @@ module.exports = function( grunt ) {
 			},
 			options: {
 				bin: 'vendor/bin/phpunit',
-				bootstrap: 'bootstrap.php',
-				colors: true
+				bootstrap: 'bootstrap.php.dist',
+				colors: true,
+				testSuffix: 'Tests.php'
 			}
 		},
 		qunit: {
