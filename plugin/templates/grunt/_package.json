@@ -1,5 +1,5 @@
 {
-  "name": "<%= _.slugify( opts.projectTitle ) %>",
+  "name": "<%= opts.projectSlug %>",
   "title": "<%= opts.projectTitle %>",
   "description": "<%= opts.description %>",
   "version": "0.1.0",

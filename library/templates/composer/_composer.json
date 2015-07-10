@@ -1,5 +1,5 @@
 {
-	"name": "<%= _.slugify( opts.projectTitle ) %>",
+	"name": "<%= opts.projectSlug %>",
 	"description": "<%= opts.description %>",
 	"version": "0.0.1",
 	"type": "wordpress-library",
