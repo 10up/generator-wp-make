@@ -131,7 +131,7 @@ module.exports = function( grunt ) {
 					'!release/**',
 					'!assets/css/sass/**',
 					'!assets/css/src/**',
-					'!assetsjs/src/**',
+					'!assets/js/src/**',
 					'!images/src/**',
 					'!bootstrap.php',
 					'!bower.json',
