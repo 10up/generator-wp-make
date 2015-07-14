@@ -121,7 +121,7 @@ module.exports = function( grunt ) {
 		copy: {
 			// Copy the theme to a versioned release directory
 			main: {
-				src:  [
+				src: [
 					'**',
 					'!**/.*',
 					'!**/readme.md',
@@ -142,6 +142,8 @@ module.exports = function( grunt ) {
 					'!phpunit.xml',
 					'!phpunit.xml.dist'
 				],
+				expand: true,
+				cwd: '',
 				dest: 'release/<%%= pkg.version %>/'
 			}
 		},
