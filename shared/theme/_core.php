@@ -45,6 +45,7 @@ function i18n() {
  *
  * @since 0.1.0
  *
+ * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
 function scripts( $debug = false ) {
@@ -66,6 +67,7 @@ function scripts( $debug = false ) {
  *
  * @since 0.1.0
  *
+ * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
 function styles( $debug = false ) {
