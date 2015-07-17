@@ -8,7 +8,7 @@ namespace TenUp\<%= namespace %>\Core;
  *
  * @uses add_action()
  *
- * @return void.
+ * @return void
  */
 function setup() {
 	$n = function( $function ) {
@@ -32,7 +32,7 @@ function setup() {
  *
  * @since 0.1.0
  *
- * @return void.
+ * @return void
  */
 function i18n() {
 	load_theme_textdomain( '<%= opts.funcPrefix %>', <%= opts.funcPrefix.toUpperCase() %>_PATH . '/languages' );
@@ -45,7 +45,7 @@ function i18n() {
  *
  * @since 0.1.0
  *
- * @return void.
+ * @return void
  */
 function scripts( $debug = false ) {
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -66,7 +66,7 @@ function scripts( $debug = false ) {
  *
  * @since 0.1.0
  *
- * @return void.
+ * @return void
  */
 function styles( $debug = false ) {
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -86,7 +86,7 @@ function styles( $debug = false ) {
  *
  * @since 0.1.0
  *
- * @return void.
+ * @return void
  */
 function header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
