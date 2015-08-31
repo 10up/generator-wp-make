@@ -121,6 +121,7 @@ module.exports = function( grunt ) {
 		copy: {
 			// Copy the theme to a versioned release directory
 			main: {
+				expand: true,
 				src:  [
 					'**',
 					'!**/.*',
