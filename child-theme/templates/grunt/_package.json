@@ -18,8 +18,8 @@
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-uglify": "^0.9.1",<% if ( opts.sass ) { %>
     "grunt-sass": "^1.0.0",<% } if ( opts.autoprefixer ) { %>
-    "autoprefixer-core": "^5.2.1",
-    "grunt-postcss": "^0.5.4",<% } %>
+    "autoprefixer": "^6.0.0",
+    "grunt-postcss": "^0.6.0",<% } %>
     "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",

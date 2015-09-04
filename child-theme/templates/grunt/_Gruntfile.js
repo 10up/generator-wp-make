@@ -61,7 +61,7 @@ module.exports = function( grunt ) {
 			dist: {
 				options: {
 					processors: [
-						require('autoprefixer-core')({browsers: 'last 2 versions'})
+						require('autoprefixer')({browsers: 'last 2 versions'})
 					]
 				},
 				files: { <% if ( opts.sass ) { %>
