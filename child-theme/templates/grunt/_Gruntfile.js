@@ -60,6 +60,10 @@ module.exports = function( grunt ) {
 		postcss: {
 			dist: {
 				options: {
+					map: {
+						inline: false,
+						annotation: 'assets/css/'
+					},
 					processors: [
 						require('autoprefixer')({browsers: 'last 2 versions'})
 					]
