@@ -3,20 +3,21 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig( {
 		pkg:    grunt.file.readJSON( 'package.json' ),
-		concat: {
-			options: {
-				stripBanners: true,
-				banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
-					' * <%%= pkg.homepage %>\n' +
-					' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
-			},
-			main: {
-				src: [
-					'assets/js/src/<%= fileSlug %>.js'
-				],
-				dest: 'assets/js/<%= fileSlug %>.js'
+		browserify: {
+			dist: {
+				files: {
+					'assets/js/<%= fileSlug %>.js': 'assets/js/src/<%= fileSlug %>.js'
+				},
+				options: {
+					banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
+						' * <%%= pkg.homepage %>\n' +
+						' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
+						' * Licensed GPLv2+' +
+						' */\n',
+					browserifyOptions: {
+						debug: true
+					}
+				}
 			}
 		},
 		jshint: {
@@ -26,20 +27,40 @@ module.exports = function( grunt ) {
 				'assets/js/test/**/*.js'
 			]
 		},
-		uglify: {
-			all: {
+		exorcise: {
+			bundle: {
+				options: {},
 				files: {
-					'assets/js/<%= fileSlug %>.min.js': ['assets/js/<%= fileSlug %>.js']
+					'assets/js/<%= fileSlug %>.js.map': 'assets/js/<%= fileSlug %>.js',
+				}
+			}
+		},
+		uglify: {
+			oldie: {
+				files: {
+					'assets/js/<%= fileSlug %>.oldie.js': 'assets/js/<%= fileSlug %>.js'
 				},
 				options: {
-					banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
-						' * <%%= pkg.homepage %>\n' +
-						' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
-						' */\n',
-					mangle: {
-						except: ['jQuery']
+					compress: {
+						global_defs: {
+							OLDIE: true
+						}
 					}
+				}
+			},
+			dist: {
+				files: {
+					'assets/js/<%= fileSlug %>.js': 'assets/js/<%= fileSlug %>.js'
+				},
+				options: {
+					compress: {
+						global_defs: {
+							OLDIE: false
+						}
+					},
+					preserveComments: 'some',
+					sourceMap: true,
+					sourceMapIn: 'assets/js/<%= fileSlug %>.js.map'
 				}
 			}
 		},
@@ -136,7 +157,7 @@ module.exports = function( grunt ) {
 			},
 			scripts: {
 				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['jshint', 'concat', 'uglify'],
+				tasks: ['js'],
 				options: {
 					debounceDelay: 500
 				}
@@ -212,7 +233,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'css', ['cssmin'] );
 	<% } %>
 
-	grunt.registerTask( 'js', ['jshint', 'concat', 'uglify'] );
+	grunt.registerTask( 'js', ['jshint', 'browserify', 'exorcise', 'uglify'] );
 
 	grunt.registerTask( 'default', ['css', 'js'] );
 
