@@ -71,14 +71,22 @@ function scripts( $debug = false ) {
  * @return void
  */
 function styles( $debug = false ) {
-	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
 	wp_enqueue_style(
 		'<%= opts.funcPrefix %>',
-		<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>{$min}.css",
+		<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>.css",
+		array(),
+		<%= opts.funcPrefix.toUpperCase() %>_VERSION,
+		'screen, handheld, tv, projection'
+	);
+
+	wp_enqueue_style(
+		'<%= opts.funcPrefix %>-oldie',
+		<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>.oldie.css",
 		array(),
 		<%= opts.funcPrefix.toUpperCase() %>_VERSION
 	);
+
+	$wp_styles->add_data( '<%= opts.funcPrefix %>-oldie', 'conditional', 'lte IE 8' );
 }
 
 /**

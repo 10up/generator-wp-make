@@ -19,8 +19,12 @@
     "grunt-contrib-uglify": "^0.9.1",<% if ( opts.sass ) { %>
     "grunt-sass": "^1.0.0",<% } if ( opts.postcss ) { %>
     "autoprefixer": "^6.0.2",
-    "grunt-postcss": "^0.6.0",<% } %>
-    "grunt-contrib-cssmin": "^0.12.3",
+    "cssnano": "^3.0.1",
+    "grunt-postcss": "^0.6.0",
+    "pixrem": "^2.0.0",
+    "postcss-opacity": "^3.0.0",
+    "postcss-pseudoelements": "^3.0.0",
+    "postcss-unmq": "^1.0.0",<% } %>
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-clean": "^0.6.0",
