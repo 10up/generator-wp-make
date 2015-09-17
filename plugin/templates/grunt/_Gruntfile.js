@@ -56,7 +56,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		<% } %>
-		<% if ( opts.autoprefixer ) { %>
+		<% if ( opts.postcss ) { %>
 		postcss: {
 			dist: {
 				options: {
@@ -99,9 +99,9 @@ module.exports = function( grunt ) {
 			},
 			styles: { <% if ( opts.sass ) { %>
 				files: ['assets/css/sass/**/*.scss'],
-				tasks: ['sass', 'autoprefixer', 'cssmin'],<% } else if ( opts.autoprefixer ) { %>
+				tasks: ['sass', 'postcss', 'cssmin'],<% } else if ( opts.postcss ) { %>
 				files: ['assets/css/src/*.css'],
-				tasks: ['autoprefixer', 'cssmin'],<% } else { %>
+				tasks: ['postcss', 'cssmin'],<% } else { %>
 				files: ['assets/css/*.css', '!assets/css/*.min.css'],
 				tasks: ['cssmin'],<% } %>
 				options: {
@@ -187,7 +187,7 @@ module.exports = function( grunt ) {
 	// Register tasks
 	<% if ( opts.sass ) { %>
 	grunt.registerTask( 'css', ['sass', 'postcss', 'cssmin'] );
-	<% } else if ( opts.autoprefixer ) { %>
+	<% } else if ( opts.postcss ) { %>
 	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
 	<% } else { %>
 	grunt.registerTask( 'css', ['cssmin'] );
