@@ -25,7 +25,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 					installs.push( _install( installers[ i ],this ));
 				}
 			}
-			
+
 			if ( 0 < chalks.skipped.length ) {
 				this.log( 'Skipping ' + chalks.skipped.join( ', ' ) + '. Just run yourself when you are ready.' );
 			}
@@ -88,7 +88,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
 			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
-				return group1 + group2.toUpperCase(); 
+				return group1 + group2.toUpperCase();
 			});
 			done();
 		}.bind( this ));
