@@ -145,6 +145,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	css: function() {
 		if ( this.opts.sass ) {
 			this.template( 'css/_style.css', 'assets/css/sass/' + this.fileSlug + '.scss' );
+			this.template( 'css/_style.oldie.scss', 'assets/css/sass/' + this.fileSlug + '.oldie.scss' );
 		} else if ( this.opts.postcss ) {
 			this.template( 'css/_style.css', 'assets/css/src/' + this.fileSlug + '.css' );
 		} else {

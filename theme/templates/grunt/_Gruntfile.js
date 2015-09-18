@@ -51,7 +51,8 @@ module.exports = function( grunt ) {
 					sourceMap: true
 				},
 				files: {
-					'assets/css/<%= fileSlug %>.css': 'assets/css/sass/<%= fileSlug %>.scss'
+					'assets/css/<%= fileSlug %>.css': 'assets/css/sass/<%= fileSlug %>.scss',
+					'assets/css/<%= fileSlug %>.oldie.css': 'assets/css/sass/<%= fileSlug %>.oldie.scss'
 				}
 			}
 		},
@@ -65,12 +66,33 @@ module.exports = function( grunt ) {
 						annotation: 'assets/css/'
 					},
 					processors: [
-						require('autoprefixer')({browsers: 'last 2 versions'})
+						require('autoprefixer')({browsers: 'last 2 versions'}),
+						require('cssnano')()
 					]
 				},
 				files: { <% if ( opts.sass ) { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/<%= fileSlug %>.css' ]<% } else { %>
 					'assets/css/<%= fileSlug %>.css': [ 'assets/css/src/<%= fileSlug %>.css' ]<% } %>
+				}
+			},
+			oldie: {
+				options: {
+					processors: [
+						require('postcss-unmq')({
+							width: 1024
+						}),
+						require('autoprefixer')({
+							browsers: 'ie >= 8'
+						}),
+						require('pixrem')(),
+						require('postcss-opacity')(),
+						require('postcss-pseudoelements')(),
+						require('cssnano')()
+					]
+				},
+				files: { <% if ( opts.sass ) { %>
+					'assets/css/<%= fileSlug %>.oldie.css': [ 'assets/css/<%= fileSlug %>.oldie.css' ]<% } else { %>
+					'assets/css/<%= fileSlug %>.oldie.css': [ 'assets/css/src/<%= fileSlug %>.css' ]<% } %>
 				}
 			}
 		},
@@ -90,7 +112,7 @@ module.exports = function( grunt ) {
 				src: ['<%= fileSlug %>.css'],
 
 				dest: 'assets/css/',
-				ext: '.min.css'
+				ext: '.css'
 			}
 		},
 		watch:  {
@@ -101,12 +123,10 @@ module.exports = function( grunt ) {
 				}
 			},
 			styles: { <% if ( opts.sass ) { %>
-				files: ['assets/css/sass/**/*.scss'],
-				tasks: ['sass', 'postcss', 'cssmin'],<% } else if ( opts.postcss ) { %>
-				files: ['assets/css/src/*.css'],
-				tasks: ['postcss', 'cssmin'],<% } else { %>
-				files: ['assets/css/*.css', '!assets/css/*.min.css'],
-				tasks: ['cssmin'],<% } %>
+				files: ['assets/css/sass/**/*.scss'],<% } else if ( opts.postcss ) { %>
+				files: ['assets/css/src/*.css'],<% } else { %>
+				files: ['assets/css/*.css'],<% } %>
+				tasks: ['css'],
 				options: {
 					debounceDelay: 500
 				}
@@ -183,12 +203,9 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'css', ['sass', 'postcss', 'cssmin'] );
-	<% } else if ( opts.postcss ) { %>
-	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
-	<% } else { %>
-	grunt.registerTask( 'css', ['cssmin'] );
-	<% } %>
+	grunt.registerTask( 'css', ['sass', 'postcss'] );<% } else if ( opts.postcss ) { %>
+	grunt.registerTask( 'css', ['postcss'] );<% } else { %>
+	grunt.registerTask( 'css', ['cssmin'] );<% } %>
 
 	grunt.registerTask( 'js', ['jshint', 'concat', 'uglify'] );
 

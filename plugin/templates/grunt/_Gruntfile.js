@@ -102,12 +102,10 @@ module.exports = function( grunt ) {
 				}
 			},
 			styles: { <% if ( opts.sass ) { %>
-				files: ['assets/css/sass/**/*.scss'],
-				tasks: ['sass', 'postcss', 'cssmin'],<% } else if ( opts.postcss ) { %>
-				files: ['assets/css/src/*.css'],
-				tasks: ['postcss', 'cssmin'],<% } else { %>
-				files: ['assets/css/*.css', '!assets/css/*.min.css'],
-				tasks: ['cssmin'],<% } %>
+				files: ['assets/css/sass/**/*.scss'],<% } else if ( opts.postcss ) { %>
+				files: ['assets/css/src/*.css'],<% } else { %>
+				files: ['assets/css/*.css'],<% } %>
+				tasks: ['css'],
 				options: {
 					debounceDelay: 500
 				}
@@ -190,12 +188,9 @@ module.exports = function( grunt ) {
 
 	// Register tasks
 	<% if ( opts.sass ) { %>
-	grunt.registerTask( 'css', ['sass', 'postcss', 'cssmin'] );
-	<% } else if ( opts.postcss ) { %>
-	grunt.registerTask( 'css', ['postcss', 'cssmin'] );
-	<% } else { %>
-	grunt.registerTask( 'css', ['cssmin'] );
-	<% } %>
+	grunt.registerTask( 'css', ['sass', 'postcss'] );<% } else if ( opts.postcss ) { %>
+	grunt.registerTask( 'css', ['postcss'] );<% } else { %>
+	grunt.registerTask( 'css', ['cssmin'] );<% } %>
 
 	grunt.registerTask( 'js', ['jshint', 'concat', 'uglify'] );
 
