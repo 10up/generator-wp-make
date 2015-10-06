@@ -98,10 +98,10 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		}.bind( this ) );
 	},
 
-	autoprefixer: function() {
-		// If we're running Sass, automatically use autoprefixer.
+	postcss: function() {
+		// If we're running Sass, automatically use postcss.
 		if ( this.opts.sass ) {
-			this.opts.autoprefixer = true;
+			this.opts.postcss = true;
 			return;
 		}
 
@@ -109,12 +109,12 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		var done = this.async();
 		this.prompt( [{
 			type:    'confirm',
-			name:    'autoprefixer',
-			message: 'Use Autoprefixer?',
+			name:    'postcss',
+			message: 'Use PostCSS?',
 			default: true
 		}],
 		function( props ){
-			this.opts.autoprefixer = props.autoprefixer;
+			this.opts.postcss = props.postcss;
 			done();
 		}.bind( this ) );
 	},
@@ -145,7 +145,8 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	css: function() {
 		if ( this.opts.sass ) {
 			this.template( 'css/_style.css', 'assets/css/sass/' + this.fileSlug + '.scss' );
-		} else if ( this.opts.autoprefixer ) {
+			this.template( 'css/_style.oldie.scss', 'assets/css/sass/' + this.fileSlug + '.oldie.scss' );
+		} else if ( this.opts.postcss ) {
 			this.template( 'css/_style.css', 'assets/css/src/' + this.fileSlug + '.css' );
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
