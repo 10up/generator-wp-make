@@ -91,7 +91,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 
 		grunt: function() {
 			this.template( 'grunt/_package.json', 'package.json' );
-			this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
+			this.template( '../../shared/grunt/_Gruntfile.js', 'Gruntfile.js' );
 			this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
 			this.copy( '../../shared/grunt/tasks/_template.js', 'tasks/_template.js');
 			this.copy( '../../shared/grunt/tasks/options/_template.js', 'tasks/options/_template.js');
