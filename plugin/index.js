@@ -25,7 +25,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 					installs.push( _install( installers[ i ],this ));
 				}
 			}
-			
+
 			if ( 0 < chalks.skipped.length ) {
 				this.log( 'Skipping ' + chalks.skipped.join( ', ' ) + '. Just run yourself when you are ready.' );
 			}
@@ -88,16 +88,16 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
 			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
-				return group1 + group2.toUpperCase(); 
+				return group1 + group2.toUpperCase();
 			});
 			done();
 		}.bind( this ));
 	},
 
-	autoprefixer: function() {
-		// If we're running Sass, automatically use autoprefixer.
+	postcss: function() {
+		// If we're running Sass, automatically use postcss.
 		if ( this.opts.sass ) {
-			this.opts.autoprefixer = true;
+			this.opts.postcss = true;
 			return;
 		}
 
@@ -105,12 +105,12 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		var done = this.async();
 		this.prompt( [{
 			type:    'confirm',
-			name:    'autoprefixer',
-			message: 'Use Autoprefixer?',
+			name:    'postcss',
+			message: 'Use PostCSS?',
 			default: true
 		}],
 		function( props ){
-			this.opts.autoprefixer = props.autoprefixer;
+			this.opts.postcss = props.postcss;
 			done();
 		}.bind( this ));
 	},
@@ -139,7 +139,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	css: function() {
 		if ( this.opts.sass ) {
 			this.template( 'css/_style.css', 'assets/css/sass/' + this.fileSlug + '.scss' );
-		} else if ( this.opts.autoprefixer ) {
+		} else if ( this.opts.postcss ) {
 			this.template( 'css/_style.css', 'assets/css/src/' + this.fileSlug + '.css' );
 		} else {
 			this.template( 'css/_style.css', 'assets/css/' + this.fileSlug + '.css' );
