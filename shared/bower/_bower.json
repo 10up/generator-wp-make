@@ -2,7 +2,6 @@
   "name": "<%= opts.projectSlug %>",
   "version": "0.0.1",
   "main": "/",
-  "license": "GPLv2+",
   "ignore": [
     "**/.*",
     "*.md",

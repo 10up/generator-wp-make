@@ -6,7 +6,6 @@
  * Version:     0.1.0
  * Author:      <%= opts.authorName %>
  * Author URI:  <%= opts.authorUrl %>
- * License:     GPLv2+
  * Text Domain: <%= opts.funcPrefix %>
  * Domain Path: /languages
  */
