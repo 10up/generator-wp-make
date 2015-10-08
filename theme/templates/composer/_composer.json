@@ -5,7 +5,6 @@
 	"type": "wordpress-theme",
 	"keywords": [],
 	<% if ( opts.projectHome ) { %>"homepage": "<%= opts.projectHome %>",<% } %>
-	"license": "GPLv2.0+",
 	"authors": [
 		{
 			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
