@@ -91,8 +91,25 @@ var LibGenerator = yeoman.generators.Base.extend({
 
 		grunt: function() {
 			this.template( 'grunt/_package.json', 'package.json' );
-			this.template( 'grunt/_Gruntfile.js', 'Gruntfile.js' );
+			this.template( '../../shared/grunt/_Gruntfile.js', 'Gruntfile.js' );
 			this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
+			this.copy( '../../shared/grunt/tasks/_template.js', 'tasks/_template.js');
+			this.copy( '../../shared/grunt/tasks/options/_template.js', 'tasks/options/_template.js');
+			this.template( '../../shared/grunt/tasks/options/_cssmin.js', 'tasks/options/cssmin.js' );
+			this.template( '../../shared/grunt/tasks/options/_clean.js', 'tasks/options/clean.js' );
+			this.template( '../../shared/grunt/tasks/options/_compress.js', 'tasks/options/compress.js' );
+			this.template( '../../shared/grunt/tasks/options/_concat.js', 'tasks/options/concat.js' );
+			this.template( '../../shared/grunt/tasks/options/_copy.js', 'tasks/options/copy.js' );
+			this.template( '../../shared/grunt/tasks/options/_jshint.js', 'tasks/options/jshint.js' );
+			this.template( '../../shared/grunt/tasks/options/_phpunit.js', 'tasks/options/phpunit.js' );
+			this.template( '../../shared/grunt/tasks/options/_qunit.js', 'tasks/options/qunit.js' );
+			this.template( '../../shared/grunt/tasks/options/_uglify.js', 'tasks/options/uglify.js' );
+			this.template( '../../shared/grunt/tasks/options/_watch.js', 'tasks/options/watch.js' );
+			this.template( '../../shared/grunt/tasks/_build.js', 'tasks/build.js' );
+			this.template( '../../shared/grunt/tasks/_css.js', 'tasks/css.js' );
+			this.template( '../../shared/grunt/tasks/_default.js', 'tasks/default.js' );
+			this.template( '../../shared/grunt/tasks/_js.js', 'tasks/js.js' );
+			this.template( '../../shared/grunt/tasks/_test.js', 'tasks/test.js' );
 		},
 
 		bower: function() {
