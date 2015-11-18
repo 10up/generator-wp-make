@@ -1,0 +1,59 @@
+{
+  "name": "generator-wp-make-2",
+  "version": "1.0.0",
+  "description": "Yeoman generator for making WordPress things.",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "10up/generator-wp-make",
+  "author": {
+    "name": "Luke Woodward",
+    "email": "woodward.lucas@gmail.com",
+    "url": "https://github.com/lkwdwrd"
+  },
+  "contributors": [
+    {
+      "name": "Luke Woodward",
+      "email": "woodward.lucas@gmail.com",
+      "url": "https://github.com/lkwdwrd"
+    },
+    {
+      "name": "Eric Mann",
+      "email": "eric@eamann.com",
+      "url": "https://eamann.com"
+    }
+  ],
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "wordpress",
+    "theme",
+    "plugin",
+    "yeoman-generator",
+    "generator",
+    "yeoman",
+    "templates",
+    "scaffold"
+  ],
+  "dependencies": {
+    "ast-query": "",
+    "chalk": "^1.1.1",
+    "ejs": "^2.3.4",
+    "lodash": "",
+    "mkdirp": "",
+    "yeoman-generator": ""
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "async": ""
+  },
+  "peerDependencies": {
+    "yo": ""
+  }
+}
