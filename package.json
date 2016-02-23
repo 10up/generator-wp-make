@@ -52,8 +52,5 @@
   "devDependencies": {
     "mocha": "*",
     "async": ""
-  },
-  "peerDependencies": {
-    "yo": ""
   }
 }
