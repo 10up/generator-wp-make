@@ -6,10 +6,10 @@ module.exports = {
 		}
 	},
 	css: {
-		<% if ( opts.sass ) { %>files: ['assets/css/sass/**/*.scss'],<% } %>
-		<% else if ( opts.autoprefixer ) { %>files: ['assets/css/src/*.css'],<% } %>
-		<% else { %>files: ['assets/css/*.css', '!assets/css/*.min.css'],<% } %>
-		tasks: ['css'],
+		<% if ( opts.sass ) { %>files: ['assets/css/sass/**/*.scss'],
+		<% } else if ( opts.autoprefixer ) { %>files: ['assets/css/src/*.css'],
+		<% } else { %>files: ['assets/css/*.css', '!assets/css/*.min.css'],
+		<% } %>tasks: ['css'],
 		options: {
 			debounceDelay: 500
 		}
