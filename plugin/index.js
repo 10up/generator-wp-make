@@ -4,7 +4,7 @@ var path = require( 'path' );
 var yeoman = require( 'yeoman-generator' );
 var chalk = require( 'chalk' );
 var async = require( 'async' );
-
+var profile = require( '../yo-profile' );
 
 var PluginGenerator = yeoman.generators.Base.extend({
 	init: function () {
