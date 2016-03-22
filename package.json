@@ -4,7 +4,10 @@
   "description": "Yeoman generator",
   "license": "MIT",
   "main": "app/index.js",
-  "repository": "10up/generator-wp-make",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/10up/generator-wp-make.git"
+  },
   "author": {
     "name": "Luke Woodward",
     "email": "woodward.lucas@gmail.com",
