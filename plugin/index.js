@@ -4,11 +4,24 @@ var path = require( 'path' );
 var yeoman = require( 'yeoman-generator' );
 var chalk = require( 'chalk' );
 var async = require( 'async' );
-var profile = require( '../yo-profile' );
+var profile = require( '../yo-profile' ).YoProfile;
 
 var PluginGenerator = yeoman.generators.Base.extend({
 	init: function () {
 		this.log( chalk.magenta( 'Thanks for generating with WP Make!' ));
+
+		// Specify profile defaults - all are `undefined` to flag they don't exist
+		var options = {
+			'license'       : undefined,
+			'humanstxt'     : undefined,
+			'root_namespace': undefined,
+			'php_min'       : undefined,
+			'wp_tested'     : undefined,
+			'wp_min'        : undefined
+		};
+
+		// Load defaults from the RC file
+		this.defaults = (new profile).load( options, 'wpmake' ).properties;
 
 		this.on( 'end', function () {
 			var i, length, installs = [],

@@ -5,7 +5,7 @@ import rc from 'rc';
 /**
  * Object representing a profile loader
  */
-class YoProfile {
+export default class YoProfile {
 	/**
 	 * Instantiate the object and set the internal collection with an empty object
 	 */
@@ -57,6 +57,3 @@ class YoProfile {
 		return this._props;
 	}
 }
-
-// Export the module
-export default YoProfile;
