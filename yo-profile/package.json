@@ -2,6 +2,7 @@
   "name": "yo-profile",
   "main": "./src/yo-profile.js",
   "dependencies": {
+    "lodash": "^4.6.1",
     "rc": "^1.1.6"
   }
 }
