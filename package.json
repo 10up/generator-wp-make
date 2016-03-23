@@ -38,9 +38,10 @@
     "yeoman-generator"
   ],
   "dependencies": {
-    "yeoman-generator": "~0.20.3",
     "chalk": "~1.1.1",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "yeoman-generator": "~0.20.3",
+    "yo-profile": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "*",
