@@ -2,11 +2,11 @@
 Contributors:      <%= opts.authorName %>
 Donate link:       <%= opts.authorUrl %>
 Tags: 
-Requires at least: 4.1.1
-Tested up to:      4.1.1
+Requires at least: <%= opts.wp_min %>
+Tested up to:      <%= opts.wp_tested %>
 Stable tag:        0.1.0
 License:           <% if ( opts.license ) { %><%= opts.license %><% } %>
-License URI:       <% if ( opts.licenseUri ) { %><%= opts.licenseUri %><% } %>
+License URI:       <% if ( opts.licenseuri ) { %><%= opts.licenseuri %><% } %>
 
 <%= opts.description %>
 

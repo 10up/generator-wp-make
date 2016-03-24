@@ -10,7 +10,7 @@
  * Text Domain: <%= opts.funcPrefix %>
  * Domain Path: /languages
  */
-<% if ( opts.license && /^GPL/.test( opts.license ) ) { %>
+<% if ( 'GPLv2+' === opts.license ) { %>
 /**
  * Copyright (c) <%= (new Date()).getFullYear() %> <%= opts.authorName %> (email : <%= opts.authorEmail %>)
  *
@@ -46,8 +46,8 @@ require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'functions/core.php';
 
 
 // Activation/Deactivation
-register_activation_hook( __FILE__, '\TenUp\<%= namespace %>\Core\activate' );
-register_deactivation_hook( __FILE__, '\TenUp\<%= namespace %>\Core\deactivate' );
+register_activation_hook( __FILE__, '\<%= opts.root_namespace %>\<%= namespace %>\Core\activate' );
+register_deactivation_hook( __FILE__, '\<%= opts.root_namespace %>\<%= namespace %>\Core\deactivate' );
 
 // Bootstrap
-TenUp\<%= namespace %>\Core\setup();
+<%= opts.root_namespace %>\<%= namespace %>\Core\setup();
