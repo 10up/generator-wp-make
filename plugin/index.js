@@ -13,7 +13,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 
 		// Specify profile defaults - all are `undefined` to flag they don't exist
 		var options = {
-			'license'       : undefined,
+			'license'       : 'GPLv2+',
 			'humanstxt'     : undefined,
 			'root_namespace': undefined,
 			'php_min'       : undefined,
@@ -53,7 +53,9 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	options: function () {
 		var done = this.async();
 		this.basename = path.basename( this.env.cwd );
-		this.opts = {};
+		this.opts = {
+			license: this.defaults.license
+		};
 
 		var prompts = [
 			{

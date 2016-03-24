@@ -6,13 +6,13 @@
  * Version:     0.1.0
  * Author:      <%= opts.authorName %>
  * Author URI:  <%= opts.authorUrl %>
- * License:     GPLv2+
+ * License:     <% if ( opts.license ) { %><%= opts.license %><% } %>
  * Text Domain: <%= opts.funcPrefix %>
  * Domain Path: /languages
  */
-
+<% if ( opts.license && /^GPL/.test( opts.license ) ) { %>
 /**
- * Copyright (c) 2015 10up (email : info@10up.com)
+ * Copyright (c) <%= (new Date()).getFullYear() %> <%= opts.authorName %> (email : <%= opts.authorEmail %>)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -27,11 +27,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+ */<% } %>
 
 /**
  * Built using yo wp-make:plugin
- * Copyright (c) 2015 10up, LLC
+ * Copyright (c) <%= (new Date()).getFullYear() %> 10up, LLC
  * https://github.com/10up/generator-wp-make
  */
 
