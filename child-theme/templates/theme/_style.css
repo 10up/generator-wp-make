@@ -9,12 +9,12 @@
  * Tags:
  * Text Domain: <%= opts.funcPrefix %>
  *
- * License:     GPLv2+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * License:     <% if ( opts.license ) { %><%= opts.license %><% } %>
+ * License URI: <% if ( opts.licenseuri ) { %><%= opts.licenseuri %><% } %>
  */
 
 /**
  * Built using yo wp-make:theme
- * Copyright (c) 2014 10up, LLC
- * https://github.com/lkwdwrd/generator-wp-make
+ * Copyright (c) <%= new Date().getFullYear() %> 10up, LLC
+ * https://github.com/10up/generator-wp-make
  */

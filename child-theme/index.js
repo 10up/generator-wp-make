@@ -1,15 +1,29 @@
 'use strict';
 var util = require( 'util' );
+var _ = require( 'lodash' );
 var path = require( 'path' );
 var yeoman = require( 'yeoman-generator' );
 var chalk = require( 'chalk' );
 var async = require( 'async' );
-
+var profile = require( 'yo-profile' ).default;
 
 var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	init: function () {
 		this.log( chalk.magenta( 'Thanks for generating with WP Make!' ) );
 
+		// Specify profile defaults - all are `undefined` to flag they don't exist
+		var options = {
+			'license'       : 'GPLv2+',
+			'humanstxt'     : undefined,
+			'root_namespace': undefined,
+			'php_min'       : undefined,
+			'wp_tested'     : undefined,
+			'wp_min'        : undefined
+		};
+
+		// Load defaults from the RC file
+		this.defaults = (new profile).load( options, 'wpmake' ).properties;
+		
 		this.on( 'end', function () {
 			var i, length, installs = [],
 				chalks = { skipped:[], run:[] },
@@ -39,6 +53,9 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 	options: function () {
 		var done = this.async();
 		this.basename = path.basename( this.env.cwd );
+		this.opts = {
+			license: this.defaults.license
+		};
 
 		var prompts = [
 			{
@@ -59,36 +76,67 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 				name:    'description',
 				message: 'Description',
 				default: 'The best WordPress theme ever made!'
-			},
-			{
-				name:    'projectHome',
-				message: 'Theme homepage',
-				default: 'http://wordpress.org/themes'
-			},
-			{
-				name:    'authorName',
-				message: 'Author name',
-				default: this.user.git.name
-			},
-			{
-				name:    'authorEmail',
-				message: 'Author email',
-				default: this.user.git.email
-			},
-			{
-				name:    'authorUrl',
-				message: 'Author URL'
-			},
-			{
-				type:    'confirm',
-				name:    'sass',
-				message: 'Use Sass?',
-				default: true
 			}
 		];
+
+		prompts.push( {
+			name   : 'projectHome',
+			message: 'Project homepage',
+			default: (undefined !== this.defaults.projectHome) ? this.defaults.projectHome : 'http://wordpress.org/plugins'
+		} );
+
+		if ( undefined === this.defaults.authorName ) {
+			prompts.push(
+				{
+					name:    'authorName',
+					message: 'Author name',
+					default: this.user.git.name
+				}
+			);
+		} else {
+			this.opts.authorName = this.defaults.authorName;
+		}
+
+		if ( undefined === this.defaults.authorEmail ) {
+			prompts.push(
+				{
+					name:    'authorEmail',
+					message: 'Author email',
+					default: this.user.git.email
+				}
+			);
+		} else {
+			this.opts.authorEmail = this.defaults.authorEmail;
+		}
+
+		if ( undefined === this.defaults.authorUrl ) {
+			prompts.push(
+				{
+					name:    'authorUrl',
+					message: 'Author URL',
+					default: this.user.git.name
+				}
+			);
+		} else {
+			this.opts.authorUrl = this.defaults.authorUrl;
+		}
+
+		if ( undefined === this.defaults.sass ) {
+			prompts.push(
+				{
+					type:    'confirm',
+					name:    'sass',
+					message: 'Use Sass?',
+					default: true
+				}
+			);
+		} else {
+			this.opts.sass = this.defaults.sass;
+		}
+		
 		// gather initial settings
 		this.prompt( prompts, function ( props ) {
-			this.opts = props;
+			_.extend( this.opts, props );
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
 			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
