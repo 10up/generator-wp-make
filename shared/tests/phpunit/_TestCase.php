@@ -1,6 +1,6 @@
 <?php
 
-namespace TenUp\<%= namespace %>;
+namespace <%= opts.root_namespace %>\<%= namespace %>;
 
 use PHPUnit_Framework_TestResult;
 use Text_Template;

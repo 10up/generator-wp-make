@@ -3,7 +3,7 @@
  * <%= opts.projectHome %>
  *
  * Copyright (c) <%= new Date().getFullYear() %> <%= opts.authorName %>
- * Licensed under the GPLv2+ license.
+ * <% if ( opts.license ) { %>}Licensed under the <%= opts.license %> license.<% } %>
  */
 
 ( function( window, undefined ) {

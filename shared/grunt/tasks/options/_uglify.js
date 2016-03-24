@@ -7,7 +7,7 @@ module.exports = {
 			banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
 			' * <%%= pkg.homepage %>\n' +
 			' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
-			' * Licensed GPLv2+' +
+			<% if ( opts.license ) { %>}' * Licensed <%= opts.license %>' +<% } %>
 			' */\n',
 			mangle: {
 				except: ['jQuery']

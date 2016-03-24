@@ -1,8 +1,8 @@
 {
   "name": "<%= opts.projectSlug %>",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "/",
-  "license": "GPLv2+",
+  <% if ( opts.license ) { %>}"license": "<%= opts.license %>",<% } %>
   "ignore": [
     "**/.*",
     "*.md",

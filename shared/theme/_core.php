@@ -1,5 +1,5 @@
 <?php
-namespace TenUp\<%= namespace %>\Core;
+namespace <%= opts.root_namespace %>\<%= namespace %>\Core;
 
 /**
  * Set up theme defaults and register supported WordPress features.
