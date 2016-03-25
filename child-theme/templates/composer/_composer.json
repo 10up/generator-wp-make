@@ -1,7 +1,7 @@
 {
 	"name": "<%= opts.projectSlug %>",
 	"description": "<%= opts.description %>",
-	"version": "0.1.",
+	"version": "0.1.0",
 	"type": "wordpress-theme",
 	"keywords": [],
 	<% if ( opts.projectHome ) { %>"homepage": "<%= opts.projectHome %>",<% } %>
