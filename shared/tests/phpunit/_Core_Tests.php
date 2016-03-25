@@ -105,8 +105,11 @@ class Core_Tests extends Base\TestCase {
 				true,
 			),
 		) );
+		\WP_Mock::onFilter( 'special_filter' )
+		        ->with( '<%= opts.funcPrefix %>_script_debug' )
+		        ->reply( true );
 
-		scripts( true );
+		scripts();
 		$this->assertConditionsMet();
 	}
 
@@ -138,8 +141,11 @@ class Core_Tests extends Base\TestCase {
 				'0.1.0',
 			),
 		) );
+		\WP_Mock::onFilter( 'special_filter' )
+		        ->with( '<%= opts.funcPrefix %>_style_debug' )
+		        ->reply( true );
 
-		styles( true );
+		styles();
 		$this->assertConditionsMet();
 	}
 

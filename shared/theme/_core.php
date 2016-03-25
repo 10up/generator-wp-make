@@ -45,10 +45,15 @@ function i18n() {
  *
  * @since 0.1.0
  *
- * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
-function scripts( $debug = false ) {
+function scripts() {
+	/**
+	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
+	 * 
+	 * @param bool <%= opts.funcPrefix %>_script_debug
+	 */
+	$debug = apply_filters( '<%= opts.funcPrefix %>_script_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_script(
@@ -67,10 +72,15 @@ function scripts( $debug = false ) {
  *
  * @since 0.1.0
  *
- * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
-function styles( $debug = false ) {
+function styles() {
+	/**
+	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
+	 *
+	 * @param bool <%= opts.funcPrefix %>_style_debug
+	 */
+	$debug = apply_filters( '<%= opts.funcPrefix %>_style_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_style(
@@ -91,7 +101,12 @@ function styles( $debug = false ) {
  * @return void
  */
 function header_meta() {
-	$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
+	/**
+	 * Filter the path used for the site's humans.txt attribution file
+	 *
+	 * @param string $humanstxt
+	 */
+	$humanstxt = apply_filters( '<%= opts.funcPrefix %>_humans', <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt' );
 
-	echo apply_filters( '<%= opts.funcPrefix %>_humans', $humans );
-}<% | %>
+	echo '<link type="text/plain" rel="author" href="' . esc_url( $humanstxt ) . '" />';
+}
