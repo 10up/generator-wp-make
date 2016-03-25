@@ -91,7 +91,12 @@ function styles( $debug = false ) {
  * @return void
  */
 function header_meta() {
-	$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
+	/**
+	 * Filter the path used for the site's humans.txt attribution file
+	 *
+	 * @param string $humanstxt
+	 */
+	$humanstxt = apply_filters( '<%= opts.funcPrefix %>_humans', <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt' );
 
-	echo apply_filters( '<%= opts.funcPrefix %>_humans', $humans );
+	echo '<link type="text/plain" rel="author" href="' . esc_url( $humanstxt ) . '" />';
 }
