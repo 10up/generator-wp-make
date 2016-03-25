@@ -5,8 +5,8 @@ Tags:
 Requires at least: <%= opts.wp_min %>
 Tested up to:      <%= opts.wp_tested %>
 Stable tag:        0.1.0
-License:           <% if ( opts.license ) { %><%= opts.license %><% } %>
-License URI:       <% if ( opts.licenseuri ) { %><%= opts.licenseuri %><% } %>
+<% if ( opts.license ) { %>License:           <%= opts.license %><% } %>
+<% if ( opts.licenseuri ) { %>License URI:       <%= opts.licenseuri %><% } %>
 
 <%= opts.description %>
 

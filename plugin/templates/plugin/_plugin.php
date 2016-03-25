@@ -6,9 +6,9 @@
  * Version:     0.1.0
  * Author:      <%= opts.authorName %>
  * Author URI:  <%= opts.authorUrl %>
- * License:     <% if ( opts.license ) { %><%= opts.license %><% } %>
  * Text Domain: <%= opts.funcPrefix %>
  * Domain Path: /languages
+ * <% if ( opts.license ) { %>License:     <%= opts.license %><% } %>
  */
 <% if ( 'GPLv2+' === opts.license ) { %>
 /**

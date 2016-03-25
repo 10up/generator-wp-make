@@ -152,7 +152,6 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( '../../shared/grunt/tasks/_default.js', 'tasks/default.js' );
 			this.template( '../../shared/grunt/tasks/_js.js', 'tasks/js.js' );
 			this.template( '../../shared/grunt/tasks/_test.js', 'tasks/test.js' );
-			this.copy( '../../shared/_editorconfig', '.editorconfig' );
 		},
 
 		bower: function() {
@@ -185,6 +184,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 			}
 			this.template( 'library/_README.md', 'README.md' );
 			this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
+			this.copy( '../../shared/_editorconfig', '.editorconfig' );
 		}
 	}
 );

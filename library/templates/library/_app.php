@@ -4,7 +4,7 @@
  *
  * @author    <%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %> <<%= opts.authorEmail %>>
  * @copyright <%= new Date().getFullYear() %> <%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>
- * @license   http://www.opensource.org/licenses/mit-license.html
+ * <% if ( opts.licenseurl ) { %>@license   <%= opts.licenseuri %><% } %>
  * @version   0.1.0
  */
 namespace <%= opts.root_namespace %>\<%= namespace %>;
