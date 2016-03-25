@@ -91,7 +91,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 			this.opts = props;
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
-			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
+			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /[^0-9a-zA-Z]+/, '' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
 				return group1 + group2.toUpperCase();
 			});
 			done();
