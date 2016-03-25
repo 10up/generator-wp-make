@@ -125,6 +125,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );
 		this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
+		this.copy( '../../shared/_editorconfig', '.editorconfig' );
 	},
 
 	i18n: function() {

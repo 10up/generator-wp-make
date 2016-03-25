@@ -110,6 +110,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( '../../shared/grunt/tasks/_default.js', 'tasks/default.js' );
 			this.template( '../../shared/grunt/tasks/_js.js', 'tasks/js.js' );
 			this.template( '../../shared/grunt/tasks/_test.js', 'tasks/test.js' );
+			this.copy( '../../shared/_editorconfig', '.editorconfig' );
 		},
 
 		bower: function() {
