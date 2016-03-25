@@ -16,9 +16,9 @@ function setup() {
 	};
 
 	add_action( 'after_setup_theme',  $n( 'i18n' )        );
-	add_action( 'wp_head',            $n( 'header_meta' ) );
 	add_action( 'wp_enqueue_scripts', $n( 'scripts' )     );
 	add_action( 'wp_enqueue_scripts', $n( 'styles' )      );
+	<% if ( opts.humanstxt ) { %>add_action( 'wp_head',            $n( 'header_meta' ) );<% } %>
 }
 
 /**
@@ -81,7 +81,7 @@ function styles( $debug = false ) {
 	);
 }
 
-/**
+<% if ( opts.humanstxt ) { %>/**
  * Add humans.txt to the <head> element.
  *
  * @uses apply_filters()
@@ -94,4 +94,4 @@ function header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt" />';
 
 	echo apply_filters( '<%= opts.funcPrefix %>_humans', $humans );
-}
+}<% | %>
