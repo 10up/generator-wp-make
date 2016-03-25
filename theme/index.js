@@ -170,7 +170,9 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		this.template( 'theme/_footer.php', 'footer.php' );
 		this.template( 'theme/_functions.php', 'functions.php' );
 		this.template( '../../shared/theme/_core.php', 'includes/functions/core.php' );
-		this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
+		if ( this.opts.humanstxt ) {
+			this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
+		}
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );
 		this.copy( '../../shared/theme/readme-includes.md', 'includes/readme.md' );
 	},
