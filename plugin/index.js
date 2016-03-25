@@ -80,6 +80,18 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			message: 'Project homepage',
 			default: (undefined !== this.defaults.projectHome) ? this.defaults.projectHome : 'http://wordpress.org/plugins'
 		} );
+
+		if ( 'prompt' === this.defaults.root_namespace ) {
+			prompts.push( {
+				name   : 'root_namespace',
+				message: 'Project root namespace',
+				default: 'TenUp'
+			} )
+		} else if ( this.defaults.root_namespace ) {
+			this.opts.root_namespace = this.defaults.root_namespace;
+		} else {
+			this.opts.root_namespace = 'TenUp';
+		}
 		
 		if ( undefined === this.defaults.authorName ) {
 			prompts.push(
