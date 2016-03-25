@@ -29,7 +29,7 @@ class Core_Tests extends Base\TestCase {
 			define( '<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL', 'template_url' );
 		}
 		if ( ! defined( '<%= opts.funcPrefix.toUpperCase() %>_VERSION' ) ) {
-			define( '<%= opts.funcPrefix.toUpperCase() %>_VERSION', '0.0.1' );
+			define( '<%= opts.funcPrefix.toUpperCase() %>_VERSION', '0.1.0' );
 		}
 		if ( ! defined( '<%= opts.funcPrefix.toUpperCase() %>_URL' ) ) {
 			define( '<%= opts.funcPrefix.toUpperCase() %>_URL', 'url' );
@@ -86,7 +86,7 @@ class Core_Tests extends Base\TestCase {
 				'<%= opts.funcPrefix %>',
 				'template_url/assets/js/<%= fileSlug %>.min.js',
 				array(),
-				'0.0.1',
+				'0.1.0',
 				true,
 			),
 		) );
@@ -101,12 +101,15 @@ class Core_Tests extends Base\TestCase {
 				'<%= opts.funcPrefix %>',
 				'template_url/assets/js/<%= fileSlug %>.js',
 				array(),
-				'0.0.1',
+				'0.1.0',
 				true,
 			),
 		) );
+		\WP_Mock::onFilter( 'special_filter' )
+		        ->with( '<%= opts.funcPrefix %>_script_debug' )
+		        ->reply( true );
 
-		scripts( true );
+		scripts();
 		$this->assertConditionsMet();
 	}
 
@@ -121,7 +124,7 @@ class Core_Tests extends Base\TestCase {
 				'<%= opts.funcPrefix %>',
 				'url/assets/css/<%= fileSlug %>.min.css',
 				array(),
-				'0.0.1',
+				'0.1.0',
 			),
 		) );
 
@@ -135,11 +138,14 @@ class Core_Tests extends Base\TestCase {
 				'<%= opts.funcPrefix %>',
 				'url/assets/css/<%= fileSlug %>.css',
 				array(),
-				'0.0.1',
+				'0.1.0',
 			),
 		) );
+		\WP_Mock::onFilter( 'special_filter' )
+		        ->with( '<%= opts.funcPrefix %>_style_debug' )
+		        ->reply( true );
 
-		styles( true );
+		styles();
 		$this->assertConditionsMet();
 	}
 

@@ -45,10 +45,15 @@ function i18n() {
  *
  * @since 0.1.0
  *
- * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
-function scripts( $debug = false ) {
+function scripts() {
+	/**
+	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
+	 * 
+	 * @param bool <%= opts.funcPrefix %>_script_debug
+	 */
+	$debug = apply_filters( '<%= opts.funcPrefix %>_script_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_script(
@@ -67,10 +72,15 @@ function scripts( $debug = false ) {
  *
  * @since 0.1.0
  *
- * @param bool $debug Whether to enable loading uncompressed/debugging assets. Default false.
  * @return void
  */
-function styles( $debug = false ) {
+function styles() {
+	/**
+	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
+	 *
+	 * @param bool <%= opts.funcPrefix %>_style_debug
+	 */
+	$debug = apply_filters( '<%= opts.funcPrefix %>_style_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_style(
