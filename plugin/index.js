@@ -120,6 +120,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
 		this.template( 'plugin/_core.php', 'includes/functions/core.php' );
 		this.copy( 'plugin/readme-includes.md', 'php/readme.md' );
+		this.copy( '../../shared/_editorconfig', '.editorconfig' );
 	},
 
 	i18n: function() {
