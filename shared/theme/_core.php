@@ -110,3 +110,4 @@ function header_meta() {
 
 	echo '<link type="text/plain" rel="author" href="' . esc_url( $humanstxt ) . '" />';
 }
+<% } %>
