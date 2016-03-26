@@ -14,7 +14,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		// Specify profile defaults - all are `undefined` to flag they don't exist
 		var options = {
 			'license'       : 'GPL-2.0+',
-			'humanstxt'     : undefined,
+			'humanstxt'     : true,
 			'root_namespace': undefined,
 			'php_min'       : undefined,
 			'wp_tested'     : undefined,
@@ -187,7 +187,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		this.template( 'theme/_style.css', 'style.css' );
 		this.template( 'theme/_functions.php', 'functions.php' );
 		this.template( '../../shared/theme/_core.php', 'includes/functions/core.php' );
-		if ( this.opts.humanstxt ) {
+		if ( false !== this.opts.humanstxt ) {
 			this.template( '../../shared/theme/_humans.txt', 'humans.txt' );
 		}
 		this.copy( 'theme/screenshot.png', 'screenshot.png' );

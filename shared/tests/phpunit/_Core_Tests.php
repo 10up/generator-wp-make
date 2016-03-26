@@ -44,9 +44,9 @@ class Core_Tests extends Base\TestCase {
 	public function test_setup() {
 		// Setup
 		\WP_Mock::expectActionAdded( 'after_setup_theme',  '<%= opts.root_namespace %>\<%= namespace %>\Core\i18n'        );
-		\WP_Mock::expectActionAdded( 'wp_head',            '<%= opts.root_namespace %>\<%= namespace %>\Core\header_meta' );
 		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', '<%= opts.root_namespace %>\<%= namespace %>\Core\scripts'     );
 		\WP_Mock::expectActionAdded( 'wp_enqueue_scripts', '<%= opts.root_namespace %>\<%= namespace %>\Core\styles'      );
+		<% if ( false !== opts.humanstxt ) { %>\WP_Mock::expectActionAdded( 'wp_head',            '<%= opts.root_namespace %>\<%= namespace %>\Core\header_meta' );<% } %>
 
 		// Act
 		setup();
@@ -148,14 +148,16 @@ class Core_Tests extends Base\TestCase {
 		styles();
 		$this->assertConditionsMet();
 	}
-
+<% if ( false !== opts.humanstxt ) { %>
 	/**
 	 * Test header meta injection
 	 */
 	public function test_header_meta() {
 		// Setup
+		$url = 'template_url/humans.txt';
 		$meta = '<link type="text/plain" rel="author" href="template_url/humans.txt" />';
-		\WP_Mock::onFilter( '<%= opts.funcPrefix %>_humans' )->with( $meta )->reply( $meta );
+		\WP_Mock::onFilter( '<%= opts.funcPrefix %>_humans' )->with( $url )->reply( $url );
+		\WP_Mock::wpPassThruFunction( 'esc_url' );
 
 		// Act
 		ob_start();
@@ -165,5 +167,5 @@ class Core_Tests extends Base\TestCase {
 		// Verify
 		$this->assertConditionsMet();
 		$this->assertEquals( $meta, $result );
-	}
+	}<% } %>
 }

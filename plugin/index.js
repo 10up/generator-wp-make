@@ -14,7 +14,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		// Specify profile defaults - all are `undefined` to flag they don't exist
 		var options = {
 			'license'       : 'GPL-2.0+',
-			'humanstxt'     : undefined,
+			'humanstxt'     : true,
 			'root_namespace': undefined,
 			'php_min'       : undefined,
 			'wp_tested'     : undefined,
