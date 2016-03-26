@@ -71,11 +71,6 @@ var LibGenerator = yeoman.generators.Base.extend({
 					name:    'description',
 					message: 'Description',
 					default: 'The best WordPress extension ever made!'
-				},
-				{
-					name:    'gitUser',
-					message: 'GitHub Account Name',
-					default: this.user.git.username
 				}
 			];
 
