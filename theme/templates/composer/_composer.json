@@ -5,7 +5,7 @@
 	"type": "wordpress-theme",
 	"keywords": [],
 	<% if ( opts.projectHome ) { %>"homepage": "<%= opts.projectHome %>",<% } %>
-	<% if ( opts.license ) { %>}"license": "<%= opts.license %>",<% } %>
+	<% if ( opts.license ) { %>"license": "<%= opts.license %>",<% } %>
 	"authors": [
 		{
 			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
