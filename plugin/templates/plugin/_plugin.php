@@ -10,7 +10,7 @@
  * Domain Path: /languages
  * <% if ( opts.license ) { %>License:     <%= opts.license %><% } %>
  */
-<% if ( 'GPLv2+' === opts.license ) { %>
+<% if ( 'GPL-2.0+' === opts.license ) { %>
 /**
  * Copyright (c) <%= (new Date()).getFullYear() %> <%= opts.authorName %> (email : <%= opts.authorEmail %>)
  *

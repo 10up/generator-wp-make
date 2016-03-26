@@ -13,7 +13,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 
 		// Specify profile defaults - all are `undefined` to flag they don't exist
 		var options = {
-			'license'       : 'GPLv2+',
+			'license'       : 'GPL-2.0+',
 			'humanstxt'     : undefined,
 			'root_namespace': undefined,
 			'php_min'       : undefined,
@@ -54,7 +54,11 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		var done = this.async();
 		this.basename = path.basename( this.env.cwd );
 		this.opts = {
-			license: this.defaults.license
+			license:    undefined === this.defaults.license ? 'GPL-2.0+' : this.defaults.license,
+			licenseuri: undefined === this.defaults.licenseuri ? 'https://opensource.org/licenses/GPL-2.0' : this.defaults.licenseuri,
+			php_min:    undefined === this.defaults.php_min ? '5.6' : this.defaults.php_min,
+			wp_tested:  undefined === this.defaults.wp_tested ? 4.5 : this.defaults.wp_tested,
+			wp_min:     undefined === this.defaults.wp_min ? '4.5' : this.defaults.wp_min,
 		};
 
 		var prompts = [
