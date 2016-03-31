@@ -25,7 +25,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 					installs.push( _install( installers[ i ],this ));
 				}
 			}
-			
+
 			if ( 0 < chalks.skipped.length ) {
 				this.log( 'Skipping ' + chalks.skipped.join( ', ' ) + '. Just run yourself when you are ready.' );
 			}
@@ -88,7 +88,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
 			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /[^0-9a-zA-Z]+/, '' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
-				return group1 + group2.toUpperCase(); 
+				return group1 + group2.toUpperCase();
 			});
 			done();
 		}.bind( this ));
@@ -157,6 +157,9 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		//qunit
 		this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
 		this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
+		//mocha
+		this.template( '../../shared/tests/mocha/_TestCase.html', 'tests/mocha/'  + this.fileSlug + '.html' );
+		this.template( '../../shared/tests/mocha/test.js', 'tests/mocha/tests/'  + this.fileSlug + '.js' );
 	},
 
 	grunt: function() {
@@ -181,6 +184,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.template( '../../shared/grunt/tasks/options/_concat.js', 'tasks/options/concat.js' );
 		this.template( '../../shared/grunt/tasks/options/_copy.js', 'tasks/options/copy.js' );
 		this.template( '../../shared/grunt/tasks/options/_jshint.js', 'tasks/options/jshint.js' );
+		this.template( '../../shared/grunt/tasks/options/_mocha.js', 'tasks/options/mocha.js' );
 		this.template( '../../shared/grunt/tasks/options/_phpunit.js', 'tasks/options/phpunit.js' );
 		this.template( '../../shared/grunt/tasks/options/_qunit.js', 'tasks/options/qunit.js' );
 		this.template( '../../shared/grunt/tasks/options/_uglify.js', 'tasks/options/uglify.js' );

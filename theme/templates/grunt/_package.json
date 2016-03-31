@@ -31,7 +31,9 @@
     "load-grunt-config": "~0.17.2",
     "load-grunt-tasks": "^3.3.0",
     "glob": "~5.0.15",
-    "qunitjs": "~1.18.0"
+    "qunitjs": "~1.18.0",
+    "chai": "^3.5.0",
+    "grunt-mocha": "^1.0.0"
   },
   "keywords": []
 }
