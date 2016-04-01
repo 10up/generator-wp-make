@@ -36,7 +36,7 @@ For each project type you get:
 - NPM to manage development dependencies (like Grunt)
 - Grunt to streamline development
 - phpunit, paratest, and [WP_Mock](https://github.com/10up/wp_mock) for PHP unit testing
-- Qunit for JS unit testing
+- Mocha and Chai for JS unit testing
 - A fully-fleshed out, namespaced setup for WordPress plugin development
 
 ### Plugin
