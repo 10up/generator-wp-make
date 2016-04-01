@@ -1,5 +1,5 @@
 <?php
-namespace TenUp\<%= namespace %>\Core;
+namespace <%= opts.root_namespace %>\<%= namespace %>\Core;
 
 /**
  * This is a very basic test case to get things started. You should probably rename this and make
@@ -13,7 +13,7 @@ namespace TenUp\<%= namespace %>\Core;
  *   - https://github.com/10up/wp_mock
  */
 
-use TenUp\<%= namespace %> as Base;
+use <%= opts.root_namespace %>\<%= namespace %> as Base;
 
 class Core_Tests extends Base\TestCase {
 
@@ -26,8 +26,8 @@ class Core_Tests extends Base\TestCase {
 	 */
 	public function test_setup() {
 		// Setup
-		\WP_Mock::expectActionAdded( 'init', 'TenUp\<%= namespace %>\Core\i18n' );
-		\WP_Mock::expectActionAdded( 'init', 'TenUp\<%= namespace %>\Core\init' );
+		\WP_Mock::expectActionAdded( 'init', '<%= opts.root_namespace %>\<%= namespace %>\Core\i18n' );
+		\WP_Mock::expectActionAdded( 'init', '<%= opts.root_namespace %>\<%= namespace %>\Core\init' );
 		\WP_Mock::expectAction( '<%= opts.funcPrefix %>_loaded' );
 
 		// Act

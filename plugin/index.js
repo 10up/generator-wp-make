@@ -1,14 +1,28 @@
 'use strict';
 var util = require( 'util' );
+var _ = require( 'lodash' );
 var path = require( 'path' );
 var yeoman = require( 'yeoman-generator' );
 var chalk = require( 'chalk' );
 var async = require( 'async' );
-
+var profile = require( 'yo-profile' ).default;
 
 var PluginGenerator = yeoman.generators.Base.extend({
 	init: function () {
 		this.log( chalk.magenta( 'Thanks for generating with WP Make!' ));
+
+		// Specify profile defaults - all are `undefined` to flag they don't exist
+		var options = {
+			'license'       : 'GPL-2.0+',
+			'humanstxt'     : true,
+			'root_namespace': undefined,
+			'php_min'       : undefined,
+			'wp_tested'     : undefined,
+			'wp_min'        : undefined
+		};
+
+		// Load defaults from the RC file
+		this.defaults = (new profile).load( options, 'wpmake' ).properties;
 
 		this.on( 'end', function () {
 			var i, length, installs = [],
@@ -39,6 +53,13 @@ var PluginGenerator = yeoman.generators.Base.extend({
 	options: function () {
 		var done = this.async();
 		this.basename = path.basename( this.env.cwd );
+		this.opts = {
+			license:    undefined === this.defaults.license ? 'GPL-2.0+' : this.defaults.license,
+			licenseuri: undefined === this.defaults.licenseuri ? 'https://opensource.org/licenses/GPL-2.0' : this.defaults.licenseuri,
+			php_min:    undefined === this.defaults.php_min ? '5.6' : this.defaults.php_min,
+			wp_tested:  undefined === this.defaults.wp_tested ? 4.5 : this.defaults.wp_tested,
+			wp_min:     undefined === this.defaults.wp_min ? '4.5' : this.defaults.wp_min,
+		};
 
 		var prompts = [
 			{
@@ -55,36 +76,79 @@ var PluginGenerator = yeoman.generators.Base.extend({
 				name:    'description',
 				message: 'Description',
 				default: 'The best WordPress extension ever made!'
-			},
-			{
-				name:    'projectHome',
-				message: 'Project homepage',
-				default: 'http://wordpress.org/plugins'
-			},
-			{
-				name:    'authorName',
-				message: 'Author name',
-				default: this.user.git.name
-			},
-			{
-				name:    'authorEmail',
-				message: 'Author email',
-				default: this.user.git.email
-			},
-			{
-				name:    'authorUrl',
-				message: 'Author URL'
-			},
-			{
-				type:    'confirm',
-				name:    'sass',
-				message: 'Use Sass?',
-				default: true
 			}
 		];
+
+		prompts.push( {
+			name   : 'projectHome',
+			message: 'Project homepage',
+			default: (undefined !== this.defaults.projectHome) ? this.defaults.projectHome : 'http://wordpress.org/plugins'
+		} );
+
+		if ( 'prompt' === this.defaults.root_namespace ) {
+			prompts.push( {
+				name   : 'root_namespace',
+				message: 'Project root namespace',
+				default: 'TenUp'
+			} )
+		} else if ( this.defaults.root_namespace ) {
+			this.opts.root_namespace = this.defaults.root_namespace;
+		} else {
+			this.opts.root_namespace = 'TenUp';
+		}
+		
+		if ( undefined === this.defaults.authorName ) {
+			prompts.push(
+				{
+					name:    'authorName',
+					message: 'Author name',
+					default: this.user.git.name
+				}
+			);
+		} else {
+			this.opts.authorName = this.defaults.authorName;
+		}
+
+		if ( undefined === this.defaults.authorEmail ) {
+			prompts.push(
+				{
+					name:    'authorEmail',
+					message: 'Author email',
+					default: this.user.git.email
+				}
+			);
+		} else {
+			this.opts.authorEmail = this.defaults.authorEmail;
+		}
+
+		if ( undefined === this.defaults.authorUrl ) {
+			prompts.push(
+				{
+					name:    'authorUrl',
+					message: 'Author URL',
+					default: this.user.git.name
+				}
+			);
+		} else {
+			this.opts.authorUrl = this.defaults.authorUrl;
+		}
+
+		if ( undefined === this.defaults.sass ) {
+			prompts.push(
+				{
+					type:    'confirm',
+					name:    'sass',
+					message: 'Use Sass?',
+					default: true
+				}
+			);
+		} else {
+			this.opts.sass = this.defaults.sass;
+		}
+		
 		// gather initial settings
 		this.prompt( prompts, function ( props ) {
-			this.opts = props;
+			_.extend( this.opts, props );
 			this.opts.projectSlug = this.opts.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 			this.fileSlug = this.opts.projectSlug;
 			this.namespace = this.opts.projectTitle.replace( /[\s|-]/g, '_' ).replace( /[^0-9a-zA-Z]+/, '' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
@@ -119,7 +183,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		this.template( 'plugin/_readme.txt', 'readme.txt' );
 		this.template( 'plugin/_plugin.php', this.fileSlug + '.php' );
 		this.template( 'plugin/_core.php', 'includes/functions/core.php' );
-		this.copy( 'plugin/readme-includes.md', 'php/readme.md' );
+		this.copy( 'plugin/readme-includes.md', 'includes/readme.md' );
 		this.copy( '../../shared/_editorconfig', '.editorconfig' );
 	},
 

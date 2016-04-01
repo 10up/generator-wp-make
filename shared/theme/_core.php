@@ -1,5 +1,5 @@
 <?php
-namespace TenUp\<%= namespace %>\Core;
+namespace <%= opts.root_namespace %>\<%= namespace %>\Core;
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -16,9 +16,9 @@ function setup() {
 	};
 
 	add_action( 'after_setup_theme',  $n( 'i18n' )        );
-	add_action( 'wp_head',            $n( 'header_meta' ) );
 	add_action( 'wp_enqueue_scripts', $n( 'scripts' )     );
 	add_action( 'wp_enqueue_scripts', $n( 'styles' )      );
+	<% if ( false !== opts.humanstxt ) { %>add_action( 'wp_head',            $n( 'header_meta' ) );<% } %>
 }
 
 /**
@@ -91,7 +91,7 @@ function styles() {
 	);
 }
 
-/**
+<% if ( false !== opts.humanstxt ) { %>/**
  * Add humans.txt to the <head> element.
  *
  * @uses apply_filters()
@@ -109,4 +109,4 @@ function header_meta() {
 	$humanstxt = apply_filters( '<%= opts.funcPrefix %>_humans', <%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . '/humans.txt' );
 
 	echo '<link type="text/plain" rel="author" href="' . esc_url( $humanstxt ) . '" />';
-}
+}<% } %>

@@ -26,4 +26,4 @@ require_once <%= opts.funcPrefix.toUpperCase() %>_INC . 'functions/core.php';
 // Include lib classes
 
 // Run the setup functions
-TenUp\<%= namespace %>\Core\setup();
+<%= opts.root_namespace %>\<%= namespace %>\Core\setup();
