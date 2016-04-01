@@ -101,8 +101,8 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( '../../shared/grunt/tasks/options/_concat.js', 'tasks/options/concat.js' );
 			this.template( '../../shared/grunt/tasks/options/_copy.js', 'tasks/options/copy.js' );
 			this.template( '../../shared/grunt/tasks/options/_jshint.js', 'tasks/options/jshint.js' );
+			this.template( '../../shared/grunt/tasks/options/_mocha.js', 'tasks/options/mocha.js' );
 			this.template( '../../shared/grunt/tasks/options/_phpunit.js', 'tasks/options/phpunit.js' );
-			this.template( '../../shared/grunt/tasks/options/_qunit.js', 'tasks/options/qunit.js' );
 			this.template( '../../shared/grunt/tasks/options/_uglify.js', 'tasks/options/uglify.js' );
 			this.template( '../../shared/grunt/tasks/options/_watch.js', 'tasks/options/watch.js' );
 			this.template( '../../shared/grunt/tasks/_build.js', 'tasks/build.js' );
@@ -131,9 +131,9 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( '../../shared/tests/phpunit/_TestCase.php', 'tests/phpunit/test-tools/TestCase.php' );
 			this.template( 'tests/phpunit/_bootstrap.php', 'bootstrap.php.dist' );
 			this.copy( 'tests/phpunit/phpunit.xml.dist', 'phpunit.xml.dist' );
-			//qunit
-			this.template( '../../shared/tests/qunit/_test.html', 'tests/qunit/' + this.fileSlug + '.html' );
-			this.copy( '../../shared/tests/qunit/test.js', 'tests/qunit/tests/' + this.fileSlug + '.js' );
+			//mocha
+			this.template( '../../shared/tests/mocha/_TestCase.html', 'tests/mocha/'  + this.fileSlug + '.html' );
+			this.template( '../../shared/tests/mocha/test.js', 'tests/mocha/tests/'  + this.fileSlug + '.js' );
 		},
 
 		library: function() {

@@ -1,3 +1,3 @@
 module.exports = function (grunt) {
-	grunt.registerTask( 'test', ['phpunit', 'qunit'] );
+	grunt.registerTask( 'test', ['phpunit', 'mocha'] );
 };
