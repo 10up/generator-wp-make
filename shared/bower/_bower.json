@@ -2,7 +2,7 @@
   "name": "<%= opts.projectSlug %>",
   "version": "0.1.0",
   "main": "/",
-  <% if ( opts.license ) { %>}"license": "<%= opts.license %>",<% } %>
+  <% if ( opts.license ) { %>"license": "<%= opts.license %>",<% } %>
   "ignore": [
     "**/.*",
     "*.md",
