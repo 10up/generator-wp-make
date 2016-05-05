@@ -3,7 +3,7 @@ module.exports = {
 		banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
 		' * <%%=pkg.homepage %>\n' +
 		' * Copyright (c) <%%= grunt.template.today("yyyy") %>;' +
-		<% if ( opts.license ) { %>}' * Licensed <%= opts.license %>' +<% } %>
+		<% if ( opts.license ) { %>' * Licensed <%= opts.license %>' +<% } %>
 		' */\n'
 	},
 	minify: {
