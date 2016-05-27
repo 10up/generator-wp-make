@@ -88,15 +88,17 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		if ( 'prompt' === this.defaults.root_namespace ) {
 			prompts.push( {
 				name   : 'root_namespace',
-				message: 'Project root namespace',
-				default: 'TenUp'
-			} )
+				message: 'Project root PHP namespace (NameOfProject)'
+			} );
 		} else if ( this.defaults.root_namespace ) {
 			this.opts.root_namespace = this.defaults.root_namespace;
 		} else {
-			this.opts.root_namespace = 'TenUp';
+			prompts.push( {
+				name   : 'root_namespace',
+				message: 'Project root PHP namespace (NameOfProject)'
+			} );
 		}
-		
+
 		if ( undefined === this.defaults.authorName ) {
 			prompts.push(
 				{
@@ -145,7 +147,7 @@ var PluginGenerator = yeoman.generators.Base.extend({
 		} else {
 			this.opts.sass = this.defaults.sass;
 		}
-		
+
 		// gather initial settings
 		this.prompt( prompts, function ( props ) {
 			_.extend( this.opts, props );

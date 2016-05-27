@@ -23,7 +23,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 
 			// Load defaults from the RC file
 			this.defaults = (new profile).load( options, 'wpmake' ).properties;
-			
+
 			this.on( 'end', function() {
 				var i, length, installs = [],
 					chalks = { skipped:[], run:[] },
@@ -83,13 +83,15 @@ var LibGenerator = yeoman.generators.Base.extend({
 			if ( 'prompt' === this.defaults.root_namespace ) {
 				prompts.push( {
 					name   : 'root_namespace',
-					message: 'Project root namespace',
-					default: 'TenUp'
-				} )
+					message: 'Project root PHP namespace (NameOfProject)'
+				} );
 			} else if ( this.defaults.root_namespace ) {
 				this.opts.root_namespace = this.defaults.root_namespace;
 			} else {
-				this.opts.root_namespace = 'TenUp';
+				prompts.push( {
+					name   : 'root_namespace',
+					message: 'Project root PHP namespace (NameOfProject)'
+				} );
 			}
 
 			if ( undefined === this.defaults.authorName ) {
