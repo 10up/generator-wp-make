@@ -109,7 +109,7 @@ $ yo wp-make:plugin --profile Enterprise
 Some fields will always prompt - the profile will merely set the default:
 - `projectHome`
 
-Some fields will prompt only when the string `prompt` is specified as a setting:
+Some fields will prompt only when a default is NOT set in a profile:
 - `root_namespace`
 
 Some fields will never prompt but will use either the profile or a hard-coded default:
