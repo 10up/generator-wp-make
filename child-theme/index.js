@@ -237,7 +237,7 @@ var ChildThemeGenerator = yeoman.generators.Base.extend( {
 		this.template( 'grunt/_package.json', 'package.json' );
 		this.template( '../../shared/grunt/_Gruntfile.js', 'Gruntfile.js' );
 		this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
-		this.copy( '../../shared/grunt/_jscsrc', 'conf/.jscsrc' );
+		this.copy( '../../shared/conf/_jscsrc', 'conf/.jscsrc' );
 		this.copy( '../../shared/grunt/tasks/_template.js', 'tasks/_template.js');
 		this.copy( '../../shared/grunt/tasks/options/_template.js', 'tasks/options/_template.js');
 		if ( this.opts.sass ) {
