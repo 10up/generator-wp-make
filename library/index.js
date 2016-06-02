@@ -148,6 +148,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( 'grunt/_package.json', 'package.json' );
 			this.template( '../../shared/grunt/_Gruntfile.js', 'Gruntfile.js' );
 			this.copy( '../../shared/grunt/_jshintrc', '.jshintrc' );
+			this.copy( '../../shared/grunt/_jscsrc', 'conf/.jscsrc' );
 			this.copy( '../../shared/grunt/tasks/_template.js', 'tasks/_template.js');
 			this.copy( '../../shared/grunt/tasks/options/_template.js', 'tasks/options/_template.js');
 			this.template( '../../shared/grunt/tasks/options/_cssmin.js', 'tasks/options/cssmin.js' );
@@ -156,6 +157,7 @@ var LibGenerator = yeoman.generators.Base.extend({
 			this.template( '../../shared/grunt/tasks/options/_concat.js', 'tasks/options/concat.js' );
 			this.template( '../../shared/grunt/tasks/options/_copy.js', 'tasks/options/copy.js' );
 			this.template( '../../shared/grunt/tasks/options/_jshint.js', 'tasks/options/jshint.js' );
+			this.template( '../../shared/grunt/tasks/options/_jscs.js', 'tasks/options/jscs.js' );
 			this.template( '../../shared/grunt/tasks/options/_mocha.js', 'tasks/options/mocha.js' );
 			this.template( '../../shared/grunt/tasks/options/_phpunit.js', 'tasks/options/phpunit.js' );
 			this.template( '../../shared/grunt/tasks/options/_uglify.js', 'tasks/options/uglify.js' );
