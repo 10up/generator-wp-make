@@ -1,3 +1,3 @@
 module.exports = function( grunt ) {
-	grunt.registerTask( 'js', [ 'eslint', 'concat', 'uglify' ] );
+	grunt.registerTask( 'js', [ 'eslint', 'jscs', 'concat', 'uglify' ] );
 };
