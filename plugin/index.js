@@ -143,7 +143,7 @@ module.exports = Base.extend({
 		this.data.projectSlug = this.data.projectTitle.toLowerCase().replace( /[\s]/g, '-' ).replace( /[^a-z-_]/g, '' );
 		this.data.fileSlug = this.data.projectSlug;
 		this.data.namespace = this.data.projectTitle.replace( /[\s|-]/g, '_' ).replace( /( ^|_ )( [a-z] )/g, function( match, group1, group2 ){
-			return group1 + group2.toUpperCase(); 
+			return group1 + group2.toUpperCase();
 		});
 
 		if ( this.data.sass ) {
@@ -153,7 +153,7 @@ module.exports = Base.extend({
 	updateTree: function() {
 		// Get objects
 		var rootJSON = this.getSubtree( 'json' ),
-			styleSutree = 'assets/css',
+			styleSubtree = 'assets/css/',
 			styleExtension = 'css';
 
 		// Composer
@@ -179,8 +179,10 @@ module.exports = Base.extend({
 			styleExtension = 'scss';
 		}
 
-		var styleTemplates = this.getSubtree( styleSubtree, 'templates' );
-			styleTemplates['<%= projectSlug %>.' + styleExtension ] = '_style.css';
+		// Confirm that we have styles needed
+		var styleTemplates = this.getSubtree( 'templates', styleSubtree );
+		styleTemplates['<%= projectSlug %>.' + styleExtension ] = '_style.css';
+
 	}
 
 });
