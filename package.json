@@ -52,6 +52,7 @@
   "devDependencies": {
     "async": "",
     "chai": "^3.5.0",
-    "mocha": "*"
+    "mocha": "*",
+    "mock-fs": "^3.9.0"
   }
 }
