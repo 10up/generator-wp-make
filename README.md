@@ -1,5 +1,7 @@
 # WP-Make
 
+[![Build Status](https://travis-ci.org/wp-cli/wp-cli.png?branch=master)](https://travis-ci.org/10up/generator-wp-make)
+
 WP-Make is a [Yeoman generator](http://yeoman.io) for quickly creating new WordPress projects based on some established template designs currently used by [10up](http://10up.com).
 
 Briefly, WP-Make can be used to create a new theme, child theme, plugin, or library project - complete with unit tests - in seconds!
