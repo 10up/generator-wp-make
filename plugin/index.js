@@ -64,7 +64,8 @@ module.exports = Base.extend({
 					'.bowerrc': this.starterJSON( 'bowerrc' ),
 					'bower.json': this.starterJSON( 'bower' ),
 					'composer.json': this.starterJSON( 'composer' ),
-					'.jshintrc': this.starterJSON( 'jshintrc' ),
+					'.eslintrc': this.starterJSON( 'eslintrc' ),
+					'.jscsrc': this.starterJSON( 'jscsrc' ),
 					'package.json': this.starterJSON( 'package' )
 				},
 				templates: {
