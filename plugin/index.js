@@ -61,6 +61,7 @@ module.exports = Base.extend({
 			],
 			tree: {
 				json: {
+					'.babelrc': this.starterJSON( 'babelrc' ),
 					'.bowerrc': this.starterJSON( 'bowerrc' ),
 					'bower.json': this.starterJSON( 'bower' ),
 					'composer.json': this.starterJSON( 'composer' ),
@@ -110,30 +111,46 @@ module.exports = Base.extend({
 					'tests': {
 						tree: {
 							'phpunit': {
+								tree: {
+									'test-tools': {
+										templates: {
+											'TestCase.php': '_TestCase.php',
+										}
+									}
+								},
 								templates: {
 									'Core_Tests.php': '_Core_Tests.php'
 								},
-								tree: {
-									templates: {
-										'Test_Case.php': '_Test_Case.php',
-									}
-								}
 							},
 							'mocha': {},
 						}
 					},
 					'tasks': {
+						tree: {
+							'options': {
+								modules: {
+									'browserify.js': this.starter( 'browserify' ),
+									'clean.js': this.starter( 'clean' ),
+									'compress.js': this.starter( 'compress' ),
+									'concat.js': this.starter( 'concat' ),
+									'copy.js': this.starter( 'copy' ),
+									'cssmin.js': this.starter( 'cssmin' ),
+									'eslint.js': this.starter( 'eslint' ),
+									'jscs.js': this.starter( 'jscs' ),
+									'jshint.js': this.starter( 'jshint' ),
+									'phpunit.js': this.starter( 'phpunit' ),
+									'mocha.js': this.starter( 'mocha' ),
+									'watch.js': this.starter( 'watch' ),
+									'uglify.js': this.starter( 'uglify' )
+								}
+							}
+						},
 						modules: {
-							'clean.js': this.starter( 'clean' ),
-							'compress.js': this.starter( 'compress' ),
-							'concat.js': this.starter( 'concat' ),
-							'copy.js': this.starter( 'copy' ),
-							'cssmin.js': this.starter( 'cssmin' ),
-							'jshint.js': this.starter( 'jshint' ),
-							'phpunit.js': this.starter( 'phpunit' ),
-							'mocha.js': this.starter( 'mocha' ),
-							'uglify.js': this.starter( 'uglify' ),
-							'watch.js': this.starter( 'watch' ),
+							'build.js'   : this.starter( 'build' ),
+							'css.js'     : this.starter( 'css' ),
+							'default.js' : this.starter( 'default' ),
+							'js.js'      : this.starter( 'js' ),
+							'test.js'    : this.starter( 'test' ),
 						}
 					},
 				}
