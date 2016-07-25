@@ -207,6 +207,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 
 	js: function() {
 		this.template( '../../shared/js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
+		this.template( '../../shared/js/_component.js', 'assets/js/src/component/component.js' );
 		this.copy( '../../shared/js/readme-vendor.md', 'assets/js/vendor/readme.md' );
 	},
 

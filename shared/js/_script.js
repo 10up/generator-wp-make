@@ -1,13 +1,7 @@
-/**
- * <%= opts.projectTitle %>
- * <%= opts.projectHome %>
- *
- * Copyright (c) <%= new Date().getFullYear() %> <%= opts.authorName %>
- * <% if ( opts.license ) { %>Licensed under the <%= opts.license %> license.<% } %>
- */
+import component from './component/component';
 
-( function( window, undefined ) {
-	'use strict';
-
-
-} )( this );
+if( window.addEventListener ){
+	window.addEventListener( 'DOMContentLoaded', component, false );
+}else if( window.attachEvent ){
+	window.attachEvent( 'DOMContentLoaded', component );
+}
