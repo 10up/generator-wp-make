@@ -55,10 +55,11 @@ function scripts() {
 	 */
 	$debug = apply_filters( '<%= opts.funcPrefix %>_script_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	$dir = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.src-browserify' : 'build';
 
 	wp_enqueue_script(
 		'<%= opts.funcPrefix %>',
-		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/<%= fileSlug %>{$min}.js",
+		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/{$dir}/'<%= fileSlug %>{$min}.js",
 		array(),
 		<%= opts.funcPrefix.toUpperCase() %>_VERSION,
 		true
