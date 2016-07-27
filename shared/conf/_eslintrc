@@ -2,7 +2,8 @@
 	"env": {
 		"browser": true,
 		"jquery": true,
-		"node": true
+		"node": true,
+		"es6": true
 	},
 	"globals": {
 		"require": true,
@@ -182,5 +183,9 @@
 		"wrap-iife": [2, "any"],
 		"wrap-regex": [2],
 		"yoda": [2]
+	},
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "module"
 	}
 }
