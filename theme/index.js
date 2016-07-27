@@ -250,6 +250,8 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		} else {
 			this.template( '../../shared/grunt/tasks/_css.js', 'tasks/css.js' );
 		}
+		this.template( '../../shared/grunt/tasks/options/_babel.js', 'tasks/options/babel.js' );
+		this.template( '../../shared/grunt/tasks/options/_browserify.js', 'tasks/options/browserify.js' );
 		this.template( '../../shared/grunt/tasks/options/_cssmin.js', 'tasks/options/cssmin.js' );
 		this.template( '../../shared/grunt/tasks/options/_clean.js', 'tasks/options/clean.js' );
 		this.template( '../../shared/grunt/tasks/options/_compress.js', 'tasks/options/compress.js' );
