@@ -16,7 +16,7 @@ if ( window.addEventListener ) {
 	window.attachEvent( 'onload', component );
 }
 
-// Initiate our script if it is loaed after the Document ready state is already complete.
+// Initiate our script if it is loaded after the Document ready state is already complete.
 if ( 'complete' === document.readyState ) {
 	component();
 }
