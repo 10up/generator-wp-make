@@ -61,7 +61,7 @@ function register_scripts() {
 
 	wp_register_script(
 		'<%= opts.funcPrefix %>',
-		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/{$dir}/'<%= fileSlug %>{$min}.js",
+		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/{$dir}/<%= fileSlug %>{$min}.js",
 		array(),
 		<%= opts.funcPrefix.toUpperCase() %>_VERSION,
 		true
