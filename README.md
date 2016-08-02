@@ -63,6 +63,14 @@ The project even includes some basic unit test examples to help get you started!
 
 This subgenerator scaffolds out a WordPress library. Libraries are a bit different from plugins in that they're meant to be included via Composer and embedded directly into a theme or a plugin.
 
+## Tests
+
+To run tests, execute the below command.
+
+````
+$ npm test
+````
+
 ## License
 
 MIT

@@ -19,7 +19,7 @@ describe('lib > util > tools', function () {
 			var truthy = false;
 			Object.keys(sanitized_files.starters).map(function(k, i) {
 				var test = k.split('.')
-				if(param.includes(test[0])) {
+				if(param.indexOf(test[0]) !== -1) {
 					truthy = true;
 				}
 			});
