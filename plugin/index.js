@@ -126,31 +126,26 @@ module.exports = Base.extend({
 						}
 					},
 					'tasks': {
-						tree: {
-							'options': {
-								modules: {
-									'browserify.js': this.starter( 'browserify' ),
-									'clean.js': this.starter( 'clean' ),
-									'compress.js': this.starter( 'compress' ),
-									'concat.js': this.starter( 'concat' ),
-									'copy.js': this.starter( 'copy' ),
-									'cssmin.js': this.starter( 'cssmin' ),
-									'eslint.js': this.starter( 'eslint' ),
-									'jscs.js': this.starter( 'jscs' ),
-									'jshint.js': this.starter( 'jshint' ),
-									'phpunit.js': this.starter( 'phpunit' ),
-									'mocha.js': this.starter( 'mocha' ),
-									'watch.js': this.starter( 'watch' ),
-									'uglify.js': this.starter( 'uglify' )
-								}
-							}
-						},
 						modules: {
-							'build.js'   : this.starter( 'build' ),
-							'css.js'     : this.starter( 'css' ),
-							'default.js' : this.starter( 'default' ),
-							'js.js'      : this.starter( 'js' ),
-							'test.js'    : this.starter( 'test' ),
+							'alias.js'     : this.starter( 'alias' ),
+							'browserify.js': this.starter( 'browserify' ),
+							'build.js'     : this.starter( 'build' ),
+							'clean.js'     : this.starter( 'clean' ),
+							'compress.js'  : this.starter( 'compress' ),
+							'concat.js'    : this.starter( 'concat' ),
+							'copy.js'      : this.starter( 'copy' ),
+							'css.js'       : this.starter( 'css' ),
+							'cssmin.js'    : this.starter( 'cssmin' ),
+							'default.js'   : this.starter( 'default' ),
+							'eslint.js'    : this.starter( 'eslint' ),
+							'js.js'        : this.starter( 'js' ),
+							'jscs.js'      : this.starter( 'jscs' ),
+							'jshint.js'    : this.starter( 'jshint' ),
+							'mocha.js'     : this.starter( 'mocha' ),
+							'phpunit.js'   : this.starter( 'phpunit' ),
+							'test.js'      : this.starter( 'test' ),
+							'watch.js'     : this.starter( 'watch' ),
+							'uglify.js'    : this.starter( 'uglify' )
 						}
 					},
 				}
