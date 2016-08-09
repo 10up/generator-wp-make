@@ -144,8 +144,8 @@ module.exports = Base.extend({
 							'mocha.js'     : this.starter( 'mocha' ),
 							'phpunit.js'   : this.starter( 'phpunit' ),
 							'test.js'      : this.starter( 'test' ),
-							'watch.js'     : this.starter( 'watch' ),
-							'uglify.js'    : this.starter( 'uglify' )
+							'uglify.js'    : this.starter( 'uglify' ),
+							'watch.js'     : this.starter( 'watch' )
 						}
 					},
 				}
