@@ -1,9 +1,9 @@
 {
-  "name": "generator-wp-make-2",
+  "name": "generator-wp-make",
   "version": "1.0.0",
   "description": "Yeoman generator for making WordPress things.",
   "license": "MIT",
-  "main": "app/index.js",
+  "main": "lib/base.js",
   "repository": "10up/generator-wp-make",
   "author": {
     "name": "Luke Woodward",
@@ -14,16 +14,26 @@
     {
       "name": "Luke Woodward",
       "email": "woodward.lucas@gmail.com",
-      "url": "https://github.com/lkwdwrd"
+      "url": "https://lkwdwrd.com"
     },
     {
       "name": "Eric Mann",
       "email": "eric@eamann.com",
       "url": "https://eamann.com"
+    },
+    {
+      "name": "Nick Smith",
+      "email": "nick.smith@10up.com",
+      "url": "https://github.com/fuhton"
+    },
+    {
+      "name": "Allen Moore",
+      "email": "allen.moore@10up.com",
+      "url": "https://allenmoore.me/"
     }
   ],
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=0.4.0"
   },
   "scripts": {
     "test": "mocha 'test/**/**/*.js'"
@@ -42,17 +52,17 @@
     "scaffold"
   ],
   "dependencies": {
-    "ast-query": "",
+    "ast-query": "^2.0.0",
     "chalk": "^1.1.1",
     "ejs": "^2.3.4",
-    "lodash": "",
-    "mkdirp": "",
-    "yeoman-generator": ""
+    "yeoman-generator": "^0.24.1",
+    "lodash": "^4.15.0",
+    "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "async": "",
+    "async": "^2.0.1",
     "chai": "^3.5.0",
-    "mocha": "*",
+    "mocha": "^3.0.2",
     "mock-fs": "^3.9.0"
   }
 }
