@@ -1,8 +1,8 @@
 'use strict';
-var yeoman = require('yeoman-generator');
+var Base = require('extendable-yeoman').Base;
 var chalk = require('chalk');
 
-var WpMakeGenerator = yeoman.generators.Base.extend({
+module.exports = Base.extend({
 	notify: function () {
 		// replace it with a short and sweet description of your generator
 		this.log(chalk.magenta('Invoke a subgenerator to get started!'));
@@ -13,5 +13,3 @@ var WpMakeGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.green("\tyo wp-make:library"));
 	}
 });
-
-module.exports = WpMakeGenerator;
