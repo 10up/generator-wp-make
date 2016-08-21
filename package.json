@@ -59,7 +59,7 @@
     "ast-query": "^2.0.0",
     "chalk": "^1.1.1",
     "ejs": "^2.3.4",
-    "yeoman-generator": "^0.24.1",
+    "extendable-yeoman": "^0.2.1",
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1"
   },
