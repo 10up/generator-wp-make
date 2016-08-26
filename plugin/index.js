@@ -61,10 +61,12 @@ module.exports = Base.extend({
 			],
 			tree: {
 				json: {
+					'.babelrc': this.starterJSON( 'babelrc' ),
 					'.bowerrc': this.starterJSON( 'bowerrc' ),
 					'bower.json': this.starterJSON( 'bower' ),
 					'composer.json': this.starterJSON( 'composer' ),
-					'.jshintrc': this.starterJSON( 'jshintrc' ),
+					'.eslintrc': this.starterJSON( 'eslintrc' ),
+					'.jscsrc': this.starterJSON( 'jscsrc' ),
 					'package.json': this.starterJSON( 'package' )
 				},
 				templates: {
@@ -109,30 +111,41 @@ module.exports = Base.extend({
 					'tests': {
 						tree: {
 							'phpunit': {
+								tree: {
+									'test-tools': {
+										templates: {
+											'TestCase.php': '_TestCase.php',
+										}
+									}
+								},
 								templates: {
 									'Core_Tests.php': '_Core_Tests.php'
 								},
-								tree: {
-									templates: {
-										'Test_Case.php': '_Test_Case.php',
-									}
-								}
 							},
 							'mocha': {},
 						}
 					},
 					'tasks': {
 						modules: {
-							'clean.js': this.starter( 'clean' ),
-							'compress.js': this.starter( 'compress' ),
-							'concat.js': this.starter( 'concat' ),
-							'copy.js': this.starter( 'copy' ),
-							'cssmin.js': this.starter( 'cssmin' ),
-							'jshint.js': this.starter( 'jshint' ),
-							'phpunit.js': this.starter( 'phpunit' ),
-							'mocha.js': this.starter( 'mocha' ),
-							'uglify.js': this.starter( 'uglify' ),
-							'watch.js': this.starter( 'watch' ),
+							'alias.js'     : this.starter( 'alias' ),
+							'browserify.js': this.starter( 'browserify' ),
+							'build.js'     : this.starter( 'build' ),
+							'clean.js'     : this.starter( 'clean' ),
+							'compress.js'  : this.starter( 'compress' ),
+							'concat.js'    : this.starter( 'concat' ),
+							'copy.js'      : this.starter( 'copy' ),
+							'css.js'       : this.starter( 'css' ),
+							'cssmin.js'    : this.starter( 'cssmin' ),
+							'default.js'   : this.starter( 'default' ),
+							'eslint.js'    : this.starter( 'eslint' ),
+							'js.js'        : this.starter( 'js' ),
+							'jscs.js'      : this.starter( 'jscs' ),
+							'jshint.js'    : this.starter( 'jshint' ),
+							'mocha.js'     : this.starter( 'mocha' ),
+							'phpunit.js'   : this.starter( 'phpunit' ),
+							'test.js'      : this.starter( 'test' ),
+							'uglify.js'    : this.starter( 'uglify' ),
+							'watch.js'     : this.starter( 'watch' )
 						}
 					},
 				}
