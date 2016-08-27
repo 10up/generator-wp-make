@@ -4,3 +4,8 @@ node_js:
   - v6
   - v5
   - v4
+addons:
+  code_climate:
+    repo_token: 57c21b6e27934a00500019ca
+after_script:
+  - codeclimate-test-reporter < lcov.info
