@@ -14,7 +14,7 @@ var ejs = require( 'ejs' );
 var path = require( 'path' );
 var chalk = require( 'chalk' );
 var mkdirp = require( 'mkdirp' );
-var astConfig = require( './util/ast-config' );
+var ASTConfig = require( './util/ast-config' );
 var gruntConfig = require( './util/grunt-config' );
 
 /**
@@ -63,7 +63,7 @@ var MakeBase = YeomanBase.extend( {
 	 *
 	 * @type {String}
 	 */
-	whitespaceDefault: "\t",
+	whitespaceDefault: '\t',
 	/**
 	 * This is the default lifecycle object.
 	 *
@@ -131,8 +131,8 @@ var MakeBase = YeomanBase.extend( {
 
 		// Optionally prepare grunt output.
 		if ( this.grunt ) {
-			var gruntContents,
-			gruntPath = this.destinationPath('Gruntfile.js');
+			var gruntContents;
+			var gruntPath = this.destinationPath('Gruntfile.js');
 
 			gruntContents = this.fs.read( gruntPath, {
 				defaults: this.fs.read( path.join( __dirname, 'defaults', 'gruntfile.js' ) )
@@ -245,13 +245,13 @@ var MakeBase = YeomanBase.extend( {
 		var moduleString;
 		if ( this.fs.exists( this.destinationPath( location ) ) ) {
 			moduleString = this.fs.read( this.destinationPath( location ) );
-		} else if ( _.isString( module ) && '' !== module ) {
+		} else if ( _.isString( module ) && module !== '' ) {
 			moduleString = module;
 		} else {
 			moduleString = this.fs.read( path.join( __dirname, 'defaults', 'module.js' ) );
 		}
 
-		module = new astConfig( moduleString, {
+		module = new ASTConfig( moduleString, {
 			formatOpts: {
 				format: {
 					indent: whitespace || this.whitespaceDefault
@@ -278,20 +278,21 @@ var MakeBase = YeomanBase.extend( {
 	 */
 	writeJSON: function ( defaults, location, whitespace ) {
 		location = this.destinationPath( ejs.compile( location )( this.data ) );
-		var data, template;
+		var data;
+		var template;
 
 		// Set up data, using existing if available.
 		if ( this.fs.exists( location ) ) {
 			try {
 				// Try just requiring the file.
 				data = require( location );
-			} catch( e ) {
+			} catch ( e ) {
 				// If we can't require it, read it in as JSON.
 				data = this.fs.readJSON( location );
 			}
 
 			// Extend existing data with defaults if it's an object.
-			if ( 'object' === typeof defaults ) {
+			if ( typeof defaults === 'object' ) {
 				data = _.defaults( data || {}, defaults );
 			}
 		} else {
@@ -332,7 +333,7 @@ var MakeBase = YeomanBase.extend( {
 	 * @return {void}
 	 */
 	writeCopy: function ( source, dest ) {
-		var dest = ejs.render( dest, this.data );
+		dest = ejs.render( dest, this.data );
 		this.copy( source, dest );
 	},
 	/**
@@ -347,7 +348,7 @@ var MakeBase = YeomanBase.extend( {
 	 * @return {void}
 	 */
 	writeTemplate: function( source, dest ) {
-		var dest = ejs.render( dest, this.data );
+		dest = ejs.render( dest, this.data );
 		this.template( source, dest, this.data );
 	},
 	/**
@@ -369,7 +370,7 @@ var MakeBase = YeomanBase.extend( {
  * are defined separately to help keep the functionality organization a little
  * cleaner.
  */
-_.extend (
+_.extend(
 	MakeBase.prototype,
 	require( './util/installer' ),
 	require( './util/prompt' ),

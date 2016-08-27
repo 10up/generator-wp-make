@@ -1,6 +1,5 @@
-'use strict';
-var assert = require('chai').assert;
-var prompt = require('../../../lib/util/prompt');
+import {assert} from 'chai';
+import prompt from '../../../lib/util/prompt';
 
 describe('lib > util > prompt', function () {
 	/**

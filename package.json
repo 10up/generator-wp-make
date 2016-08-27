@@ -37,7 +37,7 @@
   },
   "scripts": {
     "pretest": "npm run lint && npm run lint-tests && npm run compile",
-    "test": "npm run lint-tests && mocha -R spec --compilers js:babel-register 'test/**/*.js'",
+    "test": "mocha -R spec --compilers js:babel-register 'test/**/*.js'",
     "precoverage": "npm run lint && npm run lint-tests && npm run compile",
     "coverage": "istanbul cover node_modules/.bin/_mocha -- -R spec --compilers js:babel-register test/**/*.js",
     "lint": "eslint src/**/*.js",

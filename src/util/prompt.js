@@ -63,3 +63,8 @@ export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
 	};
 	return query.then( gatherData );
 }
+
+export default {
+	test: 'testing',
+	prompt: prompt
+};

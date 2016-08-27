@@ -1,4 +1,3 @@
-'use strict';
 var assert = require('chai').assert;
 var tree = require( '../../../lib/util/tree' );
 
@@ -17,33 +16,33 @@ describe('lib > util > tree', function () {
 			tree.lifecycle = {
 				tree: {
 					tree: {
-						'foo': {
+						foo: {
 							tree: {
-								'bar': {
-									'baz': 'qux'
+								bar: {
+									baz: 'qux'
 								}
 							}
 						}
 					},
-					quux : 'corge'
+					quux: 'corge'
 				}
 			};
 		});
 		it('get first child', function () {
-			var expected = 'corge',
-				actual = tree.getSubtree( 'quux' );
+			var expected = 'corge';
+			var actual = tree.getSubtree( 'quux' );
 			assert.equal(actual, expected, 'retrieve first child successfully');
 		});
 		it('get second child', function () {
-			var expected = 'qux',
-				actual = tree.getSubtree( 'baz', 'foo/bar' );
-				assert.equal(actual, expected, 'retrieve second child successfully');
+			var expected = 'qux';
+			var actual = tree.getSubtree( 'baz', 'foo/bar' );
+			assert.equal(actual, expected, 'retrieve second child successfully');
 		});
 		it('create a child', function () {
-			var expected = {'foo': 'bar'},
-				actual = tree.getSubtree( 'bar', 'foo/baz' );
-				actual['foo'] = 'bar';
-				assert.deepEqual(actual, expected, 'create a child successfully');
+			var expected = {foo: 'bar'};
+			var actual = tree.getSubtree( 'bar', 'foo/baz' );
+			actual.foo = 'bar';
+			assert.deepEqual(actual, expected, 'create a child successfully');
 		});
 	});
 });

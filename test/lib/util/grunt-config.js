@@ -1,6 +1,5 @@
-'use strict';
-var assert       = require('chai').assert;
-var grunt_config = require('../../../lib/util/grunt-config');
+var assert = require('chai').assert;
+var gruntConfig = require('../../../lib/util/grunt-config');
 
 describe('lib > util > grunt-config', function () {
 	/**
@@ -8,7 +7,7 @@ describe('lib > util > grunt-config', function () {
 	 */
 	describe('Setup', function () {
 		it('can be imported', function () {
-			assert.isOk(grunt_config, 'grunt-config is available');
+			assert.isOk(gruntConfig, 'grunt-config is available');
 		});
 	});
 });

@@ -1,4 +1,3 @@
-'use strict';
 var assert = require('chai').assert;
 var module = require('../../../lib/defaults/module');
 
