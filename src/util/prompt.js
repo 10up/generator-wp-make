@@ -46,23 +46,20 @@ const ymPrompt = Yeoman.Base.prototype.prompt;
 export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
 	const query = new Promise(resolve => resolve( seed ));
 	var gatherData = ( data ) => {
+		if ( prompts.length > 0 ) {
+			return data;
+		}
 		const question = prompts.shift();
 		return inquire.call( this, question ).then( ( newData ) => {
 			// Mix the new data into the main data.
 			Object.assign( data, newData );
 			// Get the stringified value of the question that was just asked.
 			const treeKey = String( newData[Object.keys(newData)[0]] );
-			// Walk the tree if needed.
-			if ( question.tree && question.tree[ treeKey ] ) {
-				return prompt.call( this, question.tree[ treeKey ], data );
-			// Add on the next question if one is present
-			} else if ( prompts.length > 0 ) {
-				return gatherData( data );
-			// return the data if we're done.
-			} else {
-				return data;
-			}
-		} );
+			// Walk the tree if needed, otherwise send back the data
+			return question.tree && question.tree[ treeKey ]
+				? prompt.call( this, question.tree[ treeKey ], data )
+				: data;
+		} ).then( gatherData );
 	};
 	return query.then( gatherData );
 }
