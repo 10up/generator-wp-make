@@ -57,7 +57,7 @@ export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
 			const treeKey = String( newData[Object.keys(newData)[0]] );
 			// Walk the tree if needed, otherwise send back the data
 			return question.tree && question.tree[ treeKey ]
-				? prompt.call( this, question.tree[ treeKey ], data )
+				? prompt.call( this, question.tree[ treeKey ], data, inquire )
 				: data;
 		} ).then( gatherData );
 	};
