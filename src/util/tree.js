@@ -41,11 +41,13 @@ var path = require( 'path' );
  * @return {void}
  */
 function tree ( tree, methods, dir ) {
-	var child, type, fn, _pre, _post;
+	var child;
+	var type;
+	var fn;
 	dir = dir || '';
 
 	// Make sure tree is actually an object.
-	if ( 'object' !== typeof tree ) {
+	if ( typeof tree !== 'object' ) {
 		throw new Error( 'trees must be objects.' );
 	}
 
@@ -56,7 +58,7 @@ function tree ( tree, methods, dir ) {
 
 	// Process methods that were passed
 	for ( type in methods ) {
-		if ( '_pre' === type || '_post' === type ) {
+		if ( type === '_pre' || type === '_post' ) {
 			continue;
 		}
 		if ( tree[ type ] ) {
@@ -71,7 +73,7 @@ function tree ( tree, methods, dir ) {
 	}
 
 	// Recursively run for subdirectories, key as the folder name.
-	if ( 'object' === typeof tree.tree ) {
+	if ( typeof tree.tree === 'object' ) {
 		for ( child in tree.tree ) {
 			this.tree( tree.tree[ child ], methods, path.join( dir, child ) );
 		}
@@ -110,16 +112,17 @@ function tree ( tree, methods, dir ) {
  * @param  {String} path The path in the tree represented as a file path string.
  * @return {Object}      The tree object at that location of the requested type.
  */
-function getSubtree ( type, path  ) {
-	var path = ( 'string' === typeof path ) ? path.split( '/' ) : '',
-	subPath, tree = this.lifecycle.tree;
+function getSubtree ( type, path ) {
+	path = typeof path === 'string' ? path.split( '/' ) : '';
+	var subPath;
+	var tree = this.lifecycle.tree;
 
 	// Walk the tree to get to the correct item.
 	while ( path.length ) {
 		subPath = path.shift();
 		// Make sure a subtree is available.
 		if ( ! tree.tree ) {
-			tree.tree = {}
+			tree.tree = {};
 		}
 		// Make sure we have the sub path
 		if ( ! tree.tree[ subPath ] ) {

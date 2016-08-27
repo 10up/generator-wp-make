@@ -24,29 +24,28 @@ var chalk = require( 'chalk' );
  * @return {void}
  */
 function install ( done ) {
-	var commands = [];
 	var msg = {
 		commands: [],
 		skipped: [],
 		installTemplate: ejs.compile(
-			"\n\n" +
+			'\n\n' +
 			'Running <%= commands %> to install the required dependencies.' +
-			' If this fails, try running the command' + 
+			' If this fails, try running the command' +
 			'<% if ( 1 < commandCount ) { %>s<% } %>' +
 			' yourself.' +
-			"\n\n"
+			'\n\n'
 		),
 		skipTemplate: ejs.compile(
-			"\n" +
+			'\n' +
 			'Skipping <%= skipped %>. When you are ready to install these dependencies,' +
 			' run the command' +
 			'<% if ( 1 < skippedCount ) { %>s<% } %>' +
 			' yourself.' +
-			"\n\n"
+			'\n\n'
 		)
 	};
 
-	var defaults = _.extend( _.clone ( this.installCommands ), {
+	var defaults = _.extend( _.clone( this.installCommands ), {
 		skipMessage: false
 	} );
 
@@ -77,15 +76,15 @@ function install ( done ) {
 	 * @return {void}
 	 */
 	function installMessage( done ) {
-		if ( 2 < msg.commands.length ) {
-			msg.commands[ msg.commands.length -1 ] = 'and ' + msg.commands[ msg.commands.length -1 ];
+		if ( msg.commands.length > 2 ) {
+			msg.commands[ msg.commands.length - 1 ] = 'and ' + msg.commands[ msg.commands.length - 1 ];
 			this.options.commands = msg.commands.join( ', ' );
 		} else {
 			this.options.commands = msg.commands.join( ' and ' );
 		}
 
-		if ( 2 < msg.skipped.length ) {
-			msg.skipped[ msg.skipped.length - 1 ] = 'and ' + msg.skipped[ msg.skipped.length -1 ];
+		if ( msg.skipped.length > 2 ) {
+			msg.skipped[ msg.skipped.length - 1 ] = 'and ' + msg.skipped[ msg.skipped.length - 1 ];
 			this.options.skipped = msg.skipped.join( ', ' );
 		} else {
 			this.options.skipped = msg.skipped.join( ' and ' );
@@ -97,7 +96,7 @@ function install ( done ) {
 		if ( msg.commands.length ) {
 			this.log( msg.installTemplate( this.options ) );
 		} else {
-			this.log( "\n\n" );
+			this.log( '\n\n' );
 		}
 
 		if ( msg.skipped.length ) {

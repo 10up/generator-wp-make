@@ -1,3 +1,3 @@
 module.exports = {
-	main: [ 'release/<%%= pkg.version %>' ]
+	main: ['release/<%%= pkg.version %>']
 };

@@ -1,26 +1,26 @@
 module.exports = {
-	'js': [
+	js: [
 		'eslint',
 		'jscs',
 		'browserify',
 		'uglify'
 	],
 
-	'css': [
+	css: [
 		'cssmin'
 	],
 
-	'test': [
+	test: [
 		'phpunit',
 		'mocha'
 	],
 
-	'default': [
+	default: [
 		'css',
 		'js'
 	],
 
-	'build': [
+	build: [
 		'default',
 		'clean',
 		'copy',

@@ -23,7 +23,7 @@ module.exports = function( contents ) {
 		queryMethod: 'callExpression',
 		filter: filter,
 	} );
-}
+};
 
 /**
  * Filters the get and set config values to the correct location in the AST.

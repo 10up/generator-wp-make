@@ -18,18 +18,18 @@ var path = require( 'path' );
  * @return {void}
  */
 function nodeDependency ( name, version, dev ) {
-	var type = ( ! dev ) ? 'dependencies' : 'devDependencies',
-		rootJSON = this.getSubtree( 'json' );
+	var type = ! dev ? 'dependencies' : 'devDependencies';
+	var rootJSON = this.getSubtree( 'json' );
 
-		if ( ! rootJSON['package.json'] ) {
-			rootJSON['package.json'] = this.starterJSON( 'package' );
-		}
+	if ( ! rootJSON['package.json'] ) {
+		rootJSON['package.json'] = this.starterJSON( 'package' );
+	}
 
-		if ( ! rootJSON['package.json'][ type ] ) {
-			rootJSON['package.json'][ type ] = {};
-		}
+	if ( ! rootJSON['package.json'][ type ] ) {
+		rootJSON['package.json'][ type ] = {};
+	}
 
-		rootJSON['package.json'][ type ][ name ] = version;
+	rootJSON['package.json'][ type ][ name ] = version;
 }
 
 /**
@@ -45,18 +45,18 @@ function nodeDependency ( name, version, dev ) {
  * @return {void}
  */
 function bowerDependency ( name, version, dev ) {
-	var type = ( ! dev ) ? 'dependencies' : 'devDependencies',
-		rootJSON = this.getSubtree( 'json' );
+	var type = ! dev ? 'dependencies' : 'devDependencies';
+	var rootJSON = this.getSubtree( 'json' );
 
-		if ( ! rootJSON['bower.json'] ) {
-			rootJSON['bower.json'] = this.starterJSON( 'bower' );
-		}
+	if ( ! rootJSON['bower.json'] ) {
+		rootJSON['bower.json'] = this.starterJSON( 'bower' );
+	}
 
-		if ( ! rootJSON['bower.json'][ type ] ) {
-			rootJSON['bower.json'][ type ] = {};
-		}
+	if ( ! rootJSON['bower.json'][ type ] ) {
+		rootJSON['bower.json'][ type ] = {};
+	}
 
-		rootJSON['bower.json'][ type ][ name ] = version;
+	rootJSON['bower.json'][ type ][ name ] = version;
 }
 
 /**
@@ -72,18 +72,18 @@ function bowerDependency ( name, version, dev ) {
  * @return {void}
  */
 function composerDependency ( name, version, dev ) {
-	var type = ( ! dev ) ? 'require' : 'require-dev',
-		rootJSON = this.getSubtree( 'json' );
+	var type = ! dev ? 'require' : 'require-dev';
+	var rootJSON = this.getSubtree( 'json' );
 
-		if ( ! rootJSON['composer.json'] ) {
-			rootJSON['composer.json'] = this.starterJSON( 'composer' );
-		}
+	if ( ! rootJSON['composer.json'] ) {
+		rootJSON['composer.json'] = this.starterJSON( 'composer' );
+	}
 
-		if ( ! rootJSON['composer.json'][ type ] ) {
-			rootJSON['composer.json'][ type ] = {};
-		}
+	if ( ! rootJSON['composer.json'][ type ] ) {
+		rootJSON['composer.json'][ type ] = {};
+	}
 
-		rootJSON['composer.json'][ type ][ name ] = version;
+	rootJSON['composer.json'][ type ][ name ] = version;
 }
 
 /**
@@ -119,10 +119,11 @@ function gruntConfig ( task, config ) {
  */
 function starter ( template, type ) {
 	type = type || 'js';
-	var data = '', templateFile = 'starters/_' + template + '.' + type;
+	var data = '';
+	var templateFile = 'starters/_' + template + '.' + type;
 
 	// First try the template path.
-	if( this.fs.exists( this.templatePath( templateFile ) ) ){
+	if ( this.fs.exists( this.templatePath( templateFile ) ) ){
 		data = this.fs.read( this.templatePath( templateFile ) );
 	// Then try the root directory.
 	} else if ( this.fs.exists( path.join( __dirname, '..', templateFile ) ) ) {

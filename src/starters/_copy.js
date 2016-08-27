@@ -1,7 +1,7 @@
 module.exports = {
 	main: {
 		expand: true,
-		src:  [
+		src: [
 			'**',
 			'!**/.*',
 			'!**/readme.md',

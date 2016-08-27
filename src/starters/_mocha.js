@@ -1,3 +1,3 @@
 module.exports = {
-	all: [ 'tests/qunit/**/*.html' ]
+	all: ['tests/qunit/**/*.html']
 };

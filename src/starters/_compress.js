@@ -6,7 +6,7 @@ module.exports = {
 		},
 		expand: true,
 		cwd: 'release/<%%= pkg.version %>/',
-		src: [ '**/*' ],
+		src: ['**/*'],
 		dest: '<%= funcPrefix %>/'
 	}
 };

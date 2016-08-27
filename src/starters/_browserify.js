@@ -10,8 +10,8 @@ module.exports = {
 			debug: true,
 			transform: [
 				['babelify', {
-					"presets": ["es2015", "react", "stage-1"],
-					"plugins": ["transform-runtime"]
+					presets: ['es2015', 'react', 'stage-1'],
+					plugins: ['transform-runtime']
 				}
 			]],
 			watch: true

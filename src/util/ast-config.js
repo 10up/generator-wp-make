@@ -30,7 +30,7 @@ function Config( contents, opts ) {
 			formatOpts: {
 				format: {
 					indent: {
-						style: "\t",
+						style: '\t',
 						adjustMultilineComment: true
 					}
 				}
@@ -47,7 +47,7 @@ function Config( contents, opts ) {
  * @return {mixed} Some kind of AST object, type can vary.
  */
 Config.prototype.getOptions = function () {
-	return this.opts.filter( this.jsFile[ opts.queryMethod ]( opts.query ) );
+	return this.opts.filter( this.jsFile[ this.opts.queryMethod ]( this.opts.query ) );
 };
 
 /**
@@ -73,7 +73,7 @@ Config.prototype.setOptions = function ( options ) {
  */
 Config.prototype.getAST = function() {
 	return this.jsFile;
-}
+};
 
 /**
  * Turns the AST object into into a JS code string.
@@ -82,7 +82,7 @@ Config.prototype.getAST = function() {
  */
 Config.prototype.toString = function() {
 	return this.jsFile.toString();
-}
+};
 
 // Export this object for use.
 module.exports = Config;

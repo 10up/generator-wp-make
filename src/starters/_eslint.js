@@ -1,6 +1,6 @@
-var assetsPath = 'assets/js/',
-	srcPath = assetsPath + 'src/',
-	testPath = assetsPath + 'test/';
+var assetsPath = 'assets/js/';
+var srcPath = assetsPath + 'src/';
+var testPath = assetsPath + 'test/';
 
 module.exports = {
 	options: {
