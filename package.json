@@ -36,10 +36,10 @@
     "node": ">=0.4.0"
   },
   "scripts": {
-    "pretest": "npm run lint && npm run lint-tests && npm run compile",
+    "pretest": "npm run lint && npm run lint:tests && npm run compile",
     "test": "istanbul cover node_modules/.bin/_mocha -- --compilers js:babel-register --recursive test",
-    "lint": "eslint src/**/*.js",
-    "lint-tests": "eslint test/lib/**/*.js",
+    "lint": "eslint src",
+    "lint:tests": "eslint test",
     "compile": "babel -d lib/ src/ --copy-files --source-maps both"
   },
   "files": [

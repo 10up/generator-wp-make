@@ -1,6 +1,5 @@
-'use strict';
 var assert = require('chai').assert;
-var base   = require('../../lib/base');
+var base = require('../../lib/base');
 
 describe('lib > base', function () {
 	/**

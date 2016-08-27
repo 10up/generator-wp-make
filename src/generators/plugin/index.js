@@ -11,48 +11,48 @@ module.exports = Base.extend({
 		return {
 			prompts: [
 				{
-					name:    'projectTitle',
+					name: 'projectTitle',
 					message: 'Project title',
 					default: 'WP Plugin'
 				},
 				{
-					name:    'funcPrefix',
+					name: 'funcPrefix',
 					message: 'PHP function prefix',
 					default: 'wpplugin'
 				},
 				{
-					name:    'description',
+					name: 'description',
 					message: 'Description',
 					default: 'The best WordPress extension ever made!'
 				},
 				{
-					name:    'projectHome',
+					name: 'projectHome',
 					message: 'Project homepage',
 					default: 'http://wordpress.org/plugins'
 				},
 				{
-					name:    'authorName',
+					name: 'authorName',
 					message: 'Author name',
 					default: this.user.git.name
 				},
 				{
-					name:    'authorEmail',
+					name: 'authorEmail',
 					message: 'Author email',
 					default: this.user.git.email
 				},
 				{
-					name:    'authorUrl',
+					name: 'authorUrl',
 					message: 'Author URL'
 				},
 				{
-					type:    'confirm',
-					name:    'sass',
+					type: 'confirm',
+					name: 'sass',
 					message: 'Use Sass?',
 					default: true,
 					tree: {
-						'false': [{
-							type:    'confirm',
-							name:    'autoprefixer',
+						false: [{
+							type: 'confirm',
+							name: 'autoprefixer',
 							message: 'Use Autoprefixer?',
 							default: true
 						}]
@@ -79,38 +79,38 @@ module.exports = Base.extend({
 					'php.xml.dist': 'phpunit.xml'
 				},
 				tree: {
-					'assets': {
+					assets: {
 						tree: {
-							'js': {
+							js: {
 								tree: {
-									'src': {
+									src: {
 										templates: {
 											'<%= fileSlug %>.js': '_script.js'
 										}
 									}
 								}
 							},
-							'css': {}
+							css: {}
 						}
 					},
-					'location': {},
-					'includes': {
+					location: {},
+					includes: {
 						tree: {
-							'functions': {
+							functions: {
 								templates: {
 									'core.php': '_core.php'
 								}
 							}
 						}
 					},
-					'images': {
+					images: {
 						tree: {
-							'src': {}
+							src: {}
 						}
 					},
-					'tests': {
+					tests: {
 						tree: {
-							'phpunit': {
+							phpunit: {
 								tree: {
 									'test-tools': {
 										templates: {
@@ -122,30 +122,30 @@ module.exports = Base.extend({
 									'Core_Tests.php': '_Core_Tests.php'
 								},
 							},
-							'mocha': {},
+							mocha: {},
 						}
 					},
-					'tasks': {
+					tasks: {
 						modules: {
-							'alias.js'     : this.starter( 'alias' ),
+							'alias.js': this.starter( 'alias' ),
 							'browserify.js': this.starter( 'browserify' ),
-							'build.js'     : this.starter( 'build' ),
-							'clean.js'     : this.starter( 'clean' ),
-							'compress.js'  : this.starter( 'compress' ),
-							'concat.js'    : this.starter( 'concat' ),
-							'copy.js'      : this.starter( 'copy' ),
-							'css.js'       : this.starter( 'css' ),
-							'cssmin.js'    : this.starter( 'cssmin' ),
-							'default.js'   : this.starter( 'default' ),
-							'eslint.js'    : this.starter( 'eslint' ),
-							'js.js'        : this.starter( 'js' ),
-							'jscs.js'      : this.starter( 'jscs' ),
-							'jshint.js'    : this.starter( 'jshint' ),
-							'mocha.js'     : this.starter( 'mocha' ),
-							'phpunit.js'   : this.starter( 'phpunit' ),
-							'test.js'      : this.starter( 'test' ),
-							'uglify.js'    : this.starter( 'uglify' ),
-							'watch.js'     : this.starter( 'watch' )
+							'build.js': this.starter( 'build' ),
+							'clean.js': this.starter( 'clean' ),
+							'compress.js': this.starter( 'compress' ),
+							'concat.js': this.starter( 'concat' ),
+							'copy.js': this.starter( 'copy' ),
+							'css.js': this.starter( 'css' ),
+							'cssmin.js': this.starter( 'cssmin' ),
+							'default.js': this.starter( 'default' ),
+							'eslint.js': this.starter( 'eslint' ),
+							'js.js': this.starter( 'js' ),
+							'jscs.js': this.starter( 'jscs' ),
+							'jshint.js': this.starter( 'jshint' ),
+							'mocha.js': this.starter( 'mocha' ),
+							'phpunit.js': this.starter( 'phpunit' ),
+							'test.js': this.starter( 'test' ),
+							'uglify.js': this.starter( 'uglify' ),
+							'watch.js': this.starter( 'watch' )
 						}
 					},
 				}
@@ -165,9 +165,9 @@ module.exports = Base.extend({
 	},
 	updateTree: function() {
 		// Get objects
-		var rootJSON = this.getSubtree( 'json' ),
-			styleSubtree = 'assets/css/',
-			styleExtension = 'css';
+		var rootJSON = this.getSubtree( 'json' );
+		var styleSubtree = 'assets/css/';
+		var styleExtension = 'css';
 
 		// Composer
 		if ( this.data.projectHome ) {
