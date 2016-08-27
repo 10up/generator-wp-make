@@ -186,7 +186,7 @@ var MakeBase = YeomanBase.extend( {
 	 */
 	prompts: function ( done ) {
 		this.prompt( this.lifecycle.prompts ).then( function( props ){
-			this.data  = _.extend( props, {
+			this.data = Object.assign( props, {
 				basename: this.basename
 			} );
 			done();

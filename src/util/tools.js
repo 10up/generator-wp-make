@@ -143,7 +143,7 @@ function starter ( template, type ) {
  */
 function starterJSON ( template ) {
 	var data = this.starter( template, 'json' );
-	return ( '' !== data ) ? JSON.parse( data ) : '';
+	return data !== '' ? JSON.parse( data ) : {};
 }
 
 // Export the mixin.

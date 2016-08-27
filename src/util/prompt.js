@@ -7,8 +7,8 @@
  */
 
 // Require dependencies
-var YeomanBase = require( 'yeoman-generator' ).Base;
-var _ = require( 'lodash' );
+import Yeoman from 'yeoman-generator';
+const ymPrompt = Yeoman.Base.prototype.prompt;
 
 /**
  * Prompts users for input and records the results.
@@ -43,27 +43,26 @@ var _ = require( 'lodash' );
  * @param  {Array}   prompts  An array of Yoeman style prompt questions.
  * @return {Promise}          A promise that will resolve to the answered q's.
  */
-function prompt ( prompts ) {
-	var data, key, i = 0, length = prompts.length;
-	var recordProps = function ( props ) {
-		data = _.assign( data || {}, props );
-		key = ( prompts[ i ].tree ) ? String( data[ prompts[ i ].name ] ) : false;
-		if ( false !== key && prompts[ i ].tree[ key ] ) {
-			return this.prompt( prompts[ i ].tree[ key ] ).then( function ( subData ) {
-				return _.assign( data, subData );
-			}.bind( this ) );
-		}
-		if ( ++i < length ) {
-			return YeomanBase.prototype.prompt.call(this, prompts[ i ] ).then( recordProps );
-		} else {
-			return data;
-		}
-	}.bind( this );
-
-	return YeomanBase.prototype.prompt.call( this, prompts[ i ] ).then( recordProps );
+export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
+	const query = new Promise(resolve => resolve( seed ));
+	var gatherData = ( data ) => {
+		const question = prompts.shift();
+		return inquire.call( this, question ).then( ( newData ) => {
+			// Mix the new data into the main data.
+			Object.assign( data, newData );
+			// Get the stringified value of the question that was just asked.
+			const treeKey = String( newData[Object.keys(newData)[0]] );
+			// Walk the tree if needed.
+			if ( question.tree && question.tree[ treeKey ] ) {
+				return prompt.call( this, question.tree[ treeKey ], data );
+			// Add on the next question if one is present
+			} else if ( prompts.length > 0 ) {
+				return gatherData( data );
+			// return the data if we're done.
+			} else {
+				return data;
+			}
+		} );
+	};
+	return query.then( gatherData );
 }
-
-// Export the mixin.
-module.exports = {
-	prompt: prompt
-};

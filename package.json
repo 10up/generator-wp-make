@@ -42,7 +42,7 @@
     "coverage": "istanbul cover node_modules/.bin/_mocha -- -R spec --compilers js:babel-register test/**/*.js",
     "lint": "eslint src/**/*.js",
     "lint-tests": "eslint test/lib/**/*.js",
-    "compile": "babel -d lib/ src/"
+    "compile": "babel -d lib/ src/ --copy-files"
   },
   "files": [
     "app"
