@@ -46,7 +46,7 @@ const ymPrompt = Yeoman.Base.prototype.prompt;
 export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
 	const query = new Promise(resolve => resolve( seed ));
 	var gatherData = ( data ) => {
-		if ( prompts.length > 0 ) {
+		if ( prompts.length <= 0 ) {
 			return data;
 		}
 		const question = prompts.shift();
