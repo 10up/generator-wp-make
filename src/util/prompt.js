@@ -65,6 +65,5 @@ export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
 }
 
 export default {
-	test: 'testing',
 	prompt: prompt
 };
