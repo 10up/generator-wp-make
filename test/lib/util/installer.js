@@ -1,5 +1,4 @@
-'use strict';
-var assert    = require('chai').assert;
+var assert = require('chai').assert;
 var installer = require('../../../lib/util/installer');
 
 describe('lib > util > installer', function () {

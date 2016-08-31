@@ -1,6 +1,5 @@
-'use strict';
-var assert     = require('chai').assert;
-var ast_config = require('../../../lib/util/ast-config');
+var assert = require('chai').assert;
+var astConfig = require('../../../lib/util/ast-config');
 
 describe('lib > util > ast-config', function () {
 	/**
@@ -8,7 +7,7 @@ describe('lib > util > ast-config', function () {
 	 */
 	describe('Setup', function () {
 		it('can be imported', function () {
-			assert.isOk(ast_config, 'ast_config is available');
+			assert.isOk(astConfig, 'ast_config is available');
 		});
 	});
 });

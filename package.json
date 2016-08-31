@@ -36,7 +36,11 @@
     "node": ">=0.4.0"
   },
   "scripts": {
-    "test": "mocha 'test/**/**/*.js'"
+    "pretest": "npm run lint && npm run lint:tests && npm run compile",
+    "test": "istanbul cover node_modules/.bin/_mocha -- --compilers js:babel-register --recursive test",
+    "lint": "eslint src",
+    "lint:tests": "eslint test",
+    "compile": "babel -d lib/ src/ --copy-files --source-maps both"
   },
   "files": [
     "app"
@@ -60,10 +64,16 @@
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "async": "^2.0.1",
+    "babel-cli": "^6.14.0",
+    "babel-eslint": "^6.1.2",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-register": "^6.14.0",
     "chai": "^3.5.0",
+    "eslint": "^3.3.1",
+    "istanbul": "^1.0.0-alpha.2",
     "mocha": "^3.0.2",
     "mock-fs": "^3.9.0",
-    "mockery": "^1.7.0"
+    "mockery": "^1.7.0",
+    "yeoman-test": "^1.4.0"
   }
 }

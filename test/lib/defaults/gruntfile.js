@@ -1,6 +1,5 @@
-'use strict';
-var assert    = require('chai').assert;
-var mockery   = require('mockery');
+var assert = require('chai').assert;
+var mockery = require('mockery');
 var gruntfile;
 
 describe('lib > defaults > gruntfile', function () {
