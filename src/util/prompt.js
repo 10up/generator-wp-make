@@ -8,7 +8,7 @@
 
 // Require dependencies
 import {Base as YBase} from 'extendable-yeoman';
-const ymPrompt = Base.prototype.prompt;
+const ymPrompt = YBase.prototype.prompt;
 
 /**
  * Prompts users for input and records the results.
