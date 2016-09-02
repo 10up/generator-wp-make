@@ -7,8 +7,8 @@
  */
 
 // Require dependencies
-import Yeoman from 'yeoman-generator';
-const ymPrompt = Yeoman.Base.prototype.prompt;
+import {Base as YBase} from 'extendable-yeoman';
+const ymPrompt = YBase.prototype.prompt;
 
 /**
  * Prompts users for input and records the results.
