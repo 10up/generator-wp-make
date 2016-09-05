@@ -8,7 +8,7 @@
  */
 
 // Require dependencies
-var Tree = require( './ast-config.js' );
+import ASTConfig from './ast-config.js';
 
 /**
  * Export the function for creating a Gruntfile flavored AST config.
@@ -16,21 +16,9 @@ var Tree = require( './ast-config.js' );
  * @param  {String} contents The stringified Gruntfile contents.
  * @return {Object}          The AST-Config object for the Gruntfile.
  */
-module.exports = function( contents ) {
-	return new Tree( contents, {
-		type: 'gruntfile',
-		query: 'gruntConfig',
-		queryMethod: 'callExpression',
-		filter: filter,
-	} );
-};
-
-/**
- * Filters the get and set config values to the correct location in the AST.
- *
- * @param  {Object} value The basic AST.
- * @return {Object}       The AST config filtered to the correct config value.
- */
-function filter( value ) {
-	return value.arguments.at( 1 );
-}
+export default ( contents, AST = ASTConfig ) => new AST( contents, {
+	type: 'gruntfile',
+	query: 'gruntConfig',
+	queryMethod: 'callExpression',
+	filter: val => val.arguments.at( 1 )
+} );
