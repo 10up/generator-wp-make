@@ -13,16 +13,19 @@ describe('lib > util > grunt-config', function () {
 
 	});
 	describe( 'The Grunt AST helper function', function () {
+		before( function () {
+			this.astSpy = function( content, opts ) {
+				this.content = content;
+				this.opts = opts;
+			};
+		} );
 		it( 'by default returns an instance of ASTConfig', function () {
 			const config = gruntConfig( 'var blue = 1;' );
 			assert.instanceOf( config, ASTConfig );
 		} );
 		it( 'Automatically sets defaults for grunt AST', function () {
 			// Create a config instance with an astSpy to check passed input.
-			const config = gruntConfig( '', function ( content, opts ) {
-				this.content = content;
-				this.opts = opts;
-			} );
+			const config = gruntConfig( '', this.astSpy );
 			// Check to see if we got the expected keys and types.
 			// Do not necessarily assume exactly what is passed.
 			// Only assume that those keys *are* passed.
@@ -35,21 +38,10 @@ describe('lib > util > grunt-config', function () {
 			assert.isString( config.opts.queryMethod );
 			assert.property( config.opts, 'filter' );
 			assert.isFunction( config.opts.filter );
-			assert.equal(
-				config.opts.filter( {
-					arguments: {
-						at: val => val
-					}
-				} ),
-				1
-			);
 		} );
 		it( 'sends a filter to get the aguments value at 1', function () {
 			// Create a config instance with an astSpy to check passed input.
-			const config = gruntConfig( '', function ( content, opts ) {
-				this.content = content;
-				this.opts = opts;
-			} );
+			const config = gruntConfig( '', this.astSpy );
 			// Check to see the filter method calls arguments.at( 1 );
 			assert.equal(
 				config.opts.filter( {
