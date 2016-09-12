@@ -10,7 +10,7 @@
 		{
 			"name": "<%= ( '' !== opts.authorName ) ? opts.authorName : 'me' %>",
 			"email": "<%= opts.authorEmail %>",
-		<% if ( opts.authorUrl ) { %>"homepage": "<%= opts.authorUrl %>",<% } %>
+			<% if ( opts.authorUrl ) { %>"homepage": "<%= opts.authorUrl %>",<% } %>
 			"role": "Developer"
 		}
 	],
