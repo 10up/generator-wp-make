@@ -29,7 +29,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"This version has not tests :(\" && exit 0"
   },
   "keywords": [
     "yeoman-generator"
