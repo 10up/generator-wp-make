@@ -31,9 +31,6 @@
   "scripts": {
     "test": "echo \"This version has not tests :(\" && exit 0"
   },
-  "files": [
-    "app"
-  ],
   "keywords": [
     "yeoman-generator"
   ],
