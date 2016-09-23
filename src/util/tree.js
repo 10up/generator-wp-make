@@ -3,8 +3,7 @@
  */
 
 // Require dependencies
-var _ = require( 'lodash' );
-var path = require( 'path' );
+import path from 'path';
 
 /**
  * The tree to walk and apply methods to.
@@ -40,54 +39,45 @@ var path = require( 'path' );
  * @param  {String} dir     The root directory of this tree object.
  * @return {void}
  */
-function tree ( tree, methods, dir ) {
-	var child;
-	var type;
-	var fn;
-	dir = dir || '';
-
-	// Make sure tree is actually an object.
-	if ( typeof tree !== 'object' ) {
-		throw new Error( 'trees must be objects.' );
-	}
+export function tree ( root, methods, dir = '' ) {
+	const keys = methods.keys()
+		// Make sure all the methods are actually functions.
+		.filter( type => typeof methods[ type ] === 'function' );
 
 	// Call pre processor if one is set.
-	if ( methods._pre ) {
-		methods._pre.call( this, tree, dir );
+	if ( keys.indexOf( '_pre' ) !== -1 ) {
+		methods._pre.call( this, root, dir );
 	}
 
 	// Process methods that were passed
-	for ( type in methods ) {
-		if ( type === '_pre' || type === '_post' ) {
-			continue;
-		}
-		if ( tree[ type ] ) {
-			fn = methods[ type ].bind( this );
-			_.each( tree[ type ], processor );
-		}
-	}
+	methods
+		// Don't process _pre and _post here
+		.filter( type => ['_pre', '_post'].indexOf( type ) === -1 )
+		// Don't process for branches that are empty
+		.filter( type => !! root[ type ] )
+		// Get the current path, data, and method for each branch type
+		.map( type => ({
+			path: path.join( dir, type ),
+			data: root[ type ],
+			method: methods[ type ]
+		}) )
+		// Run the correct method over each branch type
+		.map( branch => branch.method.call( this, branch.data, branch.path ) );
 
 	// Call post processor if one is set.
-	if ( methods._post ) {
-		methods._post.call( this, tree, dir );
+	if ( keys.indexOf( '_post' ) !== -1 ) {
+		methods._pre.call( this, root, dir );
 	}
 
 	// Recursively run for subdirectories, key as the folder name.
-	if ( typeof tree.tree === 'object' ) {
-		for ( child in tree.tree ) {
-			this.tree( tree.tree[ child ], methods, path.join( dir, child ) );
-		}
-	}
-
-	/**
-	 * Closured function for bulk processing wp make lifecycle trees.
-	 *
-	 * @param  {Mixed}  data Data for the tree, could be whatever is required.
-	 * @param  {String} name The location in the tree represented as a directory path.
-	 * @return {void}
-	 */
-	function processor ( data, name ) {
-		fn( data, path.join( dir, name ) );
+	if ( typeof root.tree === 'object' ) {
+		root.tree.keys()
+			.map( branchKey => [
+				root.tree[ branchKey ],
+				methods,
+				path.join( dir, branchKey )
+			] )
+			.map( branch => tree.apply( this, branch ) );
 	}
 }
 
@@ -112,35 +102,27 @@ function tree ( tree, methods, dir ) {
  * @param  {String} path The path in the tree represented as a file path string.
  * @return {Object}      The tree object at that location of the requested type.
  */
-function getSubtree ( type, path ) {
-	path = typeof path === 'string' ? path.split( '/' ) : '';
-	var subPath;
-	var tree = this.lifecycle.tree;
+export function getSubtree ( type, path = '' ) {
+	const subTree = path.split( '/' )
+		.reduce( ( branch, subPath ) => {
+			// If there is no branch tree, create it.
+			branch.tree = branch.tree || {};
 
-	// Walk the tree to get to the correct item.
-	while ( path.length ) {
-		subPath = path.shift();
-		// Make sure a subtree is available.
-		if ( ! tree.tree ) {
-			tree.tree = {};
-		}
-		// Make sure we have the sub path
-		if ( ! tree.tree[ subPath ] ) {
-			tree.tree[ subPath ] = {};
-		}
+			// If the subPath doesn't exist in the subTree tree, create it.
+			branch.tree[ subPath ] = branch.tree[ subPath ] || {};
 
-		tree = tree.tree[ subPath ];
-	}
+			// Send back the subTree Tree's subPath
+			return branch.tree[ subPath ];
+		}, this.lifecycle.tree );
 
-	if ( ! tree[ type ] ) {
-		tree[ type ] = {};
-	}
+	// If the requested type doesn't exist in this subTree, create it.
+	subTree[ type ] = subTree[ type ] || {};
 
-	return tree[ type ];
+	return subTree[ type ];
 }
 
-// Export the mixin.
-module.exports = {
-	tree: tree,
-	getSubtree: getSubtree
+// Export the mixin as an object.
+export default {
+	tree,
+	getSubtree
 };
