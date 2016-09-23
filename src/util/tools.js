@@ -3,7 +3,7 @@
  */
 
 // Require dependencies
-var path = require( 'path' );
+import path from 'path';
 
 /**
  * Sets up a node dependency in package.json
@@ -17,9 +17,9 @@ var path = require( 'path' );
  * @param  {Bool}   dev     Whether this is a dev dependency or not.
  * @return {void}
  */
-function nodeDependency ( name, version, dev ) {
-	var type = ! dev ? 'dependencies' : 'devDependencies';
-	var rootJSON = this.getSubtree( 'json' );
+export function nodeDependency ( name, version, dev ) {
+	const type = ! dev ? 'dependencies' : 'devDependencies';
+	const rootJSON = this.getSubtree( 'json' );
 
 	if ( ! rootJSON['package.json'] ) {
 		rootJSON['package.json'] = this.starterJSON( 'package' );
@@ -30,33 +30,6 @@ function nodeDependency ( name, version, dev ) {
 	}
 
 	rootJSON['package.json'][ type ][ name ] = version;
-}
-
-/**
- * Sets up a bower dependency in bower.json
- *
- * If bower.json has not be defined in the lifecycle tree, it will create it.
- * The package will then be added to the bower dependencies as either a normal
- * or devDependency depending on the dev flag passed.
- *
- * @param  {string} name    The name of the bower package to add.
- * @param  {String} version The semver string to use in bower.json.
- * @param  {Bool}   dev     Whether this is a dev dependency or not.
- * @return {void}
- */
-function bowerDependency ( name, version, dev ) {
-	var type = ! dev ? 'dependencies' : 'devDependencies';
-	var rootJSON = this.getSubtree( 'json' );
-
-	if ( ! rootJSON['bower.json'] ) {
-		rootJSON['bower.json'] = this.starterJSON( 'bower' );
-	}
-
-	if ( ! rootJSON['bower.json'][ type ] ) {
-		rootJSON['bower.json'][ type ] = {};
-	}
-
-	rootJSON['bower.json'][ type ][ name ] = version;
 }
 
 /**
@@ -71,9 +44,9 @@ function bowerDependency ( name, version, dev ) {
  * @param  {Bool}   dev     Whether this is a dev dependency or not.
  * @return {void}
  */
-function composerDependency ( name, version, dev ) {
-	var type = ! dev ? 'require' : 'require-dev';
-	var rootJSON = this.getSubtree( 'json' );
+export function composerDependency ( name, version, dev ) {
+	const type = ! dev ? 'require' : 'require-dev';
+	const rootJSON = this.getSubtree( 'json' );
 
 	if ( ! rootJSON['composer.json'] ) {
 		rootJSON['composer.json'] = this.starterJSON( 'composer' );
@@ -98,9 +71,8 @@ function composerDependency ( name, version, dev ) {
  * @param  {String} config The JS configuration string to use.
  * @return {void}
  */
-function gruntConfig ( task, config ) {
-	var options = this.getSubtree( 'modules', 'tasks' );
-	options[ task + '.js' ] = config;
+export function gruntConfig ( task, config ) {
+	this.getSubtree( 'modules', 'tasks' )[ task + '.js' ] = config;
 }
 
 /**
@@ -117,20 +89,23 @@ function gruntConfig ( task, config ) {
  * @param  {String} type     The extension of the starter template.
  * @return {String}          The strinified file contents, or empty.
  */
-function starter ( template, type ) {
-	type = type || 'js';
-	var data = '';
-	var templateFile = 'starters/_' + template + '.' + type;
+export function starter ( template, type = 'js' ) {
+	const templateFile = 'starters/_' + template + '.' + type;
 
 	// First try the template path.
-	if ( this.fs.exists( this.templatePath( templateFile ) ) ){
-		data = this.fs.read( this.templatePath( templateFile ) );
-	// Then try the root directory.
-	} else if ( this.fs.exists( path.join( __dirname, '..', templateFile ) ) ) {
-		data = this.fs.read( path.join( __dirname, '..', templateFile ) );
+	try {
+		return this.fs.read( this.templatePath( templateFile ) );
+		// Then try the root directory.
+	} catch ( e ) {
+		// eat the error if template path fails.
 	}
-
-	return data;
+	// Then try the global starters.
+	try {
+		return this.fs.read( path.join( __dirname, '..', templateFile ) );
+	} catch ( e ) {
+		// Throw an error if neither is found.
+		throw new Error( `Unable to locate ${templateFile}.` );
+	}
 }
 
 /**
@@ -142,17 +117,16 @@ function starter ( template, type ) {
  * @param  {String} template The stater JSON template to retrieve.
  * @return {String}          The object defined in the template.
  */
-function starterJSON ( template ) {
-	var data = this.starter( template, 'json' );
+export function starterJSON ( template ) {
+	const data = this.starter( template, 'json' );
 	return data !== '' ? JSON.parse( data ) : {};
 }
 
 // Export the mixin.
-module.exports = {
-	nodeDependency: nodeDependency,
-	bowerDependency: bowerDependency,
-	composerDependency: composerDependency,
-	gruntConfig: gruntConfig,
-	starter: starter,
-	starterJSON: starterJSON
+export default {
+	nodeDependency,
+	composerDependency,
+	gruntConfig,
+	starter,
+	starterJSON
 };
