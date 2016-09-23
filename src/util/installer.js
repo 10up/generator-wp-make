@@ -5,6 +5,12 @@
 // Require dependencies
 import chalk from 'chalk';
 
+/**
+ * Create the install message for install commands that are run automatically.
+ *
+ * @param  {array} commands An array of commands run automatically.
+ * @return {string}         The string for logging output.
+ */
 function installMessage( commands ) {
 	if ( commands.length ) {
 		return `Running ${formatMessage( commands, chalk.yellow.bold )} to install the required dependencies. If this fails, try running the command${commands.length > 1 ? 's' : ''} yourself.`;
@@ -13,14 +19,37 @@ function installMessage( commands ) {
 	}
 }
 
-function skipMessage( commands ) {
-	if ( commands.length ) {
-		return `Skipping ${formatMessage( commands, chalk.red.bold )}. When you are ready  to install these dependencies, run the command${commands.length > 1 ? 's' : ''} yourself.`;
+/**
+ * Create the install message for install commands that are not automatic.
+ *
+ * @param  {array} commands An array of install commands not run automatically.
+ * @return {string}         The string for logging output.
+ */
+function skipMessage( skipped ) {
+	if ( skipped.length ) {
+		return `Skipping ${formatMessage( skipped, chalk.red.bold )}. When you are ready  to install these dependencies, run the command${skipped.length > 1 ? 's' : ''} yourself.`;
 	} else {
 		return '';
 	}
 }
 
+/**
+ * Formats an array of install commands into a logabble format.
+ *
+ * Takes the base command and appends install to each, runs each through the
+ * formatting function injectd (typically a chalk method), and then concatenates
+ * the strings with proper english and the oxford comma.
+ *
+ * With one command passed it becomes just 'command install', formatted. With
+ * two commands it becomes 'command1 install and command 2 install'. With three
+ * or more commands it becomes 'command1 install, command 2 install, and
+ * command 3 install.'
+ *
+ * @param  {array}    commands            An array of commands to format.
+ * @param  {fucntion} [format=chalk.bold] The formatting function for individual
+ *                                        commands.
+ * @return {string}                       The formatted string of commands.
+ */
 function formatMessage( commands, format = chalk.bold ) {
 	return commands
 		.map( cmd => `${cmd} install`)
@@ -36,6 +65,17 @@ function formatMessage( commands, format = chalk.bold ) {
 		}, false);
 }
 
+/**
+ * Creates a function to output the install and sipped messages on an event.
+ *
+ * This is used to queue the install messaging to output right before the
+ * automatic installs are run. It closures the commands run and skipped so that
+ * the text matches what's queued to run in the installation phase.
+ *
+ * @param  {Array} {commands=[]} The commands that will run automatically.
+ * @param  {Array} {skipped=[]}  The commands that are not automatic.
+ * @return {void}
+ */
 function createOutputMessage( { commands = [], skipped = [] } = {} ) {
 	return done => {
 		if ( commands || skipped ) {
