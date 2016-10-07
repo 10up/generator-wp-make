@@ -11,9 +11,9 @@ import chalk from 'chalk';
  * @param  {array} commands An array of commands run automatically.
  * @return {string}         The string for logging output.
  */
-function installMessage( commands ) {
-	if ( commands.length ) {
-		return `Running ${formatMessage( commands, chalk.yellow.bold )} to install the required dependencies. If this fails, try running the command${commands.length > 1 ? 's' : ''} yourself.`;
+export function installMessage( concatString, length ) {
+	if ( length ) {
+		return `Running ${concatString} to install the required dependencies. If this fails, try running the command${length > 1 ? 's' : ''} yourself.`;
 	} else {
 		return '';
 	}
@@ -25,9 +25,9 @@ function installMessage( commands ) {
  * @param  {array} commands An array of install commands not run automatically.
  * @return {string}         The string for logging output.
  */
-function skipMessage( skipped ) {
-	if ( skipped.length ) {
-		return `Skipping ${formatMessage( skipped, chalk.red.bold )}. When you are ready  to install these dependencies, run the command${skipped.length > 1 ? 's' : ''} yourself.`;
+export function skipMessage( concatString, length ) {
+	if ( length ) {
+		return `Skipping ${concatString}. When you are ready  to install these dependencies, run the command${length > 1 ? 's' : ''} yourself.`;
 	} else {
 		return '';
 	}
@@ -50,13 +50,16 @@ function skipMessage( skipped ) {
  *                                        commands.
  * @return {string}                       The formatted string of commands.
  */
-function formatMessage( commands, format = chalk.bold ) {
+export function formatMessage( commands, format = chalk.bold ) {
 	return commands
+		// add the install flag to each command.
 		.map( cmd => `${cmd} install`)
-		.map( format )
+		// pass the command to `format` (this only allows map arg 1 through).
+		.map( cmd => format( cmd ) )
+		// concatenates the commands in a natural language style.
 		.reduceRight( ( msg, cmd, i ) => {
 			if ( i === 0 ) {
-				return cmd + msg;
+				return cmd + ( msg || '' );
 			} else if ( ! msg ) {
 				return i > 1 ? `, and ${cmd}` : ` and ${cmd}`;
 			} else {
@@ -76,17 +79,23 @@ function formatMessage( commands, format = chalk.bold ) {
  * @param  {Array} {skipped=[]}  The commands that are not automatic.
  * @return {void}
  */
-function createOutputMessage( { commands = [], skipped = [] } = {} ) {
+export function createOutputMessage( { commands = [], skipped = [] } = {} ) {
 	return done => {
-		if ( commands || skipped ) {
+		if ( commands.length || skipped.length ) {
 			this.log( '\n\n' );
 			this.log( [
-				installMessage( commands ),
-				skipMessage( skipped )
-			].filter().join( '\n\n' ) );
+				installMessage(
+					formatMessage( commands, chalk.yellow.bold ),
+					commands.length
+				),
+				skipMessage(
+					formatMessage( skipped, chalk.red.bold ),
+					skipped.length
+				)
+			].filter( val => !! val ).join( '\n\n' ) );
 			this.log( '\n\n' );
-			done();
 		}
+		done();
 	};
 }
 
