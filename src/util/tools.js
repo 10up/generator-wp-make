@@ -6,11 +6,38 @@
 import path from 'path';
 
 /**
- * Sets up a node dependency in package.json
+ * A generic JSON manager for dependency manager JSON dependency definitions.
  *
- * If package.json has not be defined in the lifecycle tree, it will create it.
- * The package will then be added to the npm dependencies as either a normal or
- * devDependency depending on the dev flag passed.
+ * If the JSON file is not defined in the lifecycle tree, it will create it. The
+ * dependency will then be added to the JSON definition based on the dev flag
+ * and the passed devDep/normalDep keys. This works for composer, npm, and any
+ * other JSON definition that follows this type of pattern.
+ *
+ * @param {Object} keys    The object defining the specific type of JSON file.
+ * @param {String} name    The name of the dependency to add.
+ * @param {String} version The version string to use for the dependency.
+ * @param {Bool}   dev     Whether this should go in dev or normal dependencies.
+ */
+export function jsonDependency ( keys, name, version, dev ) {
+	const type = dev ? keys.devDep : keys.normalDep;
+	const rootJSON = this.getSubtree( 'json' );
+
+	if ( ! rootJSON[ keys.type ] ) {
+		rootJSON[ keys.type ] = this.starterJSON( keys.starter );
+	}
+
+	if ( ! rootJSON[ keys.type ] ) {
+		rootJSON[ keys.type ][ type ] = {};
+	}
+
+	rootJSON[ keys.type ][ type ][ name ] = version;
+}
+
+/**
+ * Runs the jsonDependency method for npm specifically.
+ *
+ * Sets the type to package.json, normal/dev dependencies to dependencies and
+ * devDependencies specifically, and the starter to 'package'.
  *
  * @param  {string} name    The name of the npm package to add.
  * @param  {String} version The semver string to use in package.json.
@@ -18,26 +45,19 @@ import path from 'path';
  * @return {void}
  */
 export function nodeDependency ( name, version, dev ) {
-	const type = ! dev ? 'dependencies' : 'devDependencies';
-	const rootJSON = this.getSubtree( 'json' );
-
-	if ( ! rootJSON['package.json'] ) {
-		rootJSON['package.json'] = this.starterJSON( 'package' );
-	}
-
-	if ( ! rootJSON['package.json'][ type ] ) {
-		rootJSON['package.json'][ type ] = {};
-	}
-
-	rootJSON['package.json'][ type ][ name ] = version;
+	this.jsonDependency( {
+		type: 'package.json',
+		starter: 'package',
+		normalDep: 'dependencies',
+		devDep: 'devDependencies'
+	}, name, version, dev );
 }
 
 /**
- * Sets up a composer dependency in composer.json
+ * Runs the jsonDependency method for composer specifically.
  *
- * If composer.json has not be defined in the lifecycle tree, it will create it.
- * The package will then be added to the composer dependencies as either a
- * normal or dev requirement depending on the dev flag passed.
+ * Sets the type to composer.json, normal/dev dependencies to require and
+ * require-dev specifically, and the starter to 'composer'.
  *
  * @param  {string} name    The name of the composer package to add.
  * @param  {String} version The semver string to use in composer.json.
@@ -45,18 +65,12 @@ export function nodeDependency ( name, version, dev ) {
  * @return {void}
  */
 export function composerDependency ( name, version, dev ) {
-	const type = ! dev ? 'require' : 'require-dev';
-	const rootJSON = this.getSubtree( 'json' );
-
-	if ( ! rootJSON['composer.json'] ) {
-		rootJSON['composer.json'] = this.starterJSON( 'composer' );
-	}
-
-	if ( ! rootJSON['composer.json'][ type ] ) {
-		rootJSON['composer.json'][ type ] = {};
-	}
-
-	rootJSON['composer.json'][ type ][ name ] = version;
+	this.jsonDependency( {
+		type: 'composer.json',
+		starter: 'composer',
+		normalDep: 'require',
+		devDep: 'require-dev'
+	}, name, version, dev );
 }
 
 /**
@@ -87,7 +101,7 @@ export function gruntConfig ( task, config ) {
  *
  * @param  {String} template The name of the starter template to retrieve.
  * @param  {String} type     The extension of the starter template.
- * @return {String}          The strinified file contents, or empty.
+ * @return {String}          The stringified file contents, or empty.
  */
 export function starter ( template, type = 'js' ) {
 	const templateFile = 'starters/_' + template + '.' + type;
@@ -126,6 +140,7 @@ export function starterJSON ( template ) {
 export default {
 	nodeDependency,
 	composerDependency,
+	jsonDependency,
 	gruntConfig,
 	starter,
 	starterJSON
