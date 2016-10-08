@@ -10,7 +10,6 @@
 // Require dependencies
 var Base = require( 'extendable-yeoman' ).Base;
 var _ = require( 'lodash' );
-var ejs = require( 'ejs' );
 var path = require( 'path' );
 var chalk = require( 'chalk' );
 var mkdirp = require( 'mkdirp' );
@@ -258,108 +257,6 @@ var MakeBase = Base.extend( {
 				}
 			}
 		} );
-	},
-	/**
-	 * Writes out a JSON object to the destination file.
-	 *
-	 * If the file already exists, the existing object will be run through
-	 * `_.defaults` with the default object passed. This allows for some
-	 * mutation of an existing object if desired while ensuring we don't
-	 * overwrite and destroy the existing JSON object in the file.
-	 *
-	 * The contents and file names are run through templating so ejs template
-	 * tags can be used in both.
-	 *
-	 * @param  {Object} defaults   The default JSON object.
-	 * @param  {String} location   The file path where the json file will live.
-	 * @param  {String} whitespace Optional. The whitespace to use in output.
-	 *                             Will default to the defined default.
-	 * @return {void}
-	 */
-	writeJSON: function ( defaults, location, whitespace ) {
-		location = this.destinationPath( ejs.compile( location )( this.data ) );
-		var data;
-		var template;
-
-		// Set up data, using existing if available.
-		if ( this.fs.exists( location ) ) {
-			try {
-				// Try just requiring the file.
-				data = require( location );
-			} catch ( e ) {
-				// If we can't require it, read it in as JSON.
-				data = this.fs.readJSON( location );
-			}
-
-			// Extend existing data with defaults if it's an object.
-			if ( typeof defaults === 'object' ) {
-				data = _.defaults( data || {}, defaults );
-			}
-		} else {
-			data = defaults;
-		}
-
-		// Set up the template
-		template = ejs.compile( JSON.stringify( data, null, whitespace || this.whitespaceDefault ) );
-
-		// Write the file
-		this.fs.write( location, template( this.data ) );
-	},
-	/**
-	 * Writes out a JS module to the file system.
-	 *
-	 * The contents and file names are run through templating so ejs template
-	 * tags can be used in both.
-	 *
-	 * @param  {Object} module   The ASTConfig object for this module.
-	 * @param  {String} location The file path where the module will live.
-	 * @return {void}
-	 */
-	writeModule: function ( module, location ) {
-		var template = ejs.compile( module.toString() );
-		location = this.destinationPath( ejs.compile( location )( this.data ) );
-
-		// Write the module file.
-		this.fs.write( location, template( this.data ) );
-	},
-	/**
-	 * Copies files from the source to the desitination.
-	 *
-	 * While the file is copied, the file name is run through an ejs template so
-	 * that dynamic filenames can be defined in the copy templates if needed.
-	 *
-	 * @param  {String} source The template path where the file is located.
-	 * @param  {String} dest   The destination path where the file is written.
-	 * @return {void}
-	 */
-	writeCopy: function ( source, dest ) {
-		dest = ejs.render( dest, this.data );
-		this.copy( source, dest );
-	},
-	/**
-	 * Copies files from the source to the desitination, running it through ejs.
-	 *
-	 * Both the file contents and the file name are run through ejs templating
-	 * so dynamic filenames and content can be specified based off of the
-	 * collected data stored in `this.data`.
-	 *
-	 * @param  {String} source The template path where the file is located.
-	 * @param  {String} dest   The destination path where the file is written.
-	 * @return {void}
-	 */
-	writeTemplate: function( source, dest ) {
-		dest = ejs.render( dest, this.data );
-		this.template( source, dest, this.data );
-	},
-	/**
-	 * If needed, writes the Gruntfile out to the file root as Gruntfile.js.
-	 *
-	 * @param  {Function} done The function to continue generation.
-	 * @return {void}
-	 */
-	writeGruntfile: function ( done ) {
-		this.fs.write( this.destinationPath( 'Gruntfile.js' ), this.grunt.toString() );
-		done();
 	}
 } );
 
