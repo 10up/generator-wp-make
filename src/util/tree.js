@@ -105,12 +105,14 @@ export function tree ( root, methods, dir = '' ) {
 export function getSubtree ( type, path = '' ) {
 	const subTree = path.split( '/' )
 		.reduce( ( branch, subPath ) => {
+			// If there is no subPath, just send back the branch.
+			if ( subPath === '' ) {
+				return branch;
+			}
 			// If there is no branch tree, create it.
 			branch.tree = branch.tree || {};
-
 			// If the subPath doesn't exist in the subTree tree, create it.
 			branch.tree[ subPath ] = branch.tree[ subPath ] || {};
-
 			// Send back the subTree Tree's subPath
 			return branch.tree[ subPath ];
 		}, this.lifecycle.tree );

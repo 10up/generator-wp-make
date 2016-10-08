@@ -1,7 +1,10 @@
-var assert = require('chai').assert;
-var tree = require( '../../../lib/util/tree' );
+import {assert} from 'chai';
+import tree from '../../../lib/util/tree';
 
 describe('lib > util > tree', function () {
+	/**
+	 * Make sure everything imports as expected.
+	 */
 	describe('Setup', function () {
 		it('can be imported', function () {
 			assert.isOk(tree, 'tree is available');
@@ -11,7 +14,10 @@ describe('lib > util > tree', function () {
 			assert.isFunction(tree.getSubtree, 'tree.getSubtree is a function');
 		});
 	});
-	describe('getSubtree()', function () {
+	/**
+	 * Test the tree walking abilities of getSubtree
+	 */
+	describe('#getSubtree', function () {
 		beforeEach(function() {
 			tree.lifecycle = {
 				tree: {
@@ -28,21 +34,20 @@ describe('lib > util > tree', function () {
 				}
 			};
 		});
-		it('get first child', function () {
-			var expected = 'corge';
-			var actual = tree.getSubtree( 'quux' );
-			assert.equal(actual, expected, 'retrieve first child successfully');
+		after(function () {
+			delete tree.lifecycle;
 		});
-		it('get second child', function () {
-			var expected = 'qux';
-			var actual = tree.getSubtree( 'baz', 'foo/bar' );
-			assert.equal(actual, expected, 'retrieve second child successfully');
+		it('can get the first child', function () {
+			assert.equal(tree.getSubtree( 'quux' ), 'corge');
 		});
-		it('create a child', function () {
-			var expected = {foo: 'bar'};
-			var actual = tree.getSubtree( 'bar', 'foo/baz' );
-			actual.foo = 'bar';
-			assert.deepEqual(actual, expected, 'create a child successfully');
+		it('can get the second child', function () {
+			assert.equal(tree.getSubtree( 'baz', 'foo/bar' ), 'qux' );
+		});
+		it('can create a child', function () {
+			const result = tree.getSubtree( 'bar', 'foo/baz' );
+			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz );
+			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz.bar );
+			assert.deepEqual(result, {});
 		});
 	});
 });
