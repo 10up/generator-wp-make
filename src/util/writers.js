@@ -18,11 +18,11 @@ import ejs from 'ejs';
  *
  * @param  {Object} contents   The JS object to use as the cntents.
  * @param  {String} location   The file path where the json file will live.
- * @param  {String} whitespace Optional. The whitespace to use in output.
+ * @param  {String} pad        Optional. The whitespace to use in output.
  *                             Will default to the defined default.
  * @return {void}
  */
-export function writeJSON ( content = {}, location, whitespace = this.whitespaceDefault ) {
+export function writeJSON ( content, location, pad = this.defaultPad) {
 	location = this.destinationPath( ejs.render( location, this.data ) );
 	let existing;
 	// See if existing data is available.
@@ -41,7 +41,7 @@ export function writeJSON ( content = {}, location, whitespace = this.whitespace
 			JSON.stringify(
 				Object.assign( {}, content, existing ),
 				null,
-				whitespace
+				pad
 			),
 			this.data
 		)

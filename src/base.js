@@ -7,14 +7,19 @@
  * lifecycle.
  */
 
-// Require dependencies
-var Base = require( 'extendable-yeoman' ).Base;
-var _ = require( 'lodash' );
-var path = require( 'path' );
-var chalk = require( 'chalk' );
-var mkdirp = require( 'mkdirp' );
-var ASTConfig = require( './util/ast-config' );
-var gruntConfig = require( './util/grunt-config' );
+// Import dependencies
+import {Base} from 'extendable-yeoman';
+import chalk from 'chalk';
+import mkdirp from 'mkdirp';
+import ASTConfig from './util/ast-config';
+import gruntConfig from './util/grunt-config';
+
+// Import mixins
+import mixinInstaller from './util/installer';
+import mixinPrompt from './util/prompt';
+import mixinTree from './util/tree';
+import mixinTools from './util/tools';
+import mixinWriters from './util/writers';
 
 /**
  * The MakeBase definition for controlling a WP Make generation lifecycle.
@@ -56,19 +61,19 @@ var gruntConfig = require( './util/grunt-config' );
  * methods will be run in sequence unless you specifically use the yeoman
  * queue framework to move them outside of this basic lifecycle.
  */
-var MakeBase = Base.extend( {
+const MakeBase = Base.extend( {
 	/**
 	 * This is the default whitespace used when outputting JSON and JS code.
 	 *
 	 * @type {String}
 	 */
-	whitespaceDefault: '\t',
+	defaultPad: '\t',
 	/**
 	 * This is the default lifecycle object.
 	 *
 	 * Don't overwrite this. Instead, define a lifecycle object in your
 	 * initConfig method and return a lifecycle object. This returned object
-	 * will be run through `_.defaults` with this object as the default.
+	 * will be run through `Object.assign` with this object as the default.
 	 *
 	 * @type {Object}
 	 */
@@ -107,7 +112,6 @@ var MakeBase = Base.extend( {
 	 */
 	installCommands: {
 		npm: true,
-		bower: true,
 		composer: true
 	},
 	/**
@@ -120,26 +124,46 @@ var MakeBase = Base.extend( {
 		Base.apply( this, arguments );
 
 		// Prepare overall lifecycle.
-		this.env.runLoop.add( 'initializing', this.welcomeMessage.bind( this ), { once: 'wpm:welcome', run: false } );
-		this.env.runLoop.add( 'initializing', this.setLifecycle.bind( this ), { once: 'wpm:setLifecycle', run: false } );
-		this.env.runLoop.add( 'initializing', this.installers.bind( this ), { once: 'wpm:install', run: false } );
-		this.env.runLoop.add( 'prompting', this.prompts.bind( this ), { once: 'wpm:prompts', run: false } );
-		this.env.runLoop.add( 'configuring', this.makeObjects.bind( this ), { once: 'wpm:makeObjects', run: false } );
-		this.env.runLoop.add( 'writing', this.walkTree.bind( this ), { once: 'wpm:walkTree', run: false } );
-		this.env.runLoop.add( 'end', this.goodbyeMessage.bind( this ), { once: 'wpm:goodbye', run: false } );
-
-		// Optionally prepare grunt output.
-		if ( this.grunt ) {
-			var gruntContents;
-			var gruntPath = this.destinationPath('Gruntfile.js');
-
-			gruntContents = this.fs.read( gruntPath, {
-				defaults: this.fs.read( path.join( __dirname, 'defaults', 'gruntfile.js' ) )
-			} );
-
-			this.grunt = gruntConfig( gruntContents );
-			this.env.runLoop.add( 'writing', this.writeGruntfile.bind( this ), { once: 'wpm:grunt', run: false } );
-		}
+		this.env.runLoop.add(
+			'initializing',
+			this.welcomeMessage,
+			{ once: 'wpm:welcome', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.initGrunt.bind( this ),
+			{ once: 'wpm:initGrunt', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.setLifecycle.bind( this ),
+			{ once: 'wpm:setLifecycle', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.installers.bind( this ),
+			{ once: 'wpm:install', run: false }
+		);
+		this.env.runLoop.add(
+			'prompting',
+			this.prompts.bind( this ),
+			{ once: 'wpm:prompts', run: false }
+		);
+		this.env.runLoop.add(
+			'configuring',
+			this.makeObjects.bind( this ),
+			{ once: 'wpm:makeObjects', run: false }
+		);
+		this.env.runLoop.add(
+			'writing',
+			this.walkTree.bind( this ),
+			{ once: 'wpm:walkTree', run: false }
+		);
+		this.env.runLoop.add(
+			'end',
+			this.goodbyeMessage,
+			{ once: 'wpm:goodbye', run: false }
+		);
 	},
 	/**
 	 * Outputs a welcome message to thank users for trying WP Make.
@@ -147,12 +171,12 @@ var MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	welcomeMessage: function( done ) {
-		this.log(
-			chalk.magenta( 'Thanks for generating with ' ) +
-			chalk.magenta.bold( 'WP Make' ) +
-			chalk.magenta( '!' )
-		);
+	welcomeMessage: ( done ) => {
+		this.log( chalk.magenta(
+			'Thanks for generating with ',
+			chalk.bold( 'WP Make' ),
+			'!'
+		) );
 		done();
 	},
 	/**
@@ -161,9 +185,32 @@ var MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	goodbyeMessage: function( done ) {
-		var item = this.type || 'item';
-		this.log( chalk.green.bold( 'Your ' + item + ' has been generated.' ) );
+	goodbyeMessage: ( done ) => {
+		this.log( chalk.green.bold(
+			`Your ${this.type || 'item'} has been generated.`
+		) );
+		done();
+	},
+	/**
+	 * Optionally initialize a grunt object if grunt is set to true.
+	 * @param  {Function} done The function to continue generation.
+	 * @return {void}
+	 */
+	initGrunt: function ( done ) {
+		// Optionally intialize grunt config and output.
+		if ( this.grunt ) {
+			// Read in or create the default gruntfile.
+			this.grunt = gruntConfig( this.fs.read(
+				this.destinationPath('Gruntfile.js'),
+				{ defaults: this.starter('gruntfile') }
+			) );
+			// Set up gruntfile dump on output.
+			this.env.runLoop.add(
+				'writing',
+				this.writeGruntfile.bind( this ),
+				{ once: 'wpm:grunt', run: false }
+			);
+		}
 		done();
 	},
 	/**
@@ -174,7 +221,11 @@ var MakeBase = Base.extend( {
 	 */
 	setLifecycle: function ( done ) {
 		// Make sure lifecycle is ready.
-		this.lifecycle = _.defaults( this.initConfig(), this._lifecycle );
+		this.lifecycle = Object.assign(
+			{},
+			this._lifecycle,
+			this.initConfig()
+		);
 		done();
 	},
 	/**
@@ -184,12 +235,12 @@ var MakeBase = Base.extend( {
 	 * @return {void}
 	 */
 	prompts: function ( done ) {
-		this.prompt( this.lifecycle.prompts ).then( function( props ){
+		this.prompt( this.lifecycle.prompts ).then( ( props ) => {
 			this.data = Object.assign( props, {
 				basename: this.basename
 			} );
 			done();
-		}.bind( this ) );
+		} );
 	},
 	/**
 	 * Turns object strings into AST objects for better/safer mutation control.
@@ -236,27 +287,29 @@ var MakeBase = Base.extend( {
 	 *
 	 * @param  {String} module     The default module value.
 	 * @param  {String} location   The file path to where the module will live.
-	 * @param  {String} whitespace Optional. The whitespace to use in output.
+	 * @param  {String} pad        Optional. The whitespace to use in output.
 	 *                             Will default to the defined default.
 	 * @return {void}
 	 */
-	initModule: function ( module, location, whitespace ) {
-		var moduleString;
-		if ( this.fs.exists( this.destinationPath( location ) ) ) {
-			moduleString = this.fs.read( this.destinationPath( location ) );
-		} else if ( _.isString( module ) && module !== '' ) {
-			moduleString = module;
-		} else {
-			moduleString = this.fs.read( path.join( __dirname, 'defaults', 'module.js' ) );
+	initModule: function ( module, location, pad = this.defaultPad ) {
+		try {
+			module = this.fs.read( this.destinationPath( location ) );
+		} catch ( e ) {
+			if ( typeof module !== 'string' || module === '' ) {
+				module = this.starter( 'module' );
+			}
 		}
 
-		module = new ASTConfig( moduleString, {
-			formatOpts: {
-				format: {
-					indent: whitespace || this.whitespaceDefault
+		module = new ASTConfig(
+			module,
+			{
+				formatOpts: {
+					format: {
+						indent: pad
+					}
 				}
 			}
-		} );
+		);
 	}
 } );
 
@@ -267,13 +320,14 @@ var MakeBase = Base.extend( {
  * are defined separately to help keep the functionality organization a little
  * cleaner.
  */
-_.extend(
+Object.assign(
 	MakeBase.prototype,
-	require( './util/installer' ),
-	require( './util/prompt' ),
-	require( './util/tree' ),
-	require( './util/tools' )
+	mixinInstaller,
+	mixinPrompt,
+	mixinTools,
+	mixinTree,
+	mixinWriters
 );
 
 // Exports the MakeBase for use.
-module.exports = MakeBase;
+export default MakeBase;
