@@ -34,13 +34,13 @@ import path from 'path';
  * before processing any of the items at that level of the tree. The `_pre` and
  * `_post` function will be passed the tree object, and the current directory.
  *
- * @param  {Object} tree    The tree object to traverse.
+ * @param  {Object} root    The tree object to traverse.
  * @param  {Object} methods A mapping of tree keys to processing functions.
  * @param  {String} dir     The root directory of this tree object.
  * @return {void}
  */
 export function tree ( root, methods, dir = '' ) {
-	const keys = methods.keys()
+	const keys = Object.keys( methods )
 		// Make sure all the methods are actually functions.
 		.filter( type => typeof methods[ type ] === 'function' );
 
@@ -50,28 +50,27 @@ export function tree ( root, methods, dir = '' ) {
 	}
 
 	// Process methods that were passed
-	methods
+	keys
 		// Don't process _pre and _post here
 		.filter( type => ['_pre', '_post'].indexOf( type ) === -1 )
 		// Don't process for branches that are empty
 		.filter( type => !! root[ type ] )
-		// Get the current path, data, and method for each branch type
+		// Get the current data and method for each branch type
 		.map( type => ({
-			path: path.join( dir, type ),
 			data: root[ type ],
 			method: methods[ type ]
 		}) )
 		// Run the correct method over each branch type
-		.map( branch => branch.method.call( this, branch.data, branch.path ) );
+		.map( branch => branch.method.call( this, branch.data, dir ) );
 
 	// Call post processor if one is set.
 	if ( keys.indexOf( '_post' ) !== -1 ) {
-		methods._pre.call( this, root, dir );
+		methods._post.call( this, root, dir );
 	}
 
 	// Recursively run for subdirectories, key as the folder name.
 	if ( typeof root.tree === 'object' ) {
-		root.tree.keys()
+		Object.keys( root.tree )
 			.map( branchKey => [
 				root.tree[ branchKey ],
 				methods,
