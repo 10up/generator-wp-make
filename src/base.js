@@ -171,7 +171,7 @@ const MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	welcomeMessage: ( done ) => {
+	welcomeMessage: function ( done ) {
 		this.log( chalk.magenta(
 			'Thanks for generating with ',
 			chalk.bold( 'WP Make' ),
@@ -185,7 +185,7 @@ const MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	goodbyeMessage: ( done ) => {
+	goodbyeMessage: function ( done ) {
 		this.log( chalk.green.bold(
 			`Your ${this.type || 'item'} has been generated.`
 		) );
