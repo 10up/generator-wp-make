@@ -57,11 +57,18 @@ export function tree ( root, methods, dir = '' ) {
 		.filter( type => !! root[ type ] )
 		// Get the current data and method for each branch type
 		.map( type => ({
+			type,
 			data: root[ type ],
 			method: methods[ type ]
 		}) )
 		// Run the correct method over each branch type
-		.map( branch => branch.method.call( this, branch.data, dir ) );
+		// Assign back to root if a return value is recieved
+		.map( branch => {
+			const result = branch.method.call( this, branch.data, dir );
+			if ( typeof result !== 'undefined' ) {
+				root[branch.type] = result;
+			}
+		} );
 
 	// Call post processor if one is set.
 	if ( keys.indexOf( '_post' ) !== -1 ) {

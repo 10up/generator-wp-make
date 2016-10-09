@@ -57,6 +57,24 @@ describe('lib > util > tree', function () {
 				'baz'
 			);
 		});
+		it('still works with non-object data', function () {
+			// Set up mocks
+			this.mockTree.testing = 'test';
+			this.mockTree.tree.level1.testing = 'test';
+			// Run the test
+			tree.tree( this.mockTree, { testing: val => `${val}ing` } );
+			// Verfiy the result.
+			assert.propertyVal(
+				this.mockTree,
+				'testing',
+				'testing'
+			);
+			assert.deepPropertyVal(
+				this.mockTree,
+				'tree.level1.testing',
+				'testing'
+			);
+		});
 		it('builds a path string off the passed directory', function () {
 			// Run the test
 			tree.tree(
