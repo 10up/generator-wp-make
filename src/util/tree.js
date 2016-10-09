@@ -55,19 +55,33 @@ export function tree ( root, methods, dir = '' ) {
 		.filter( type => ['_pre', '_post'].indexOf( type ) === -1 )
 		// Don't process for branches that are empty
 		.filter( type => !! root[ type ] )
-		// Get the current data and method for each branch type
+		// Get the file names and content and method for each branch type
 		.map( type => ({
-			type,
-			data: root[ type ],
+			files: root[ type ],
 			method: methods[ type ]
 		}) )
-		// Run the correct method over each branch type
-		// Assign back to root if a return value is recieved
-		.map( branch => {
-			const result = branch.method.call( this, branch.data, dir );
-			if ( typeof result !== 'undefined' ) {
-				root[branch.type] = result;
-			}
+		// create a new object running the method over each file.
+		.map( (branch) => {
+			branch.files = Object.keys( branch.files )
+				// Create an array of objects with name and content keys.
+				// Makes for easier processing.
+				.reduce( ( files, name ) => {
+					return files.concat({
+						name,
+						method: branch.method,
+						source: branch.files[ name ] });
+				}, [] )
+				// Run the method, and if not undefined, assign the result back
+				// Create a new object to replace branch.files
+				.reduce( ( files, { method, name, source } ) => {
+					const result = method.call(
+						this,
+						source,
+						path.join( dir, name )
+					);
+					files[ name ] = result === undefined ? source : result;
+					return files;
+				}, {} );
 		} );
 
 	// Call post processor if one is set.
