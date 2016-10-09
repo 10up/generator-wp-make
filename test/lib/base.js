@@ -30,6 +30,24 @@ describe('lib > base', function () {
 			);
 			assert.instanceOf( app, MakeBase );
 		});
+		it('mixes in helpers to the prototype', function () {
+			assert.isFunction(MakeBase.prototype.installers);
+			assert.isFunction(MakeBase.prototype.prompt);
+			assert.isFunction(MakeBase.prototype.starter);
+			assert.isFunction(MakeBase.prototype.tree);
+			assert.isFunction(MakeBase.prototype.writeCopy);
+		});
+		it('has several default properties in the prototype', function () {
+			assert.equal( MakeBase.prototype.defaultPad, '\t' );
+			assert.isObject( MakeBase.prototype._lifecycle );
+			assert.isObject( MakeBase.prototype._lifecycle.prompts );
+			assert.isObject( MakeBase.prototype._lifecycle.tree );
+			assert.isObject( MakeBase.prototype.data );
+			assert.isFalse( MakeBase.prototype.grunt );
+			assert.isObject( MakeBase.prototype.installCommands );
+			assert.isTrue( MakeBase.prototype.installCommands.npm );
+			assert.isTrue( MakeBase.prototype.installCommands.composer );
+		});
 	});
 	describe('#constructor', function () {
 		it( 'registers methods with the run loop', function () {
@@ -289,30 +307,219 @@ describe('lib > base', function () {
 			delete this.doneCalled;
 		});
 	});
-	describe('#makeObject', function () {
-		it('runs the initModule method on the lifecycle tree', function() {
+	describe('#makeObjects', function () {
+		it('is a wrapper method to call this.tree', function() {
 			// Create mocks
 			const context = {
-				lifecycle: {
-					tree: {
-						tasks: {
-							modules: {
-								blue: 'green'
-							}
-						}
-					}
-				},
+				lifecycle: { tree: 'the tree object' },
 				tree: ( tree, methods ) => {
-					methods.modules( tree.tasks.modules );
+					this.treeVal = tree;
+					this.methodsVal = methods;
 				},
-				initModule: (val) {
-					val.blue = 'orange';
-				}
+				initModule: 'module method'
 			};
 			// Run the test
 			MakeBase.prototype.makeObjects.call( context, () => {} );
 			// Verify the resutls.
-			assert.equal( context.lifecycle.tree.tasks.modules.blue, 'orange' );
+			assert.equal( this.treeVal, 'the tree object' );
+			assert.property( this.methodsVal, 'modules' );
+			assert.equal( this.methodsVal.modules, 'module method' );
+			// Clean up
+			delete this.treeVal;
+			delete this.methodsVal;
+		});
+		it('always calls done', function () {
+			// Create mocks
+			const context = {
+				lifecycle: { tree: 'the tree object' },
+				tree: () => {},
+				initModule: 'module method'
+			};
+			// Run the test
+			MakeBase.prototype.makeObjects.call(
+				context,
+				() => { this.doneCalled = true; }
+			);
+			// Verify the resutls.
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
+	describe('#initConfig', function () {
+		it('is a stub method that returns an object', function () {
+			assert.isObject( MakeBase.prototype.initConfig() );
+		});
+	});
+	describe('#walkTree', function () {
+		it('is a wrapper method to call this.tree', function () {
+			//Create mocks
+			const context = {
+				lifecycle: {
+					tree: 'the tree object'
+				},
+				writeJSON: 'json method',
+				writeModule: 'modules method',
+				writeCopy: 'copies method',
+				writeTemplate: 'templates method',
+				tree: ( tree, methods ) => {
+					this.treeVal = tree;
+					this.methodsVal = methods;
+				}
+			};
+			//Run the test
+			MakeBase.prototype.walkTree.call( context, () => {} );
+			// Verify the result
+			assert.equal( this.treeVal, 'the tree object' );
+			assert.property( this.methodsVal, '_pre' );
+			assert.property( this.methodsVal, 'json' );
+			assert.property( this.methodsVal, 'modules' );
+			assert.property( this.methodsVal, 'copies' );
+			assert.property( this.methodsVal, 'templates' );
+			assert.isFunction( this.methodsVal._pre );
+			assert.equal( this.methodsVal.json, 'json method' );
+			assert.equal( this.methodsVal.modules, 'modules method' );
+			assert.equal( this.methodsVal.copies, 'copies method' );
+			assert.equal( this.methodsVal.templates, 'templates method' );
+			// Clean up
+			delete this.treeVal;
+			delete this.methodsVal;
+		});
+		it('always calls done', function () {
+			// Create mocks
+			const context = {
+				lifecycle: { tree: 'the tree object' },
+				writeJSON: 'json method',
+				writeModule: 'modules method',
+				writeCopy: 'copies method',
+				writeTemplate: 'templates method',
+				tree: () => {},
+			};
+			// Run the test
+			MakeBase.prototype.makeObjects.call(
+				context,
+				() => { this.doneCalled = true; }
+			);
+			// Verify the resutls.
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
+	describe('#initModule', function () {
+		it('reads and existing module in if it exists', function () {
+			// Create mocks
+			const context = {
+				defaultPad: '\t',
+				fs: {
+					read: (path) => `var testing = "${path}";`
+				},
+				destinationPath: val => val
+			};
+			// Run the test
+			const result = MakeBase.prototype.initModule.call(
+				context,
+				'skip starter',
+				'/a/dummy/path'
+			);
+			// Verify result
+			assert.instanceOf( result, ASTConfig );
+			assert.equal(
+				result.toString(),
+				'var testing = \'/a/dummy/path\';'
+			);
+		});
+		it('will default to a passed string', function () {
+			// Create mocks
+			const context = {
+				defaultPad: '\t',
+				fs: {
+					read: (path, opts) => opts.defaults
+				},
+				destinationPath: val => val
+			};
+			// Run the test
+			const result = MakeBase.prototype.initModule.call(
+				context,
+				'var test = "testing";',
+				'/dummy/path'
+			);
+			// Verify result
+			assert.instanceOf( result, ASTConfig );
+			assert.equal(
+				result.toString(),
+				'var test = \'testing\';'
+			);
+		});
+		it('will grab a starter if falsey values are passed', function () {
+			// Create mocks
+			const context = {
+				defaultPad: '\t',
+				fs: {
+					read: (path, opts) => opts.defaults
+				},
+				destinationPath: val => val,
+				starter: () => 'var test = "testing";'
+			};
+			// Run the test
+			const result = MakeBase.prototype.initModule.call(
+				context,
+				false,
+				'/dummy/path'
+			);
+			// Verify result
+			assert.instanceOf( result, ASTConfig );
+			assert.equal(
+				result.toString(),
+				'var test = \'testing\';'
+			);
+		});
+		it('will use the defaultPad for indentation by default', function () {
+			// Create mocks
+			const context = {
+				defaultPad: '\t',
+				fs: {
+					read: () => 'if( true ){\nvar test = \'test\';\n}'
+				},
+				destinationPath: val => val
+			};
+			// Run the test
+			const result = MakeBase.prototype.initModule.call(
+				context,
+				'skip starter',
+				'/dummy/path'
+			);
+			// Verify result
+			assert.include(
+				result.toString(),
+				'\t'
+			);
+		});
+		it('allows custom pad if desired', function () {
+			// Create mocks
+			const context = {
+				defaultPad: '\t',
+				fs: {
+					read: () => 'if( true ){\nvar test = \'test\';\n}'
+				},
+				destinationPath: val => val
+			};
+			// Run the test
+			const result = MakeBase.prototype.initModule.call(
+				context,
+				'skip starter',
+				'/dummy/path',
+				'    '
+			);
+			// Verify result
+			assert.notInclude(
+				result.toString(),
+				'\t'
+			);
+			assert.include(
+				result.toString(),
+				'    '
+			);
 		});
 	});
 });

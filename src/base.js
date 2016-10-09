@@ -259,9 +259,7 @@ const MakeBase = Base.extend( {
 	 *
 	 * @return {Object} Returns a lifecycle object.
 	 */
-	initConfig: function() {
-		return {};
-	},
+	initConfig: () => ({}),
 	/**
 	 * Walks the `lifecycle.tree` to output all of the objects defined.
 	 *
@@ -282,7 +280,7 @@ const MakeBase = Base.extend( {
 	 * Helper function to turn a specific JS string into and AST object.
 	 *
 	 * The intended use is to create AST queryable module objects. These are
-	 * typically pretty simple object that are simply passing a config value
+	 * typically pretty simple objects that are simply passing a config value
 	 * back to module.exports.
 	 *
 	 * @param  {String} module     The default module value.
@@ -292,23 +290,14 @@ const MakeBase = Base.extend( {
 	 * @return {void}
 	 */
 	initModule: function ( module, location, pad = this.defaultPad ) {
-		try {
-			module = this.fs.read( this.destinationPath( location ) );
-		} catch ( e ) {
-			if ( typeof module !== 'string' || module === '' ) {
-				module = this.starter( 'module' );
-			}
-		}
+		module = this.fs.read(
+			this.destinationPath( location ),
+			{ defaults: module || this.starter( 'module' ) }
+		);
 
-		module = new ASTConfig(
+		return new ASTConfig(
 			module,
-			{
-				formatOpts: {
-					format: {
-						indent: pad
-					}
-				}
-			}
+			{ formatOpts: { format: { indent: { style: pad } } } }
 		);
 	}
 } );
