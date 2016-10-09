@@ -9,7 +9,7 @@ import ejs from 'ejs';
  * Writes out a JSON object to the destination file.
  *
  * If the file already exists, the existing object will be run through
- * `_.defaults` with the default object passed. This allows for some
+ * `Object.assign` with the content object passed. This allows for some
  * mutation of an existing object if desired while ensuring we don't
  * overwrite and destroy the existing JSON object in the file.
  *
@@ -24,15 +24,7 @@ import ejs from 'ejs';
  */
 export function writeJSON ( content, location, pad = this.defaultPad) {
 	location = this.destinationPath( ejs.render( location, this.data ) );
-	let existing;
-	// See if existing data is available.
-	try {
-		// Try reading in the existing file.
-		// Extend existing data with defaults.
-		existing = this.fs.readJSON( location );
-	} catch ( e ) {
-		existing = {};
-	}
+	const existing = this.fs.readJSON( location, { defaults: '{}' } );
 
 	// Write the file as a template passing the generator data.
 	this.fs.write(
