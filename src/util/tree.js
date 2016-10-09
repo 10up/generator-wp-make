@@ -57,12 +57,13 @@ export function tree ( root, methods, dir = '' ) {
 		.filter( type => !! root[ type ] )
 		// Get the file names and content and method for each branch type
 		.map( type => ({
+			type,
 			files: root[ type ],
 			method: methods[ type ]
 		}) )
 		// create a new object running the method over each file.
 		.map( (branch) => {
-			branch.files = Object.keys( branch.files )
+			root[ branch.type ] = Object.keys( branch.files )
 				// Create an array of objects with name and content keys.
 				// Makes for easier processing.
 				.reduce( ( files, name ) => {

@@ -20,10 +20,18 @@ describe('lib > util > tree', function () {
 	describe('#tree', function () {
 		beforeEach( function () {
 			this.mockTree = {
-				testing: { foo: 'bar' },
+				testing: {
+					'blue.js': 'green',
+					'red.js': 'green',
+					'yellow.js': 'green'
+				},
 				tree: {
 					level1: {
-						testing: { foo: 'bar' }
+						testing: {
+							'blue.js': 'green',
+							'red.js': 'green',
+							'yellow.js': 'green'
+						}
 					}
 				}
 			};
@@ -32,66 +40,92 @@ describe('lib > util > tree', function () {
 			// Set up mocks
 			this.mockTree.tree.level1.tree = {
 				level2: {
-					testing: { foo: 'bar' }
+					testing: {
+						'blue.js': 'green',
+						'red.js': 'green',
+						'yellow.js': 'green'
+					}
 				}
 			};
 			// Run the test
 			tree.tree(
 				this.mockTree,
-				{testing: val => { val.foo = 'baz'; }}
+				{testing: val => `${val}.md`}
 			);
 			// Verfiy the result.
-			assert.deepPropertyVal(
-				this.mockTree,
-				'testing.foo',
-				'baz'
+			const expected = {
+				'blue.js': 'green.md',
+				'red.js': 'green.md',
+				'yellow.js': 'green.md'
+			};
+			assert.deepEqual(
+				this.mockTree.testing,
+				expected
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.testing.foo',
-				'baz'
+			assert.deepEqual(
+				this.mockTree.tree.level1.testing,
+				expected
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.tree.level2.testing.foo',
-				'baz'
+			assert.deepEqual(
+				this.mockTree.tree.level1.tree.level2.testing,
+				expected
 			);
 		});
-		it('still works with non-object data', function () {
+		it('does not overwrite source with no return', function () {
 			// Set up mocks
-			this.mockTree.testing = 'test';
-			this.mockTree.tree.level1.testing = 'test';
+			this.mockTree.tree.level1.tree = {
+				level2: {
+					testing: {
+						'blue.js': 'green',
+						'red.js': 'green',
+						'yellow.js': 'green'
+					}
+				}
+			};
 			// Run the test
-			tree.tree( this.mockTree, { testing: val => `${val}ing` } );
-			// Verfiy the result.
-			assert.propertyVal(
+			// Assert the arg we got should be green, but return nothing.
+			tree.tree(
 				this.mockTree,
-				'testing',
-				'testing'
+				{testing: val => { assert.equal( val, 'green' ); }}
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.testing',
-				'testing'
+			// Verfiy the result.
+			const expected = {
+				'blue.js': 'green',
+				'red.js': 'green',
+				'yellow.js': 'green'
+			};
+			assert.deepEqual(
+				this.mockTree.testing,
+				expected
+			);
+			assert.deepEqual(
+				this.mockTree.tree.level1.testing,
+				expected
 			);
 		});
-		it('builds a path string off the passed directory', function () {
+		it('builds path strings off the passed directory', function () {
 			// Run the test
 			tree.tree(
 				this.mockTree,
-				{testing: (val, dir) => { val.foo = dir; }},
-				'/some/random/path'
+				{testing: (val, dir) => dir },
+				'random/path'
 			);
 			// Verfiy the result.
-			assert.deepPropertyVal(
-				this.mockTree,
-				'testing.foo',
-				'/some/random/path'
+			assert.deepEqual(
+				this.mockTree.testing,
+				{
+					'blue.js': 'random/path/blue.js',
+					'red.js': 'random/path/red.js',
+					'yellow.js': 'random/path/yellow.js'
+				}
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.testing.foo',
-				'/some/random/path/level1'
+			assert.deepEqual(
+				this.mockTree.tree.level1.testing,
+				{
+					'blue.js': 'random/path/level1/blue.js',
+					'red.js': 'random/path/level1/red.js',
+					'yellow.js': 'random/path/level1/yellow.js'
+				}
 			);
 		});
 		it('allows _pre and _post operators', function () {
@@ -141,15 +175,18 @@ describe('lib > util > tree', function () {
 				}
 			);
 			// Verfiy the result.
-			assert.deepPropertyVal(
-				this.mockTree,
-				'testing.foo',
-				'bar'
+			const expected = {
+				'blue.js': 'green',
+				'red.js': 'green',
+				'yellow.js': 'green'
+			};
+			assert.deepEqual(
+				this.mockTree.testing,
+				expected
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.testing.foo',
-				'bar'
+			assert.deepEqual(
+				this.mockTree.tree.level1.testing,
+				expected
 			);
 		});
 		it('does not allow _pre and _post as tree keys', function () {
@@ -160,8 +197,8 @@ describe('lib > util > tree', function () {
 			tree.tree(
 				this.mockTree,
 				{
-					_pre: val => { val.foo = 'baz'; },
-					_post: val => { val.foo = 'baz'; }
+					_pre: () => 'baz',
+					_post: () => 'baz'
 				}
 			);
 			// Verify the results
@@ -172,29 +209,36 @@ describe('lib > util > tree', function () {
 			// Set up mocks
 			this.mockTree.tree.level1.tree = {
 				level2: {
-					testing: { foo: 'bar' }
+					testing: {
+						'blue.js': 'green',
+						'red.js': 'green',
+						'yellow.js': 'green'
+					}
 				}
 			};
 			delete this.mockTree.tree.level1.testing;
 			// Run the test
 			tree.tree(
 				this.mockTree,
-				{testing: val => { val.foo = 'baz'; }}
+				{testing: val => `${val}.md`}
 			);
 			// Verfiy the result
-			assert.notDeepProperty(
-				this.mockTree,
-				'tree.level1.testing'
+			const expected = {
+				'blue.js': 'green.md',
+				'red.js': 'green.md',
+				'yellow.js': 'green.md'
+			};
+			assert.deepEqual(
+				this.mockTree.testing,
+				expected
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'testing.foo',
-				'baz'
+			assert.notDeepEqual(
+				this.mockTree.tree.level1.testing,
+				expected
 			);
-			assert.deepPropertyVal(
-				this.mockTree,
-				'tree.level1.tree.level2.testing.foo',
-				'baz'
+			assert.deepEqual(
+				this.mockTree.tree.level1.tree.level2.testing,
+				expected
 			);
 		});
 	});

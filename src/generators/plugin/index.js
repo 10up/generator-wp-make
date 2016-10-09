@@ -1,4 +1,4 @@
-var Base = require( '../../base.js' );
+import Base from '../../base';
 
 module.exports = Base.extend({
 	type: 'plugin',
