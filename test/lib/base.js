@@ -171,4 +171,122 @@ describe('lib > base', function () {
 			delete this.doneCalled;
 		});
 	});
+	describe('#setLifecycle', function () {
+		it('combines the default and config into the lifecycle', function () {
+			// Create mocks
+			const context = {
+				_lifecycle: { blue: 'green' },
+				initConfig: () => ({ red: 'orange' })
+			};
+			// Run the test
+			MakeBase.prototype.setLifecycle.call( context, () => {} );
+			// Verify result
+			assert.deepEqual(
+				context.lifecycle,
+				{
+					blue: 'green',
+					red: 'orange'
+				}
+			);
+		});
+		it('creates a new object', function () {
+			// Create mocks
+			const context = {
+				_lifecycle: { blue: 'green' },
+				initConfig: () => ({ red: 'orange' })
+			};
+			// Run the test
+			MakeBase.prototype.setLifecycle.call( context, () => {} );
+			// Verify result
+			assert.notEqual( context.lifecycle, context._lifecycle );
+		});
+		it('uses this._lifecycle as the default object', function () {
+			// Create mocks
+			const context = {
+				_lifecycle: { blue: 'green' },
+				initConfig: () => ({ blue: 'orange' })
+			};
+			// Run the test
+			MakeBase.prototype.setLifecycle.call( context, () => {} );
+			// Verify result
+			assert.deepEqual( context.lifecycle, { blue: 'orange' } );
+		});
+		it('always calls the done function', function () {
+			// Create mocks
+			const context = { _lifecycle: {}, initConfig: () => ({}) };
+			// Run the test
+			MakeBase.prototype.setLifecycle.call(
+				context,
+				() => { this.doneCalled = true; }
+			);
+			// Verify result
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
+	describe('#prompts', function () {
+		it('runs the prompt method and then sets the data', function () {
+			// Create mocks
+			const context = {
+				lifecycle: {
+					prompts: 'arbitrary prompt object'
+				},
+				prompt: ( prompts ) => {
+					this.promptArg = prompts;
+					return {
+						then: (fn) => fn({testing: 'test'})
+					};
+				},
+				basename: 'testgen'
+			};
+			// Run the test
+			MakeBase.prototype.prompts.call( context, () => {} );
+			// Verify the result
+			assert.equal( this.promptArg, 'arbitrary prompt object');
+			assert.deepEqual(
+				context.data,
+				{
+					testing: 'test',
+					basename: 'testgen'
+				}
+			);
+		});
+		it('always uses the defined basename', function () {
+			// Create mocks
+			const context = {
+				lifecycle: {},
+				prompt: () => ({
+					then: (fn) => fn({basename: 'test'})
+				}),
+				basename: 'testgen'
+			};
+			// Run the test
+			MakeBase.prototype.prompts.call( context, () => {} );
+			// Verify the result
+			assert.equal( context.data.basename, 'testgen');
+		});
+		it('calls done after this.data has been set', function () {
+			// Create mocks
+			const context = {
+				lifecycle: {},
+				prompt: () => ({
+					then: (fn) => fn({})
+				}),
+				basename: 'testgen'
+			};
+			// Run the test
+			MakeBase.prototype.prompts.call(
+				context,
+				() => {
+					this.doneCalled = true;
+					assert.isObject( context.data );
+				}
+			);
+			// Verify done was called.
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
 });

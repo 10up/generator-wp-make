@@ -270,7 +270,7 @@ const MakeBase = Base.extend( {
 	 */
 	walkTree: function ( done ) {
 		this.tree( this.lifecycle.tree, {
-			_pre: function( tree, dir ) { mkdirp( dir ); },
+			_pre: ( tree, dir ) => mkdirp( dir ),
 			json: this.writeJSON,
 			modules: this.writeModule,
 			copies: this.writeCopy,
