@@ -271,7 +271,17 @@ describe('lib > util > tree', function () {
 		it('can get the second child', function () {
 			assert.equal(tree.getSubtree( 'baz', 'foo/bar' ), 'qux' );
 		});
-		it('can create a child', function () {
+		it('can create a type', function () {
+			const result = tree.getSubtree( 'glu' );
+			assert.isObject( tree.lifecycle.tree.glu );
+			assert.deepEqual( result, {} );
+		});
+		it('can create a branch', function () {
+			const result = tree.getSubtree( 'glu', 'foo/bar' );
+			assert.isObject( tree.lifecycle.tree.tree.foo.tree.bar.glu );
+			assert.deepEqual(result, {});
+		});
+		it('can create a branch when no sub-tree exists', function () {
 			const result = tree.getSubtree( 'bar', 'foo/baz' );
 			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz );
 			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz.bar );
