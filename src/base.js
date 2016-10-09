@@ -126,7 +126,7 @@ const MakeBase = Base.extend( {
 		// Prepare overall lifecycle.
 		this.env.runLoop.add(
 			'initializing',
-			this.welcomeMessage,
+			this.welcomeMessage.bind( this ),
 			{ once: 'wpm:welcome', run: false }
 		);
 		this.env.runLoop.add(
@@ -161,7 +161,7 @@ const MakeBase = Base.extend( {
 		);
 		this.env.runLoop.add(
 			'end',
-			this.goodbyeMessage,
+			this.goodbyeMessage.bind( this ),
 			{ once: 'wpm:goodbye', run: false }
 		);
 	},
