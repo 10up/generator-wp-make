@@ -289,4 +289,30 @@ describe('lib > base', function () {
 			delete this.doneCalled;
 		});
 	});
+	describe('#makeObject', function () {
+		it('runs the initModule method on the lifecycle tree', function() {
+			// Create mocks
+			const context = {
+				lifecycle: {
+					tree: {
+						tasks: {
+							modules: {
+								blue: 'green'
+							}
+						}
+					}
+				},
+				tree: ( tree, methods ) => {
+					methods.modules( tree.tasks.modules );
+				},
+				initModule: (val) {
+					val.blue = 'orange';
+				}
+			};
+			// Run the test
+			MakeBase.prototype.makeObjects.call( context, () => {} );
+			// Verify the resutls.
+			assert.equal( context.lifecycle.tree.tasks.modules.blue, 'orange' );
+		});
+	});
 });
