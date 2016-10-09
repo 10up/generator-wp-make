@@ -104,4 +104,100 @@ describe('lib > util > writers', function () {
 			);
 		});
 	});
+	describe('#writeModule', function () {
+		it('writes modules to the disk', function () {
+			// Run test
+			writers.writeModule( { toString: () => 'yellow' }, '/test.js' );
+			// Verify result
+			assert.deepEqual( this.written[0], ['/test.js', 'yellow'] );
+		});
+		it('allows templating on file names and contents', function () {
+			// Run test
+			writers.writeModule(
+				{ toString: () => '<%= blue %>' }, '/<%= east %>.js' );
+			// Verify result
+			assert.deepEqual( this.written[0], ['/west.js', 'green'] );
+		});
+	});
+	describe('#writeCopy', function () {
+		before(function(){
+			writers.copy = ( src, dest ) => {
+				this.written.push( [src, dest] );
+			};
+		});
+		after(function () {
+			delete writers.copy;
+		});
+		it('copies files to the disk', function () {
+			// Run test
+			writers.writeCopy( '/some/src.md', '/src.md' );
+			// Verify result
+			assert.deepEqual(
+				this.written[0],
+				['/some/src.md', '/src.md']
+			);
+		});
+		it('allows templating on destination paths', function () {
+			// Run test
+			writers.writeCopy( '/some/src.md', '/<%= blue %>.md' );
+			// Verify result
+			assert.deepEqual(
+				this.written[0],
+				['/some/src.md', '/green.md']
+			);
+		});
+	});
+	describe('#writeTemplate', function () {
+		before(function(){
+			writers.template = ( src, dest, data ) => {
+				this.written.push( [src, dest, data] );
+			};
+		});
+		after(function () {
+			delete writers.template;
+		});
+		it('copies files to the disk', function () {
+			// Run test
+			writers.writeTemplate( '/some/src.md', '/src.md' );
+			// Verify result
+			assert.deepEqual(
+				this.written[0],
+				['/some/src.md', '/src.md', writers.data]
+			);
+		});
+		it('allows templating on destination paths', function () {
+			// Run test
+			writers.writeTemplate( '/some/src.md', '/<%= blue %>.md' );
+			// Verify result
+			assert.deepEqual(
+				this.written[0],
+				['/some/src.md', '/green.md', writers.data]
+			);
+		});
+	});
+	describe('#writeGruntfile', function () {
+		before(function(){
+			writers.grunt = { toString: () => 'gruntfile contents' };
+		});
+		after(function () {
+			delete writers.grunt;
+		});
+		it('copies files to the disk', function () {
+			// Run test
+			writers.writeGruntfile( () => {} );
+			// Verify result
+			assert.deepEqual(
+				this.written[0],
+				['Gruntfile.js', 'gruntfile contents']
+			);
+		});
+		it('always calls done', function () {
+			// Run test
+			writers.writeGruntfile( () => { this.doneCalled = true; } );
+			// Verify result
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
 });
