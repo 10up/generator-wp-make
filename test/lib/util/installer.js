@@ -26,7 +26,7 @@ describe('lib > util > installer', function () {
 	/**
 	 * Cofirm install message is working correctly.
 	 */
-	describe( 'installMessage creates a message for output.', function () {
+	describe( '#installMessage', function () {
 		it( 'returns an empty string when 0 length is passed', function () {
 			const msg = installMessage('testing', 0);
 			assert.equal(msg, '');
@@ -50,7 +50,7 @@ describe('lib > util > installer', function () {
 	/**
 	 * Cofirm skip message is working correctly.
 	 */
-	describe( 'skipMessage creates a message for output.', function () {
+	describe( '#skipMessage', function () {
 		it( 'returns an empty string when 0 length is passed', function () {
 			const msg = skipMessage('testing', 0);
 			assert.equal(msg, '');
@@ -74,7 +74,7 @@ describe('lib > util > installer', function () {
 	/**
 	 * Double check formatting is working correctly.
 	 */
-	describe( 'formatMessage deals with items correctly', function () {
+	describe( '#formatMessage', function () {
 		before( function () {
 			this.oneThing = ['one'];
 			this.twoThings = ['one', 'two'];
@@ -109,7 +109,7 @@ describe('lib > util > installer', function () {
 	/**
 	 * Make sure createOutputMessage creates a sane message output function.
 	 */
-	describe( 'createOutputMessage creates a closure', function () {
+	describe( '#createOutputMessage', function () {
 		before( function() {
 			this.contextMock = {
 				log: function( val ) {
@@ -189,6 +189,121 @@ describe('lib > util > installer', function () {
 			noneFn( count );
 			bothFn( count );
 			assert.equal( callCount, 2 );
+		});
+	});
+	describe('#installers', function () {
+		before(function () {
+			installer.runInstall = val => { this.ranInstall.push( val ); };
+			installer.env = {
+				runLoop: {
+					add: (qu, fn, opt) => this.runLoop.push({qu, fn, opt})
+				}
+			};
+			installer.log = (...val) => {
+				this.logged += val.join('');
+			};
+		});
+		beforeEach(function () {
+			installer.installCommands = {
+				npm: true,
+				composer: true
+			};
+			this.ranInstall = [];
+			this.runLoop = [];
+			this.logged = '';
+		});
+		after(function () {
+			delete installer.runInstall;
+			delete this.ranInstall;
+			delete this.runLoop;
+			delete this.logged;
+			delete installer.installCommands;
+			delete installer.env;
+			delete installer.log;
+		});
+		it('sends defined installers to the this.runInstall', function () {
+			// Run test
+			installer.installers( () => {} );
+			// Verify results
+			assert.deepEqual(
+				this.ranInstall,
+				['npm', 'composer']
+			);
+		});
+		it('does not send installers set to false', function () {
+			// Set up mocks
+			installer.installCommands.composer = false;
+			// Run test
+			installer.installers( () => {} );
+			// Verify results
+			assert.deepEqual(
+				this.ranInstall,
+				['npm']
+			);
+		});
+		it('will send a message for run installers', function () {
+			// Run test
+			installer.installers( () => {} );
+			// Verify results
+			assert.equal( this.runLoop[0].qu, 'install' );
+			assert.isFunction( this.runLoop[0].fn );
+			this.runLoop[0].fn( () => {});
+			assert.match( this.logged, /npm/ );
+			assert.match( this.logged, /composer/ );
+			assert.deepEqual(
+				this.runLoop[0].opt,
+				{
+					once: 'installMessage',
+					run: false
+				}
+			);
+		});
+		it('still ouputs a message for not-run installers', function () {
+			// Set up mocks
+			installer.installCommands.composer = false;
+			// Run test
+			installer.installers( () => {} );
+			// Verify results
+			assert.deepEqual(
+				this.ranInstall,
+				['npm']
+			);
+			assert.isFunction( this.runLoop[0].fn );
+			this.runLoop[0].fn( () => {});
+			assert.match( this.logged, /npm/ );
+			assert.match( this.logged, /composer/ );
+		});
+		it('allows skipping the message with options', function () {
+			// Set up mocks
+			installer.installOptions = {
+				skipMessage: true
+			};
+			// Run test
+			installer.installers( () => {} );
+			//Verify results
+			assert.lengthOf( this.runLoop, 0 );
+			// Clean up mocks
+			delete installer.installOptions;
+		});
+		it('will send the message when not using defaults', function () {
+			// Set up mocks
+			installer.installOptions = {
+				skipMessage: false
+			};
+			// Run test
+			installer.installers( () => {} );
+			//Verify result
+			assert.lengthOf( this.runLoop, 1 );
+			// Clean up mocks
+			delete installer.installOptions;
+		});
+		it('always calls done', function () {
+			// Run test
+			installer.installers( () => { this.doneCalled = true; } );
+			// Verify result
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
 		});
 	});
 });
