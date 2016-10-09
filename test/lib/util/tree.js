@@ -282,9 +282,9 @@ describe('lib > util > tree', function () {
 			assert.deepEqual(result, {});
 		});
 		it('can create a branch when no sub-tree exists', function () {
-			const result = tree.getSubtree( 'bar', 'foo/baz' );
-			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz );
-			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz.bar );
+			const result = tree.getSubtree( 'bar', 'foo/baz/glu' );
+			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz.tree.glu );
+			assert.isObject( tree.lifecycle.tree.tree.foo.tree.baz.tree.glu.bar );
 			assert.deepEqual(result, {});
 		});
 	});
