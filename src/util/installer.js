@@ -122,9 +122,9 @@ export function installers ( done ) {
 	);
 
 	const cmds = {
-		commands: this.installCommands.keys()
+		commands: Object.keys( this.installCommands )
 			.filter( cmd => this.installCommands[ cmd ] ),
-		skipped: this.installCommands.keys()
+		skipped: Object.keys( this.installCommands )
 			.filter( cmd => !this.installCommands[ cmd ] )
 	};
 
@@ -139,7 +139,7 @@ export function installers ( done ) {
 		);
 	}
 
-	cmds.commands.map( this.runInstall.bind( this ) );
+	cmds.commands.map( val => this.runInstall( val ) );
 
 	done();
 }
