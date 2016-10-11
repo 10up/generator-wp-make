@@ -2,6 +2,12 @@ import {assert} from 'chai';
 import prompt from '../../../lib/util/prompt';
 
 describe('lib > util > prompt', function () {
+	beforeEach(function () {
+		prompt._makeProfile = {};
+	});
+	after(function () {
+		delete prompt._makeProfile;
+	});
 	/**
 	 * Confirm the file is loading correctly and tested functions are available
 	 */
@@ -92,7 +98,7 @@ describe('lib > util > prompt', function () {
 					[question.name]: `answer${count}`
 				} ) );
 			}
-			return prompt.prompt( [...mockQuestions], undefined, mockPrompt )
+			return prompt.prompt( mockQuestions, undefined, mockPrompt )
 				.then(answers => {
 					// mockPrompt should have been called 3 times.
 					assert.equal( count, 5 );
@@ -130,7 +136,7 @@ describe('lib > util > prompt', function () {
 					[question.name]: 'answer'
 				} ) );
 			}
-			return prompt.prompt( [...mockQuestions], {}, mockPrompt )
+			return prompt.prompt( mockQuestions, {}, mockPrompt )
 				.then(answers => {
 					// only should have two answers back, no tree followed.
 					assert.deepEqual( answers, {
@@ -162,7 +168,7 @@ describe('lib > util > prompt', function () {
 					[question.name]: true
 				} ) );
 			}
-			return prompt.prompt( [...mockQuestions], {}, mockPrompt )
+			return prompt.prompt( mockQuestions, {}, mockPrompt )
 				.then(answers => {
 					// mockPrompt should have been called 2 times.
 					assert.equal( count, 2 );
@@ -191,13 +197,167 @@ describe('lib > util > prompt', function () {
 					[question.name]: 'answer'
 				} ) );
 			}
-			return prompt.prompt.call( context, [...mockQuestions], { test: 'test' }, mockPrompt )
+			return prompt.prompt( mockQuestions, { test: 'test' }, mockPrompt )
 				.then(answers => {
 					// Check to make sure we got both questions and the seed.
 					assert.deepEqual( answers, {
 						test: 'test',
 						question1: 'answer',
 						question2: 'answer'
+					});
+				});
+		});
+		it('mixes the profile object into the seed object', function () {
+			prompt._makeProfile = {
+				blue: 'green',
+				test: 'override seed'
+			};
+			const mockQuestions = [
+				{
+					name: 'question1',
+					message: 'Question 1'
+				},
+				{
+					name: 'question2',
+					message: 'Question 2'
+				}
+			];
+			// Mocks the call to the yeoman prompt prototype.
+			function mockPrompt( question ) {
+				// return the incremented answer.
+				return new Promise( resolve => resolve( {
+					[question.name]: 'answer'
+				} ) );
+			}
+			return prompt.prompt( mockQuestions, { test: 'test' }, mockPrompt )
+				.then(answers => {
+					// Check to make sure we got both questions and the seed.
+					assert.deepEqual( answers, {
+						blue: 'green',
+						test: 'override seed',
+						question1: 'answer',
+						question2: 'answer'
+					});
+				});
+		});
+		it('can override defaults with profile if specified', function () {
+			prompt._makeProfile = {
+				question1: 'newdefault1',
+				question2: 'newdefault2'
+			};
+			const mockQuestions = [
+				{
+					name: 'question1',
+					message: 'Question 1',
+					default: 'answer1',
+					profile: 'default'
+				},
+				{
+					name: 'question2',
+					message: 'Question 2',
+					default: 'answer2'
+				}
+			];
+			// Mocks the call to the yeoman prompt prototype.
+			function mockPrompt( question ) {
+				// return the incremented answer.
+				return new Promise( resolve => resolve( {
+					[question.name]: question.default
+				} ) );
+			}
+			return prompt.prompt( mockQuestions, {}, mockPrompt )
+				.then(answers => {
+					// Check to make sure we got both questions and the seed.
+					assert.deepEqual( answers, {
+						question1: 'newdefault1',
+						question2: 'answer2'
+					});
+				});
+		});
+		it('can override questions entirely if specified', function () {
+			let count = 0;
+			prompt._makeProfile = {
+				question1: 'override1',
+				question2: 'override2'
+			};
+			const mockQuestions = [
+				{
+					name: 'question1',
+					message: 'Question 1',
+					profile: 'override'
+				},
+				{
+					name: 'question2',
+					message: 'Question 2',
+				}
+			];
+			// Mocks the call to the yeoman prompt prototype.
+			function mockPrompt( question ) {
+				// Increment call count.
+				count++;
+				// return the incremented answer.
+				return new Promise( resolve => resolve( {
+					[question.name]: 'answer'
+				} ) );
+			}
+			return prompt.prompt( mockQuestions, {}, mockPrompt )
+				.then(answers => {
+					// Check to make sure mockPrompt was only called onced.
+					assert.equal( count, 1 );
+					// Check to make sure we got both questions and the seed.
+					assert.deepEqual( answers, {
+						question1: 'override1',
+						question2: 'answer'
+					});
+				});
+		});
+		it('can make hidden questions questions asked', function () {
+			let count = 0;
+			prompt._makeProfile = {
+				question1: '__prompt',
+				question2: 'auto2'
+			};
+			const mockQuestions = [
+				{
+					name: 'question1',
+					message: 'Question 1',
+					profile: 'hidden'
+				},
+				{
+					name: 'question2',
+					message: 'Question 2',
+					profile: 'hidden'
+				},
+				{
+					name: 'question3',
+					message: 'Question 3',
+					profile: 'hidden'
+				},
+				{
+					name: 'question4',
+					message: 'Question 4',
+					profile: 'hidden'
+				}
+			];
+			// Mocks the call to the yeoman prompt prototype.
+			function mockPrompt( question ) {
+				// Increment call count.
+				count++;
+				// return the incremented answer.
+				return new Promise( resolve => resolve( {
+					[question.name]: 'answer'
+				} ) );
+			}
+			return prompt.prompt( mockQuestions, { question3: 'auto3'}, mockPrompt )
+				.then(answers => {
+					// Check to make sure mockPrompt was only called onced.
+					assert.equal( count, 1 );
+					// Check to make sure we got both questions and the seed.
+					assert.deepEqual( answers, {
+						question1: 'answer',
+						question2: 'auto2',
+						question3: 'auto3',
+						question4: undefined
 					});
 				});
 		});
@@ -226,7 +386,7 @@ describe('lib > util > prompt', function () {
 			// This borders more on an integration test but is still worth it.
 
 			// Mock a bit of the yeoman environment context so that the
-			// actual prompt method doesn' throw a fit when run.
+			// actual prompt method doesn't throw a fit when run.
 			const context = {
 				options: {},
 				_globalConfig: {

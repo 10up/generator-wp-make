@@ -44,13 +44,39 @@ const ymPrompt = YBase.prototype.prompt;
  * @return {Promise}          A promise that will resolve to the answered q's.
  */
 export function prompt ( prompts, seed = {}, inquire = ymPrompt ) {
+	seed = Object.assign( {}, seed, this._makeProfile );
 	const query = new Promise(resolve => resolve( seed ));
-	var gatherData = ( data ) => {
+	const gatherData = ( data ) => {
 		if ( prompts.length <= 0 ) {
 			return data;
 		}
+		// Grab the question and set up it's default method.
 		const question = prompts.shift();
-		return inquire.call( this, question ).then( ( newData ) => {
+		question.__m = inquire;
+		// Mix in profile data as defined.
+		const inSeed = seed[ question.name ] !== undefined;
+		// When default is used, allow the profile to override the default
+		if ( question.profile === 'default' && inSeed ) {
+			question.default = seed[ question.name ];
+		// When override is used, allow the profile to suppress the question
+		} else if ( question.profile === 'override' && inSeed ) {
+			question.__m = () => new Promise(
+				resolve => resolve( {
+					[question.name]: seed[ question.name ]
+				} )
+			);
+		// When hidden is used, suppress the question unless __prompt
+		} else if ( question.profile === 'hidden' ) {
+			if ( seed[ question.name ] !== '__prompt' ) {
+				question.__m = () => new Promise(
+					resolve => resolve( {
+						[question.name]: seed[ question.name ]
+					} )
+				);
+			}
+		}
+
+		return question.__m.call( this, question ).then( ( newData ) => {
 			// Mix the new data into the main data.
 			Object.assign( data, newData );
 			// Get the stringified value of the question that was just asked.
