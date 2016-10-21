@@ -8,7 +8,7 @@ import chalk from 'chalk';
 /**
  * Create the install message for install commands that are run automatically.
  *
- * @param  {array} commands An array of commands run automatically.
+ * @param  {Array} commands An array of commands run automatically.
  * @return {string}         The string for logging output.
  */
 export function installMessage( concatString, length ) {
@@ -22,7 +22,7 @@ export function installMessage( concatString, length ) {
 /**
  * Create the install message for install commands that are not automatic.
  *
- * @param  {array} commands An array of install commands not run automatically.
+ * @param  {Array} commands An array of install commands not run automatically.
  * @return {string}         The string for logging output.
  */
 export function skipMessage( concatString, length ) {
@@ -45,8 +45,8 @@ export function skipMessage( concatString, length ) {
  * or more commands it becomes 'command1 install, command 2 install, and
  * command 3 install.'
  *
- * @param  {array}    commands            An array of commands to format.
- * @param  {fucntion} [format=chalk.bold] The formatting function for individual
+ * @param  {Array}    commands            An array of commands to format.
+ * @param  {Fucntion} [format=chalk.bold] The formatting function for individual
  *                                        commands.
  * @return {string}                       The formatted string of commands.
  */
