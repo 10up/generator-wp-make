@@ -36,7 +36,7 @@ import path from 'path';
  *
  * @param  {Object} root    The tree object to traverse.
  * @param  {Object} methods A mapping of tree keys to processing functions.
- * @param  {String} dir     The root directory of this tree object.
+ * @param  {string} dir     The root directory of this tree object.
  * @return {void}
  */
 export function tree ( root, methods, dir = '' ) {
@@ -119,8 +119,8 @@ export function tree ( root, methods, dir = '' ) {
  * the full JSON object with filename: value mappings. You can then mutate a
  * specific file, or add one.
  *
- * @param  {String} type The object type to get (json, modules, templates, etc.)
- * @param  {String} path The path in the tree represented as a file path string.
+ * @param  {string} type The object type to get (json, modules, templates, etc.)
+ * @param  {string} path The path in the tree represented as a file path string.
  * @return {Object}      The tree object at that location of the requested type.
  */
 export function getSubtree ( type, path = '' ) {
