@@ -17,8 +17,8 @@ import ejs from 'ejs';
  * tags can be used in both.
  *
  * @param  {Object} contents   The JS object to use as the cntents.
- * @param  {String} location   The file path where the json file will live.
- * @param  {String} pad        Optional. The whitespace to use in output.
+ * @param  {string} location   The file path where the json file will live.
+ * @param  {string} pad        Optional. The whitespace to use in output.
  *                             Will default to the defined default.
  * @return {void}
  */
@@ -46,7 +46,7 @@ export function writeJSON ( content, location, pad = this.defaultPad) {
  * tags can be used in both.
  *
  * @param  {Object} module   The ASTConfig object for this module.
- * @param  {String} location The file path where the module will live.
+ * @param  {string} location The file path where the module will live.
  * @return {void}
  */
 export function writeModule ( module, location ) {
@@ -62,8 +62,8 @@ export function writeModule ( module, location ) {
  * While the file is copied, the file name is run through an ejs template so
  * that dynamic filenames can be defined in the copy templates if needed.
  *
- * @param  {String} source The template path where the file is located.
- * @param  {String} dest   The destination path where the file is written.
+ * @param  {string} source The template path where the file is located.
+ * @param  {string} dest   The destination path where the file is written.
  * @return {void}
  */
 export function writeCopy ( source, dest ) {
@@ -76,8 +76,8 @@ export function writeCopy ( source, dest ) {
   * so dynamic filenames and content can be specified based off of the
   * collected data stored in `this.data`.
   *
-  * @param  {String} source The template path where the file is located.
-  * @param  {String} dest   The destination path where the file is written.
+  * @param  {string} source The template path where the file is located.
+  * @param  {string} dest   The destination path where the file is written.
   * @return {void}
   */
 export function writeTemplate ( source, dest ) {

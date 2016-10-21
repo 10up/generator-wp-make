@@ -65,7 +65,7 @@ const MakeBase = Base.extend( {
 	/**
 	 * This is the default whitespace used when outputting JSON and JS code.
 	 *
-	 * @type {String}
+	 * @type {string}
 	 */
 	defaultPad: '\t',
 	/**
@@ -97,7 +97,7 @@ const MakeBase = Base.extend( {
 	 * true in your generator. It will output a basic Gruntfile.js. You can
 	 * modify this using the AST config options in mutation functions.
 	 *
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	grunt: false,
 	/**
@@ -283,9 +283,9 @@ const MakeBase = Base.extend( {
 	 * typically pretty simple objects that are simply passing a config value
 	 * back to module.exports.
 	 *
-	 * @param  {String} module     The default module value.
-	 * @param  {String} location   The file path to where the module will live.
-	 * @param  {String} pad        Optional. The whitespace to use in output.
+	 * @param  {string} module     The default module value.
+	 * @param  {string} location   The file path to where the module will live.
+	 * @param  {string} pad        Optional. The whitespace to use in output.
 	 *                             Will default to the defined default.
 	 * @return {void}
 	 */
