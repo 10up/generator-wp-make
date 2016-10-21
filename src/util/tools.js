@@ -14,7 +14,7 @@ import path from 'path';
  * other JSON definition that follows this type of pattern.
  *
  * @param {Object} keys    The object defining the specific type of JSON file.
- * @param {String} name    The name of the dependency to add.
+ * @param {string} name    The name of the dependency to add.
  * @param {String} version The version string to use for the dependency.
  * @param {Bool}   dev     Whether this should go in dev or normal dependencies.
  */
@@ -39,9 +39,9 @@ export function jsonDependency ( keys, name, version, dev ) {
  * Sets the type to package.json, normal/dev dependencies to dependencies and
  * devDependencies specifically, and the starter to 'package'.
  *
- * @param  {string} name    The name of the npm package to add.
- * @param  {String} version The semver string to use in package.json.
- * @param  {Bool}   dev     Whether this is a dev dependency or not.
+ * @param  {string}  name    The name of the bower package to add.
+ * @param  {string}  version The semver string to use in bower.json.
+ * @param  {boolean} dev     Whether this is a dev dependency or not.
  * @return {void}
  */
 export function nodeDependency ( name, version, dev ) {
@@ -59,9 +59,9 @@ export function nodeDependency ( name, version, dev ) {
  * Sets the type to composer.json, normal/dev dependencies to require and
  * require-dev specifically, and the starter to 'composer'.
  *
- * @param  {string} name    The name of the composer package to add.
- * @param  {String} version The semver string to use in composer.json.
- * @param  {Bool}   dev     Whether this is a dev dependency or not.
+ * @param  {string}  name    The name of the composer package to add.
+ * @param  {string}  version The semver string to use in composer.json.
+ * @param  {boolean} dev     Whether this is a dev dependency or not.
  * @return {void}
  */
 export function composerDependency ( name, version, dev ) {
@@ -81,8 +81,8 @@ export function composerDependency ( name, version, dev ) {
  * easy shortcut for adding an task configuration module into the `/tasks`
  * directory for grunt to consume.
  *
- * @param  {String} task   The task name to configure.
- * @param  {String} config The JS configuration string to use.
+ * @param  {string} task   The task name to configure.
+ * @param  {string} config The JS configuration string to use.
  * @return {void}
  */
 export function gruntConfig ( task, config ) {
@@ -99,9 +99,9 @@ export function gruntConfig ( task, config ) {
  *
  * This is great for both JSON and Module strings used in AST.
  *
- * @param  {String} template The name of the starter template to retrieve.
- * @param  {String} type     The extension of the starter template.
- * @return {String}          The stringified file contents, or empty.
+ * @param  {string} template The name of the starter template to retrieve.
+ * @param  {string} type     The extension of the starter template.
+ * @return {string}          The strinified file contents, or empty.
  */
 export function starter ( template, type = 'js' ) {
 	const templateFile = 'starters/_' + template + '.' + type;
@@ -128,8 +128,8 @@ export function starter ( template, type = 'js' ) {
  * Handy for setting up JS object starters as actual objects rather than as
  * string since they are easier to manipulate and mutate as JS objects.
  *
- * @param  {String} template The stater JSON template to retrieve.
- * @return {String}          The object defined in the template.
+ * @param  {string} template The stater JSON template to retrieve.
+ * @return {string}          The object defined in the template.
  */
 export function starterJSON ( template ) {
 	const data = this.starter( template, 'json' );
