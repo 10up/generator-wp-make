@@ -1,13 +1,13 @@
 var assert = require('chai').assert;
-var module = require('../../../lib/defaults/module');
+var app = require('../../../lib/generators/app');
 
-describe('lib > defaults > module', function () {
+describe('app > index', function () {
 	/**
 	 * Confirm the file is loading correctly and tested functions are available
 	 */
 	describe('Setup', function () {
 		it('can be imported', function () {
-			assert.isOk(module, 'module is available');
+			assert.isOk(app, 'app is available');
 		});
 	});
 });

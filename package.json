@@ -74,6 +74,6 @@
     "mocha": "^3.0.2",
     "mock-fs": "^3.9.0",
     "mockery": "^1.7.0",
-    "yeoman-test": "^1.4.0"
+    "yeoman-test": "^1.5.1"
   }
 }

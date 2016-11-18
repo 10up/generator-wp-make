@@ -7,15 +7,19 @@
  * lifecycle.
  */
 
-// Require dependencies
-var Base = require( 'extendable-yeoman' ).Base;
-var _ = require( 'lodash' );
-var ejs = require( 'ejs' );
-var path = require( 'path' );
-var chalk = require( 'chalk' );
-var mkdirp = require( 'mkdirp' );
-var ASTConfig = require( './util/ast-config' );
-var gruntConfig = require( './util/grunt-config' );
+// Import dependencies
+import {Base} from 'extendable-yeoman';
+import chalk from 'chalk';
+import mkdirp from 'mkdirp';
+import ASTConfig from './util/ast-config';
+import gruntConfig from './util/grunt-config';
+
+// Import mixins
+import mixinInstaller from './util/installer';
+import mixinPrompt from './util/prompt';
+import mixinTree from './util/tree';
+import mixinTools from './util/tools';
+import mixinWriters from './util/writers';
 
 /**
  * The MakeBase definition for controlling a WP Make generation lifecycle.
@@ -57,19 +61,19 @@ var gruntConfig = require( './util/grunt-config' );
  * methods will be run in sequence unless you specifically use the yeoman
  * queue framework to move them outside of this basic lifecycle.
  */
-var MakeBase = Base.extend( {
+const MakeBase = Base.extend( {
 	/**
 	 * This is the default whitespace used when outputting JSON and JS code.
 	 *
-	 * @type {String}
+	 * @type {string}
 	 */
-	whitespaceDefault: '\t',
+	defaultPad: '\t',
 	/**
 	 * This is the default lifecycle object.
 	 *
 	 * Don't overwrite this. Instead, define a lifecycle object in your
 	 * initConfig method and return a lifecycle object. This returned object
-	 * will be run through `_.defaults` with this object as the default.
+	 * will be run through `Object.assign` with this object as the default.
 	 *
 	 * @type {Object}
 	 */
@@ -93,7 +97,7 @@ var MakeBase = Base.extend( {
 	 * true in your generator. It will output a basic Gruntfile.js. You can
 	 * modify this using the AST config options in mutation functions.
 	 *
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	grunt: false,
 	/**
@@ -108,7 +112,6 @@ var MakeBase = Base.extend( {
 	 */
 	installCommands: {
 		npm: true,
-		bower: true,
 		composer: true
 	},
 	/**
@@ -121,26 +124,46 @@ var MakeBase = Base.extend( {
 		Base.apply( this, arguments );
 
 		// Prepare overall lifecycle.
-		this.env.runLoop.add( 'initializing', this.welcomeMessage.bind( this ), { once: 'wpm:welcome', run: false } );
-		this.env.runLoop.add( 'initializing', this.setLifecycle.bind( this ), { once: 'wpm:setLifecycle', run: false } );
-		this.env.runLoop.add( 'initializing', this.installers.bind( this ), { once: 'wpm:install', run: false } );
-		this.env.runLoop.add( 'prompting', this.prompts.bind( this ), { once: 'wpm:prompts', run: false } );
-		this.env.runLoop.add( 'configuring', this.makeObjects.bind( this ), { once: 'wpm:makeObjects', run: false } );
-		this.env.runLoop.add( 'writing', this.walkTree.bind( this ), { once: 'wpm:walkTree', run: false } );
-		this.env.runLoop.add( 'end', this.goodbyeMessage.bind( this ), { once: 'wpm:goodbye', run: false } );
-
-		// Optionally prepare grunt output.
-		if ( this.grunt ) {
-			var gruntContents;
-			var gruntPath = this.destinationPath('Gruntfile.js');
-
-			gruntContents = this.fs.read( gruntPath, {
-				defaults: this.fs.read( path.join( __dirname, 'defaults', 'gruntfile.js' ) )
-			} );
-
-			this.grunt = gruntConfig( gruntContents );
-			this.env.runLoop.add( 'writing', this.writeGruntfile.bind( this ), { once: 'wpm:grunt', run: false } );
-		}
+		this.env.runLoop.add(
+			'initializing',
+			this.welcomeMessage.bind( this ),
+			{ once: 'wpm:welcome', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.initGrunt.bind( this ),
+			{ once: 'wpm:initGrunt', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.setLifecycle.bind( this ),
+			{ once: 'wpm:setLifecycle', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.installers.bind( this ),
+			{ once: 'wpm:install', run: false }
+		);
+		this.env.runLoop.add(
+			'prompting',
+			this.prompts.bind( this ),
+			{ once: 'wpm:prompts', run: false }
+		);
+		this.env.runLoop.add(
+			'configuring',
+			this.makeObjects.bind( this ),
+			{ once: 'wpm:makeObjects', run: false }
+		);
+		this.env.runLoop.add(
+			'writing',
+			this.walkTree.bind( this ),
+			{ once: 'wpm:walkTree', run: false }
+		);
+		this.env.runLoop.add(
+			'end',
+			this.goodbyeMessage.bind( this ),
+			{ once: 'wpm:goodbye', run: false }
+		);
 	},
 	/**
 	 * Outputs a welcome message to thank users for trying WP Make.
@@ -148,12 +171,12 @@ var MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	welcomeMessage: function( done ) {
-		this.log(
-			chalk.magenta( 'Thanks for generating with ' ) +
-			chalk.magenta.bold( 'WP Make' ) +
-			chalk.magenta( '!' )
-		);
+	welcomeMessage: function ( done ) {
+		this.log( chalk.magenta(
+			'Thanks for generating with ',
+			chalk.bold( 'WP Make' ),
+			'!'
+		) );
 		done();
 	},
 	/**
@@ -162,9 +185,32 @@ var MakeBase = Base.extend( {
 	 * @param  {Function} done The function to continue generation.
 	 * @return {void}
 	 */
-	goodbyeMessage: function( done ) {
-		var item = this.type || 'item';
-		this.log( chalk.green.bold( 'Your ' + item + ' has been generated.' ) );
+	goodbyeMessage: function ( done ) {
+		this.log( chalk.green.bold(
+			`Your ${this.type || 'item'} has been generated.`
+		) );
+		done();
+	},
+	/**
+	 * Optionally initialize a grunt object if grunt is set to true.
+	 * @param  {Function} done The function to continue generation.
+	 * @return {void}
+	 */
+	initGrunt: function ( done ) {
+		// Optionally intialize grunt config and output.
+		if ( this.grunt ) {
+			// Read in or create the default gruntfile.
+			this.grunt = gruntConfig( this.fs.read(
+				this.destinationPath('Gruntfile.js'),
+				{ defaults: this.starter('gruntfile') }
+			) );
+			// Set up gruntfile dump on output.
+			this.env.runLoop.add(
+				'writing',
+				this.writeGruntfile.bind( this ),
+				{ once: 'wpm:grunt', run: false }
+			);
+		}
 		done();
 	},
 	/**
@@ -175,7 +221,11 @@ var MakeBase = Base.extend( {
 	 */
 	setLifecycle: function ( done ) {
 		// Make sure lifecycle is ready.
-		this.lifecycle = _.defaults( this.initConfig(), this._lifecycle );
+		this.lifecycle = Object.assign(
+			{},
+			this._lifecycle,
+			this.initConfig()
+		);
 		done();
 	},
 	/**
@@ -185,12 +235,12 @@ var MakeBase = Base.extend( {
 	 * @return {void}
 	 */
 	prompts: function ( done ) {
-		this.prompt( this.lifecycle.prompts ).then( function( props ){
+		this.prompt( this.lifecycle.prompts ).then( ( props ) => {
 			this.data = Object.assign( props, {
 				basename: this.basename
 			} );
 			done();
-		}.bind( this ) );
+		} );
 	},
 	/**
 	 * Turns object strings into AST objects for better/safer mutation control.
@@ -209,9 +259,7 @@ var MakeBase = Base.extend( {
 	 *
 	 * @return {Object} Returns a lifecycle object.
 	 */
-	initConfig: function() {
-		return {};
-	},
+	initConfig: () => ({}),
 	/**
 	 * Walks the `lifecycle.tree` to output all of the objects defined.
 	 *
@@ -220,7 +268,7 @@ var MakeBase = Base.extend( {
 	 */
 	walkTree: function ( done ) {
 		this.tree( this.lifecycle.tree, {
-			_pre: function( tree, dir ) { mkdirp( dir ); },
+			_pre: ( tree, dir ) => mkdirp( dir ),
 			json: this.writeJSON,
 			modules: this.writeModule,
 			copies: this.writeCopy,
@@ -232,134 +280,25 @@ var MakeBase = Base.extend( {
 	 * Helper function to turn a specific JS string into and AST object.
 	 *
 	 * The intended use is to create AST queryable module objects. These are
-	 * typically pretty simple object that are simply passing a config value
+	 * typically pretty simple objects that are simply passing a config value
 	 * back to module.exports.
 	 *
-	 * @param  {String} module     The default module value.
-	 * @param  {String} location   The file path to where the module will live.
-	 * @param  {String} whitespace Optional. The whitespace to use in output.
+	 * @param  {string} module     The default module value.
+	 * @param  {string} location   The file path to where the module will live.
+	 * @param  {string} pad        Optional. The whitespace to use in output.
 	 *                             Will default to the defined default.
 	 * @return {void}
 	 */
-	initModule: function ( module, location, whitespace ) {
-		var moduleString;
-		if ( this.fs.exists( this.destinationPath( location ) ) ) {
-			moduleString = this.fs.read( this.destinationPath( location ) );
-		} else if ( _.isString( module ) && module !== '' ) {
-			moduleString = module;
-		} else {
-			moduleString = this.fs.read( path.join( __dirname, 'defaults', 'module.js' ) );
-		}
+	initModule: function ( module, location, pad = this.defaultPad ) {
+		module = this.fs.read(
+			this.destinationPath( location ),
+			{ defaults: module || this.starter( 'module' ) }
+		);
 
-		module = new ASTConfig( moduleString, {
-			formatOpts: {
-				format: {
-					indent: whitespace || this.whitespaceDefault
-				}
-			}
-		} );
-	},
-	/**
-	 * Writes out a JSON object to the destination file.
-	 *
-	 * If the file already exists, the existing object will be run through
-	 * `_.defaults` with the default object passed. This allows for some
-	 * mutation of an existing object if desired while ensuring we don't
-	 * overwrite and destroy the existing JSON object in the file.
-	 *
-	 * The contents and file names are run through templating so ejs template
-	 * tags can be used in both.
-	 *
-	 * @param  {Object} defaults   The default JSON object.
-	 * @param  {String} location   The file path where the json file will live.
-	 * @param  {String} whitespace Optional. The whitespace to use in output.
-	 *                             Will default to the defined default.
-	 * @return {void}
-	 */
-	writeJSON: function ( defaults, location, whitespace ) {
-		location = this.destinationPath( ejs.compile( location )( this.data ) );
-		var data;
-		var template;
-
-		// Set up data, using existing if available.
-		if ( this.fs.exists( location ) ) {
-			try {
-				// Try just requiring the file.
-				data = require( location );
-			} catch ( e ) {
-				// If we can't require it, read it in as JSON.
-				data = this.fs.readJSON( location );
-			}
-
-			// Extend existing data with defaults if it's an object.
-			if ( typeof defaults === 'object' ) {
-				data = _.defaults( data || {}, defaults );
-			}
-		} else {
-			data = defaults;
-		}
-
-		// Set up the template
-		template = ejs.compile( JSON.stringify( data, null, whitespace || this.whitespaceDefault ) );
-
-		// Write the file
-		this.fs.write( location, template( this.data ) );
-	},
-	/**
-	 * Writes out a JS module to the file system.
-	 *
-	 * The contents and file names are run through templating so ejs template
-	 * tags can be used in both.
-	 *
-	 * @param  {Object} module   The ASTConfig object for this module.
-	 * @param  {String} location The file path where the module will live.
-	 * @return {void}
-	 */
-	writeModule: function ( module, location ) {
-		var template = ejs.compile( module.toString() );
-		location = this.destinationPath( ejs.compile( location )( this.data ) );
-
-		// Write the module file.
-		this.fs.write( location, template( this.data ) );
-	},
-	/**
-	 * Copies files from the source to the desitination.
-	 *
-	 * While the file is copied, the file name is run through an ejs template so
-	 * that dynamic filenames can be defined in the copy templates if needed.
-	 *
-	 * @param  {String} source The template path where the file is located.
-	 * @param  {String} dest   The destination path where the file is written.
-	 * @return {void}
-	 */
-	writeCopy: function ( source, dest ) {
-		dest = ejs.render( dest, this.data );
-		this.copy( source, dest );
-	},
-	/**
-	 * Copies files from the source to the desitination, running it through ejs.
-	 *
-	 * Both the file contents and the file name are run through ejs templating
-	 * so dynamic filenames and content can be specified based off of the
-	 * collected data stored in `this.data`.
-	 *
-	 * @param  {String} source The template path where the file is located.
-	 * @param  {String} dest   The destination path where the file is written.
-	 * @return {void}
-	 */
-	writeTemplate: function( source, dest ) {
-		dest = ejs.render( dest, this.data );
-		this.template( source, dest, this.data );
-	},
-	/**
-	 * If needed, writes the Gruntfile out to the file root as Gruntfile.js.
-	 *
-	 * @param  {Function} done The function to continue generation.
-	 * @return {void}
-	 */
-	writeGruntfile: function ( done ) {
-		this.fs.write( this.destinationPath( 'Gruntfile.js' ), this.grunt.toString() );
-		done();
+		return new ASTConfig(
+			module,
+			{ formatOpts: { format: { indent: { style: pad } } } }
+		);
 	}
 } );
 
@@ -370,13 +309,14 @@ var MakeBase = Base.extend( {
  * are defined separately to help keep the functionality organization a little
  * cleaner.
  */
-_.extend(
+Object.assign(
 	MakeBase.prototype,
-	require( './util/installer' ),
-	require( './util/prompt' ),
-	require( './util/tree' ),
-	require( './util/tools' )
+	mixinInstaller,
+	mixinPrompt,
+	mixinTools,
+	mixinTree,
+	mixinWriters
 );
 
 // Exports the MakeBase for use.
-module.exports = MakeBase;
+export default MakeBase;

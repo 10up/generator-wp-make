@@ -1,5 +1,5 @@
 coverage
-lib
+/lib
 node_modules/
 temp/
 .idea/
