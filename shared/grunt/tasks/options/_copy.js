@@ -15,6 +15,7 @@ module.exports = {
 			'!assets/js/src/**',
 			'!images/src/**',
 			'!bootstrap.php',
+			'!bootstrap.php.dist',
 			'!bower.json',
 			'!composer.json',
 			'!composer.lock',
