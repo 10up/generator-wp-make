@@ -8,6 +8,7 @@ module.exports = {
 			'!**/readme.md',
 			'!node_modules/**',
 			'!vendor/**',
+			'!tasks/**',
 			'!tests/**',
 			'!release/**',
 			'!assets/css/sass/**',
