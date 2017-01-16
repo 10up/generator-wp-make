@@ -3,9 +3,101 @@
  */
 
 // Require dependencies
-var _ = require( 'lodash' );
-var ejs = require( 'ejs' );
-var chalk = require( 'chalk' );
+import chalk from 'chalk';
+
+/**
+ * Create the install message for install commands that are run automatically.
+ *
+ * @param  {Array} commands An array of commands run automatically.
+ * @return {string}         The string for logging output.
+ */
+export function installMessage( concatString, length ) {
+	if ( length ) {
+		return `Running ${concatString} to install the required dependencies. If this fails, try running the command${length > 1 ? 's' : ''} yourself.`;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Create the install message for install commands that are not automatic.
+ *
+ * @param  {Array} commands An array of install commands not run automatically.
+ * @return {string}         The string for logging output.
+ */
+export function skipMessage( concatString, length ) {
+	if ( length ) {
+		return `Skipping ${concatString}. When you are ready  to install these dependencies, run the command${length > 1 ? 's' : ''} yourself.`;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Formats an array of install commands into a logabble format.
+ *
+ * Takes the base command and appends install to each, runs each through the
+ * formatting function injectd (typically a chalk method), and then concatenates
+ * the strings with proper english and the oxford comma.
+ *
+ * With one command passed it becomes just 'command install', formatted. With
+ * two commands it becomes 'command1 install and command 2 install'. With three
+ * or more commands it becomes 'command1 install, command 2 install, and
+ * command 3 install.'
+ *
+ * @param  {Array}    commands            An array of commands to format.
+ * @param  {Fucntion} [format=chalk.bold] The formatting function for individual
+ *                                        commands.
+ * @return {string}                       The formatted string of commands.
+ */
+export function formatMessage( commands, format = chalk.bold ) {
+	return commands
+		// add the install flag to each command.
+		.map( cmd => `${cmd} install`)
+		// pass the command to `format` (this only allows map arg 1 through).
+		.map( cmd => format( cmd ) )
+		// concatenates the commands in a natural language style.
+		.reduceRight( ( msg, cmd, i ) => {
+			if ( i === 0 ) {
+				return cmd + ( msg || '' );
+			} else if ( ! msg ) {
+				return i > 1 ? `, and ${cmd}` : ` and ${cmd}`;
+			} else {
+				return `, ${cmd}` + msg;
+			}
+		}, false);
+}
+
+/**
+ * Creates a function to output the install and sipped messages on an event.
+ *
+ * This is used to queue the install messaging to output right before the
+ * automatic installs are run. It closures the commands run and skipped so that
+ * the text matches what's queued to run in the installation phase.
+ *
+ * @param  {Array} {commands=[]} The commands that will run automatically.
+ * @param  {Array} {skipped=[]}  The commands that are not automatic.
+ * @return {void}
+ */
+export function createOutputMessage( { commands = [], skipped = [] } = {} ) {
+	return done => {
+		if ( commands.length || skipped.length ) {
+			this.log( '\n\n' );
+			this.log( [
+				installMessage(
+					formatMessage( commands, chalk.yellow.bold ),
+					commands.length
+				),
+				skipMessage(
+					formatMessage( skipped, chalk.red.bold ),
+					skipped.length
+				)
+			].filter( val => !! val ).join( '\n\n' ) );
+			this.log( '\n\n' );
+		}
+		done();
+	};
+}
 
 /**
  * Runs the installers as needed based on generator configuration.
@@ -23,91 +115,36 @@ var chalk = require( 'chalk' );
  * @param  {Function} done The function for continuing generation.
  * @return {void}
  */
-function install ( done ) {
-	var msg = {
-		commands: [],
-		skipped: [],
-		installTemplate: ejs.compile(
-			'\n\n' +
-			'Running <%= commands %> to install the required dependencies.' +
-			' If this fails, try running the command' +
-			'<% if ( 1 < commandCount ) { %>s<% } %>' +
-			' yourself.' +
-			'\n\n'
-		),
-		skipTemplate: ejs.compile(
-			'\n' +
-			'Skipping <%= skipped %>. When you are ready to install these dependencies,' +
-			' run the command' +
-			'<% if ( 1 < skippedCount ) { %>s<% } %>' +
-			' yourself.' +
-			'\n\n'
-		)
+export function installers ( done ) {
+	const options = Object.assign(
+		{ skipMessage: false },
+		this.installOptions || {}
+	);
+
+	const cmds = {
+		commands: Object.keys( this.installCommands )
+			.filter( cmd => this.installCommands[ cmd ] ),
+		skipped: Object.keys( this.installCommands )
+			.filter( cmd => !this.installCommands[ cmd ] )
 	};
 
-	var defaults = _.extend( _.clone( this.installCommands ), {
-		skipMessage: false
-	} );
-
-	var options = _.defaults( this.installOptions || {}, defaults );
-
 	if ( ! options.skipMessage ) {
-		this.env.runLoop.add( 'install', installMessage.bind( this ), {
-			once: 'installMessage',
-			run: false
-		} );
+		this.env.runLoop.add(
+			'install',
+			createOutputMessage.call( this, cmds ),
+			{
+				once: 'installMessage',
+				run: false
+			}
+		);
 	}
 
-	for ( var command in this.installCommands ) {
-		if ( options[ command ] && ! options.skipInstall ) {
-			msg.commands.push( chalk.yellow.bold( command + ' install' ) );
-			this.runInstall( command );
-		} else {
-			msg.skipped.push( chalk.red.bold( command + ' install' ) );
-		}
-	}
+	cmds.commands.map( val => this.runInstall( val ) );
 
 	done();
-
-	/**
-	 * Closured function that outputs messages based on the run installers.
-	 *
-	 * @param  {Function} done The function to continue generation.
-	 * @return {void}
-	 */
-	function installMessage( done ) {
-		if ( msg.commands.length > 2 ) {
-			msg.commands[ msg.commands.length - 1 ] = 'and ' + msg.commands[ msg.commands.length - 1 ];
-			this.options.commands = msg.commands.join( ', ' );
-		} else {
-			this.options.commands = msg.commands.join( ' and ' );
-		}
-
-		if ( msg.skipped.length > 2 ) {
-			msg.skipped[ msg.skipped.length - 1 ] = 'and ' + msg.skipped[ msg.skipped.length - 1 ];
-			this.options.skipped = msg.skipped.join( ', ' );
-		} else {
-			this.options.skipped = msg.skipped.join( ' and ' );
-		}
-
-		this.options.commandCount = msg.commands.length;
-		this.options.skippedCount = msg.skipped.length;
-
-		if ( msg.commands.length ) {
-			this.log( msg.installTemplate( this.options ) );
-		} else {
-			this.log( '\n\n' );
-		}
-
-		if ( msg.skipped.length ) {
-			this.log( msg.skipTemplate( this.options ) );
-		}
-
-		done();
-	}
 }
 
 // Export the mixin.
-module.exports = {
-	installers: install
+export default {
+	installers
 };
