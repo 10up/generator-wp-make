@@ -11,6 +11,7 @@
 import {Base} from 'extendable-yeoman';
 import chalk from 'chalk';
 import mkdirp from 'mkdirp';
+import ProfileRC from 'yo-profile';
 import ASTConfig from './util/ast-config';
 import gruntConfig from './util/grunt-config';
 
@@ -80,6 +81,7 @@ const MakeBase = Base.extend( {
 	_lifecycle: {
 		prompts: {},
 		tree: {},
+		defaults: {}
 	},
 	/**
 	 * This is where data is stored when gathered from inputs.
@@ -128,6 +130,11 @@ const MakeBase = Base.extend( {
 			'initializing',
 			this.welcomeMessage.bind( this ),
 			{ once: 'wpm:welcome', run: false }
+		);
+		this.env.runLoop.add(
+			'initializing',
+			this.initProfiles.bind( this ),
+			{ once: 'wpm:initProfiles', run: false }
 		);
 		this.env.runLoop.add(
 			'initializing',
@@ -214,6 +221,35 @@ const MakeBase = Base.extend( {
 		done();
 	},
 	/**
+	 * Initializes the WP Make prfiles feature from any .wpmakerc files.
+	 * @param  {Function} done Run to indicate generation should continue.
+	 * @return {void}
+	 */
+	initProfiles: function ( done ) {
+		this._makeProfile = new this.ProfileRC().load( {
+			license: 'GPL-2.0+',
+			humanstxt: true,
+			rootNamespace: undefined,
+			phpMin: undefined,
+			wpTested: undefined,
+			wpMin: undefined
+		}, 'wpmake' ).properties;
+
+		// Convert legacy keys to camelCase.
+		['root_namespace', 'php_min', 'wp_tested', 'wp_min'].map( key => {
+			if ( this._makeProfile.hasOwnProperty( key ) ) {
+				const camel = key.replace( /(\_\w)/g, m => m[1].toUpperCase() );
+				this._makeProfile[ camel ] = this._makeProfile[ key ];
+				delete this._makeProfile[ key ];
+			}
+		});
+		// convert legacy prompt to __prompt
+		if ( this._makeProfile.rootNamespace === 'prompt' ) {
+			this._makeProfile.rootNamespace = '__prompt';
+		}
+		done();
+	},
+	/**
 	 * Sets the the `this.lifecycle` object using `initConfig` and `_lifecycle`.
 	 *
 	 * @param {Function} done The function to continue generation.
@@ -235,7 +271,10 @@ const MakeBase = Base.extend( {
 	 * @return {void}
 	 */
 	prompts: function ( done ) {
-		this.prompt( this.lifecycle.prompts ).then( ( props ) => {
+		this.prompt(
+			this.lifecycle.prompts,
+			this.lifecycle.defaults
+		).then( ( props ) => {
 			this.data = Object.assign( props, {
 				basename: this.basename
 			} );
@@ -315,7 +354,8 @@ Object.assign(
 	mixinPrompt,
 	mixinTools,
 	mixinTree,
-	mixinWriters
+	mixinWriters,
+	{ ProfileRC: ProfileRC }
 );
 
 // Exports the MakeBase for use.

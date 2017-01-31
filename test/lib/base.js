@@ -42,6 +42,7 @@ describe('lib > base', function () {
 			assert.isObject( MakeBase.prototype._lifecycle );
 			assert.isObject( MakeBase.prototype._lifecycle.prompts );
 			assert.isObject( MakeBase.prototype._lifecycle.tree );
+			assert.isObject( MakeBase.prototype._lifecycle.defaults );
 			assert.isObject( MakeBase.prototype.data );
 			assert.isFalse( MakeBase.prototype.grunt );
 			assert.isObject( MakeBase.prototype.installCommands );
@@ -73,6 +74,7 @@ describe('lib > base', function () {
 				[
 					'wpm:welcome',
 					'wpm:initGrunt',
+					'wpm:initProfiles',
 					'wpm:setLifecycle',
 					'wpm:install'
 				]
@@ -189,6 +191,121 @@ describe('lib > base', function () {
 			delete this.doneCalled;
 		});
 	});
+	describe('#initProfiles', function () {
+		before( function () {
+			this.context = {
+				ProfileRC: () => ({
+					load: ( defaults, key ) => {
+						this.profileDefaults = defaults;
+						this.profileKey = key;
+						return { properties: this.storedProfile };
+					}
+				})
+			};
+		});
+		beforeEach( function () {
+			this.context._makeProfile = false;
+			this.profileDefaults = false;
+			this.profileKey = false;
+			this.storedProfile = {};
+		});
+		after( function () {
+			delete MakeBase.ProfileRC;
+			delete this.profileDefaults;
+			delete this.profileKey;
+			delete this.storedProfile;
+		});
+		it('sets a profiles object to the _makeProfile property', function () {
+			// Create mocks
+			this.storedProfile = {
+				blue: 'green',
+				red: 'yellow'
+			};
+			MakeBase.prototype.initProfiles.call( this.context, () => {} );
+			assert.propertyVal( this.context._makeProfile, 'blue', 'green' );
+			assert.propertyVal( this.context._makeProfile, 'red', 'yellow' );
+		});
+		it('passes default properties', function () {
+			MakeBase.prototype.initProfiles.call( this.context, () => {} );
+			assert.isObject( this.profileDefaults );
+		});
+		it('uses the .wmmakerc file for the profiles', function () {
+			MakeBase.prototype.initProfiles.call( this.context, () => {} );
+			assert.equal( this.profileKey, 'wpmake' );
+		});
+		it('converts legacy snake case keys to camelCase', function () {
+			// Create mocks
+			/* eslint-disable camelcase */
+			this.storedProfile = {
+				root_namespace: 'green',
+				php_min: 'yellow',
+				wp_tested: 'red',
+				wp_min: 'blue',
+				random_nonlegacy: 'purple'
+			};
+			/* eslint-enable camelcase */
+			// Run test
+			MakeBase.prototype.initProfiles.call( this.context, () => {} );
+			// Verify result
+			assert.notProperty( this.context._makeProfile, 'root_namespace' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'rootNamespace',
+				'green'
+			);
+			assert.notProperty( this.context._makeProfile, 'php_min' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'phpMin',
+				'yellow'
+			);
+			assert.notProperty( this.context._makeProfile, 'wp_tested' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'wpTested',
+				'red'
+			);
+			assert.notProperty( this.context._makeProfile, 'wp_min' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'wpMin',
+				'blue'
+			);
+			assert.notProperty( this.context._makeProfile, 'randomNonlegacy' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'random_nonlegacy',
+				'purple'
+			);
+		});
+		it('converts rootNamespace legacy prompt to __prompt', function () {
+			// Create mocks
+			/* eslint-disable camelcase */
+			this.storedProfile = {
+				root_namespace: 'prompt',
+			};
+			/* eslint-enable camelcase */
+			// Run test
+			MakeBase.prototype.initProfiles.call( this.context, () => {} );
+			// Verify result
+			assert.notProperty( this.context._makeProfile, 'root_namespace' );
+			assert.propertyVal(
+				this.context._makeProfile,
+				'rootNamespace',
+				'__prompt'
+			);
+		});
+		it('always calls done', function () {
+			// Run test
+			MakeBase.prototype.initProfiles.call( this.context, () => {
+				this.doneCalled = true;
+			} );
+			// Verify result
+			assert.isTrue( this.doneCalled );
+			// Clean up
+			delete this.doneCalled;
+		});
+	});
 	describe('#setLifecycle', function () {
 		it('combines the default and config into the lifecycle', function () {
 			// Create mocks
@@ -248,10 +365,12 @@ describe('lib > base', function () {
 			// Create mocks
 			const context = {
 				lifecycle: {
-					prompts: 'arbitrary prompt object'
+					prompts: 'arbitrary prompt object',
+					defaults: 'arbitrary defaults object'
 				},
-				prompt: ( prompts ) => {
-					this.promptArg = prompts;
+				prompt: ( prompts, defaults ) => {
+					this.promptDefs = prompts;
+					this.promptDefaults = defaults;
 					return {
 						then: (fn) => fn({testing: 'test'})
 					};
@@ -261,7 +380,8 @@ describe('lib > base', function () {
 			// Run the test
 			MakeBase.prototype.prompts.call( context, () => {} );
 			// Verify the result
-			assert.equal( this.promptArg, 'arbitrary prompt object');
+			assert.equal( this.promptDefs, 'arbitrary prompt object');
+			assert.equal( this.promptDefaults, 'arbitrary defaults object' );
 			assert.deepEqual(
 				context.data,
 				{
@@ -269,6 +389,9 @@ describe('lib > base', function () {
 					basename: 'testgen'
 				}
 			);
+			// Clean up
+			delete this.promptDefs;
+			delete this.promptDefaults;
 		});
 		it('always uses the defined basename', function () {
 			// Create mocks
@@ -381,7 +504,6 @@ describe('lib > base', function () {
 			assert.equal( this.methodsVal.modules, 'modules method' );
 			assert.equal( this.methodsVal.copies, 'copies method' );
 			assert.equal( this.methodsVal.templates, 'templates method' );
-			// Clean up
 			delete this.treeVal;
 			delete this.methodsVal;
 		});
