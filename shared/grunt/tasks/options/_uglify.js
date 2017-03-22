@@ -1,8 +1,12 @@
 module.exports = {
 	all: {
-		files: {
-			'assets/js/<%= fileSlug %>.min.js': ['assets/js/<%= fileSlug %>.js']
-		},
+		files: [{
+			expand: true,
+			cwd: 'assets/js/.src-browserify/',
+			src: ['*.js'],
+			dest: 'assets/js/build/',
+			ext: '.min.js'
+		}],
 		options: {
 			banner: '/*! <%%= pkg.title %> - v<%%= pkg.version %>\n' +
 			' * <%%= pkg.homepage %>\n' +

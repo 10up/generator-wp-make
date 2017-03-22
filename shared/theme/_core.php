@@ -16,8 +16,10 @@ function setup() {
 	};
 
 	add_action( 'after_setup_theme',  $n( 'i18n' )        );
-	add_action( 'wp_enqueue_scripts', $n( 'scripts' )     );
-	add_action( 'wp_enqueue_scripts', $n( 'styles' )      );
+	add_action( 'init', $n( 'register_scripts' ) );
+	add_action( 'init', $n( 'register_styles' ) );
+	add_action( 'wp_enqueue_scripts', $n( 'enqueue_global_scripts' ) );
+	add_action( 'wp_enqueue_scripts', $n( 'enqueue_global_styles' ) );
 	<% if ( false !== opts.humanstxt ) { %>add_action( 'wp_head',            $n( 'header_meta' ) );<% } %>
 }
 
@@ -39,15 +41,15 @@ function i18n() {
  }
 
 /**
- * Enqueue scripts for front-end.
+ * Register scripts for front-end.
  *
- * @uses wp_enqueue_script() to load front end scripts.
+ * @uses wp_register_script() to load front end scripts.
  *
  * @since 0.1.0
  *
  * @return void
  */
-function scripts() {
+function register_scripts() {
 	/**
 	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
 	 * 
@@ -55,13 +57,53 @@ function scripts() {
 	 */
 	$debug = apply_filters( '<%= opts.funcPrefix %>_script_debug', false );
 	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	$dir = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.src-browserify' : 'build';
 
-	wp_enqueue_script(
+	wp_register_script(
 		'<%= opts.funcPrefix %>',
-		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/<%= fileSlug %>{$min}.js",
+		<%= opts.funcPrefix.toUpperCase() %>_TEMPLATE_URL . "/assets/js/{$dir}/<%= fileSlug %>{$min}.js",
 		array(),
 		<%= opts.funcPrefix.toUpperCase() %>_VERSION,
 		true
+	);
+}
+
+/**
+ * Enqueue global scripts for front-end.
+ *
+ * @uses wp_enqueue_script() to load front end scripts.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function enqueue_global_scripts() {
+	wp_enqueue_script( '<%= opts.funcPrefix %>' );
+}
+
+/**
+ * Register global styles for front-end.
+ *
+ * @uses wp_register_style() to load front end styles.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function register_styles() {
+	/**
+	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
+	 *
+	 * @param bool <%= opts.funcPrefix %>_style_debug
+	 */
+	$debug = apply_filters( '<%= opts.funcPrefix %>_style_debug', false );
+	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	wp_register_style(
+		'<%= opts.funcPrefix %>',
+		<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>{$min}.css",
+		array(),
+		<%= opts.funcPrefix.toUpperCase() %>_VERSION
 	);
 }
 
@@ -74,21 +116,8 @@ function scripts() {
  *
  * @return void
  */
-function styles() {
-	/**
-	 * Flag whether to enable loading uncompressed/debugging assets. Default false.
-	 *
-	 * @param bool <%= opts.funcPrefix %>_style_debug
-	 */
-	$debug = apply_filters( '<%= opts.funcPrefix %>_style_debug', false );
-	$min = ( $debug || defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-	wp_enqueue_style(
-		'<%= opts.funcPrefix %>',
-		<%= opts.funcPrefix.toUpperCase() %>_URL . "/assets/css/<%= fileSlug %>{$min}.css",
-		array(),
-		<%= opts.funcPrefix.toUpperCase() %>_VERSION
-	);
+function enqueue_global_styles() {
+	wp_enqueue_style( '<%= opts.funcPrefix %>' );
 }
 
 <% if ( false !== opts.humanstxt ) { %>/**

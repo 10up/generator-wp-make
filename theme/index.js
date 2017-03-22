@@ -207,6 +207,7 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 
 	js: function() {
 		this.template( '../../shared/js/_script.js', 'assets/js/src/' + this.fileSlug + '.js' );
+		this.template( '../../shared/js/_component.js', 'assets/js/src/component/component.js' );
 		this.copy( '../../shared/js/readme-vendor.md', 'assets/js/vendor/readme.md' );
 	},
 
@@ -249,6 +250,8 @@ var ThemeGenerator = yeoman.generators.Base.extend({
 		} else {
 			this.template( '../../shared/grunt/tasks/_css.js', 'tasks/css.js' );
 		}
+		this.template( '../../shared/grunt/tasks/options/_babel.js', 'tasks/options/babel.js' );
+		this.template( '../../shared/grunt/tasks/options/_browserify.js', 'tasks/options/browserify.js' );
 		this.template( '../../shared/grunt/tasks/options/_cssmin.js', 'tasks/options/cssmin.js' );
 		this.template( '../../shared/grunt/tasks/options/_clean.js', 'tasks/options/clean.js' );
 		this.template( '../../shared/grunt/tasks/options/_compress.js', 'tasks/options/compress.js' );
